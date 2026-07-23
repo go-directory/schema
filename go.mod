@@ -1,3 +1,3 @@
-module github.com/JesseCoretta/go-ldapschema
+module github.com/go-directory/schema
 
 go 1.25.5
