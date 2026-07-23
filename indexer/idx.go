@@ -1,7 +1,7 @@
 package indexer
 
 import (
-	"github.com/JesseCoretta/go-ldapschema"
+	"github.com/go-directory/schema"
 )
 
 /*

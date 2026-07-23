@@ -3,7 +3,7 @@ package indexer
 import (
 	"strings"
 
-	"github.com/JesseCoretta/go-ldapschema"
+	"github.com/go-directory/schema"
 )
 
 func (r DITStructureRuleProperties) Resolve(def string) (rid, ident string, names []string) {

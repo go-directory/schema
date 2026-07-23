@@ -3,7 +3,7 @@ package indexer
 import (
 	"strings"
 
-	"github.com/JesseCoretta/go-ldapschema"
+	"github.com/go-directory/schema"
 )
 
 func (r LDAPSyntaxProperties) Resolve(def string) (noid, desc string, _ []string) {
