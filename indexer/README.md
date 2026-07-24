@@ -1,6 +1,6 @@
 # indexer
 
-Package indexer wraps [JesseCoretta/go-ldapschema](https://github.com/JesseCoretta/go-ldapschema) to generate fast schema lookup tables, vastly improving response time as compared to use of a native `*schema.SubentrySubschema` instance.
+Package indexer wraps [go-directory/schema](https://github.com/go-directory/schema) to generate fast schema lookup tables, vastly improving response time as compared to use of a native `*schema.SubentrySubschema` instance.
 
 ## Example
 
@@ -8,8 +8,8 @@ Package indexer wraps [JesseCoretta/go-ldapschema](https://github.com/JesseCoret
 package main
 
 import (
-	"github.com/JesseCoretta/go-ldapschema"
-	"github.com/JesseCoretta/go-ldapschema/indexer"
+	"github.com/go-directory/schema"
+	"github.com/go-directory/schema/indexer"
 )
 
 func main() {

@@ -44,7 +44,7 @@ func BenchmarkAttributeTypeCalls(b *testing.B) {
 		_, _ = exampleIndex.AT.D2O[attr[i%maxIdx]]
 		_, _ = exampleIndex.AT.UB[attr[i%maxIdx]]
 		_, _ = exampleIndex.AT.LS[attr[i%maxIdx]]
-		_, _ = exampleIndex.AT.MR[attr[i%maxIdx]]
+		_, _ = exampleIndex.AT.EQ[attr[i%maxIdx]]
 		_, _ = exampleIndex.AT.Sup[attr[i%maxIdx]]
 		_, _ = exampleIndex.AT.Sub[attr[i%maxIdx]]
 		_, _ = exampleIndex.AT.Usage[attr[i%maxIdx]]

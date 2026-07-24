@@ -61,7 +61,9 @@ func (r *Index) seedAT(sch *schema.SubschemaSubentry) {
 	r.AT.Princ = make(map[string]string)
 	r.AT.SrcIndex = make(map[string]int)
 	r.AT.Flags = make(map[string]uint8)
-	r.AT.MR = make(map[string]string)
+	r.AT.EQ = make(map[string]string)
+	r.AT.SUB = make(map[string]string)
+	r.AT.ORD = make(map[string]string)
 	r.AT.LS = make(map[string]string)
 	r.AT.O2D = make(map[string][]string)
 	r.AT.D2O = make(map[string]string)
@@ -69,15 +71,14 @@ func (r *Index) seedAT(sch *schema.SubschemaSubentry) {
 
 	for i := 0; i < sch.AttributeTypes.Len(); i++ {
 		def := sch.AttributeTypes.Index(i)
-		for _, rule := range []func() *schema.MatchingRule{
-			def.EffectiveEquality,
-			def.EffectiveSubstring,
-			def.EffectiveOrdering,
-		} {
-			if mr := rule(); mr != nil {
-				r.AT.MR[def.NumericOID] = mr.NumericOID
-				break
-			}
+		if mr := def.EffectiveEquality(); mr != nil {
+			r.AT.EQ[def.NumericOID] = mr.NumericOID
+		}
+		if mr := def.EffectiveSubstring(); mr != nil {
+			r.AT.SUB[def.NumericOID] = mr.NumericOID
+		}
+		if mr := def.EffectiveOrdering(); mr != nil {
+			r.AT.ORD[def.NumericOID] = mr.NumericOID
 		}
 
 		efs := def.EffectiveSyntax()
@@ -113,16 +114,6 @@ func (r *Index) loadAT() (err error) {
 
 		syn := r.AT.LS[noid]
 		r.AT.LS[noid] = syn
-
-		for _, rule := range []string{
-			attr.Equality,
-			attr.Substring,
-			attr.Ordering,
-		} {
-			if rule != "" {
-				r.AT.MR[noid], _, _ = r.MR.Resolve(rule)
-			}
-		}
 
 		if sup := attr.SuperType; sup != "" {
 			r.AT.Sup[noid], _, _ = r.AT.Resolve(sup)
@@ -201,7 +192,9 @@ type AttributeTypeProperties struct {
 	D2O      map[string]string   // descriptor to numeric OID
 	Princ    map[string]string   // attribute (k) has principal identifier (v)
 	LS       map[string]string   // attribute (k) uses syntax (v)
-	MR       map[string]string   // attribute (k) uses matching rule (v)
+	EQ       map[string]string   // attribute (k) uses equality matching rule (v)
+	SUB      map[string]string   // attribute (k) uses substring matching rule (v)
+	ORD      map[string]string   // attribute (k) uses ordering matching rule (v)
 	Flags    map[string]uint8    // attribute (k) has bool flags (v)
 	Usage    map[string]string   // attribute (k) is <usage>
 	Sup      map[string]string   // attribute (k) has super type (v)
