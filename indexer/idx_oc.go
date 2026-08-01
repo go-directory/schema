@@ -123,10 +123,9 @@ func (r *Index) loadOC() (err error) {
 		}
 
 		var supers []string
-		for j := 0; j < len(class.SuperClasses); j++ {
-			if o, _, _ := r.OC.Resolve(class.SuperClasses[j]); o != "" {
-				supers = append(supers, o)
-			}
+		chain := class.SuperChain()
+		for j := 0; j < chain.Len(); j++ {
+			supers = append(supers, chain.Index(j).NumericOID)
 		}
 		if len(supers) > 0 {
 			r.OC.Sup[noid] = supers

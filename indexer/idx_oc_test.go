@@ -17,6 +17,12 @@ func ExampleObjectClassProperties_Resolve_forwardLookup() {
 	// Output: Principal name for 2.5.6.0: "top"
 }
 
+func ExampleObjectClassProperties_superChain() {
+	chain := exampleIndex.OC.Sup[`2.5.6.7`]
+	fmt.Println(chain)
+	// Output: [2.5.6.0 2.5.6.6 2.5.6.7]
+}
+
 func BenchmarkObjectClassCalls(b *testing.B) {
 	var class []string
 	for k := range exampleIndex.OC.O2D {
