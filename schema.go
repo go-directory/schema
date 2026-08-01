@@ -3983,9 +3983,6 @@ func (r ObjectClass) Identifier() (id string) {
 SuperChain returns an instance of [ObjectClasses], which will
 contain zero (0) or more slices of [ObjectClass], each of which
 representing a direct superior class of the receiver instance.
-
-The input classes instance should represent the [ObjectClasses]
-instance obtained through a [SubschemaSubentry] instance.
 */
 func (r ObjectClass) SuperChain() (supers *ObjectClasses) {
 	supers = &ObjectClasses{}
@@ -3993,6 +3990,10 @@ func (r ObjectClass) SuperChain() (supers *ObjectClasses) {
 		supers = r.schema.NewObjectClasses()
 		for _, class := range r.SuperClasses {
 			if def, idx := r.schema.ObjectClasses.Get(class); idx != -1 {
+				defs := def.SuperChain()
+				for s := 0; s < defs.Len(); s++ {
+					supers.Push(defs.Index(s))
+				}	
 				supers.Push(def)
 			}
 		}
@@ -4131,14 +4132,17 @@ Duplicate references are silently discarded.
 */
 func (r ObjectClass) AllMust() (must *AttributeTypes) {
 	must = r.schema.NewAttributeTypes()
+	supers := r.SuperChain()
 
 	// Add MANDATORY types declared by super classes.
-	for i := 0; i < len(r.SuperClasses); i++ {
-		sm := r.SuperClasses[i]
-		if class, idx := r.schema.ObjectClasses.Get(sm); idx != -1 {
-			for _, j := range class.AllMust().defs {
-				must.Push(j)
-			}
+	for i := 0; i < supers.Len(); i++ {
+		sm := supers.Index(i)
+		if r.NumericOID == sm.NumericOID {
+			continue // just say no to stack overflows
+		}
+		alm := sm.AllMust()
+		for a := 0; a < alm.Len(); a++ {
+			must.Push(alm.Index(a))
 		}
 	}
 
@@ -4168,18 +4172,21 @@ Duplicate references are silently discarded.
 */
 func (r ObjectClass) AllMay() (may *AttributeTypes) {
 	may = r.schema.NewAttributeTypes()
+	supers := r.SuperChain()
 
-	// Add MANDATORY types declared by super classes.
-	for i := 0; i < len(r.SuperClasses); i++ {
-		sm := r.SuperClasses[i]
-		if class, idx := r.schema.ObjectClasses.Get(sm); idx != -1 {
-			for _, j := range class.AllMay().defs {
-				may.Push(j)
-			}
+	// Add OPTIONAL types declared by super classes.
+	for i := 0; i < supers.Len(); i++ {
+		sm := supers.Index(i)
+		if r.NumericOID == sm.NumericOID {
+			continue // just say no to stack overflows
+		}
+		alm := sm.AllMay()
+		for a := 0; a < alm.Len(); a++ {
+			may.Push(alm.Index(a))
 		}
 	}
 
-	// Add local MANDATORY types.
+	// Add local OPTIONAL types.
 	for i := 0; i < len(r.May); i++ {
 		if attr, idx := r.schema.AttributeTypes.Get(r.May[i]); idx != -1 {
 			may.Push(attr)
