@@ -1527,7 +1527,7 @@ func init() {
 		panic(fmt.Sprintf("%s failed [read bytes]: %v", name, err))
 	}
 
-	if exampleSchema, err = NewSubschemaSubentry(true); err != nil {
+	if exampleSchema, err = New(true); err != nil {
 		panic(fmt.Sprintf("%s failed [schema init]: %v", name, err))
 	}
 

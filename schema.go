@@ -37,9 +37,9 @@ var invalidSchema *SubschemaSubentry = &SubschemaSubentry{
 }
 
 /*
-NewSubschemaSubentry returns a freshly initialized instance of *[SubschemaSubentry].
-Instances of this type serve as a platform upon which individual text definitions
-may be parsed into usable instances of [Definition].
+New returns a freshly initialized instance of *[SubschemaSubentry]. Instances of
+this type serve as a platform upon which individual text definitions may be
+parsed into usable instances of [Definition].
 
 The prime variadic argument controls whether to prime, or "pre-load", standard
 [LDAPSyntax] and [MatchingRule] definitions sourced from RFC 4512, RFC 4523 and
@@ -51,7 +51,7 @@ they are constructing a very stringent schema structure which only contains sele
 syntaxes and matching rules -- a most unusual circumstance. In such a case, users
 will be required to register those select syntaxes and matching rules MANUALLY.
 */
-func NewSubschemaSubentry(prime ...bool) (sch *SubschemaSubentry, err error) {
+func New(prime ...bool) (sch *SubschemaSubentry, err error) {
 	sch = &SubschemaSubentry{
 		LDAPSyntaxes:      &LDAPSyntaxes{mutex: &sync.Mutex{}},
 		MatchingRules:     &MatchingRules{mutex: &sync.Mutex{}},
