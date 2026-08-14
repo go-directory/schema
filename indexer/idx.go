@@ -1,6 +1,8 @@
 package indexer
 
 import (
+	"time"
+
 	"github.com/go-directory/schema"
 )
 
@@ -32,6 +34,7 @@ func New(sch *schema.SubschemaSubentry) (r Index, err error) {
 	// get rid of temp, regardless of
 	// outcome, we're finished with it.
 	r.temp = nil
+	r.Timestamp = time.Now()
 
 	return
 }
@@ -59,7 +62,7 @@ type Index struct {
 
 	temp *temporaryReferences
 
-	version uint64
+	Timestamp time.Time // create or modify timestamp
 }
 
 type temporaryReferences struct {

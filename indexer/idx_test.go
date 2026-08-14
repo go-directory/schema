@@ -7,7 +7,7 @@ import (
 var exampleIndex Index
 
 func init() {
-	sch, err := schema.NewSubschemaSubentry(true)
+	sch, err := schema.New(true)
 	if err != nil {
 		panic(err)
 	}
