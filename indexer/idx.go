@@ -36,6 +36,12 @@ func New(sch *schema.SubschemaSubentry) (r Index, err error) {
 	r.temp = nil
 	r.Timestamp = time.Now()
 
+	// make a note of the effective
+	// subschemaSubentry DN, if set.
+	if sch.DN != nil {
+		r.DN = sch.DN
+	}
+
 	return
 }
 
