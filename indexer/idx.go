@@ -52,6 +52,8 @@ func (r *Index) init(sch *schema.SubschemaSubentry) {
 }
 
 type Index struct {
+	DN []byte // schema context DN
+
 	LS LDAPSyntaxProperties
 	MR MatchingRuleProperties
 	AT AttributeTypeProperties
