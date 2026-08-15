@@ -692,6 +692,7 @@ of this feature, and its invocation is automatic wherever appropriate.
 [§ 4.2 of RFC 4512]: https://datatracker.ietf.org/doc/html/rfc4512#section-4.2
 */
 type SubschemaSubentry struct {
+	DN []byte // schema context DN
 	*LDAPSyntaxes
 	*MatchingRules
 	*AttributeTypes
