@@ -1492,12 +1492,12 @@ var testAttributeDescriptors []string = []string{
 }
 
 func BenchmarkGetAttributeType(b *testing.B) {
-        b.StopTimer()
-        maxIdx := len(testAttributeDescriptors)
-        b.StartTimer()
-        for i := 0; i < b.N; i++ {
-                _, _ = exampleSchema.AttributeTypes.Get(testAttributeDescriptors[i%maxIdx])
-        }
+	b.StopTimer()
+	maxIdx := len(testAttributeDescriptors)
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = exampleSchema.AttributeTypes.Get(testAttributeDescriptors[i%maxIdx])
+	}
 
 }
 
