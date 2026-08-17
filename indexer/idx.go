@@ -35,12 +35,7 @@ func New(sch *schema.SubschemaSubentry) (r Index, err error) {
 	// outcome, we're finished with it.
 	r.temp = nil
 	r.Timestamp = time.Now()
-
-	// make a note of the effective
-	// subschemaSubentry DN, if set.
-	if sch.DN != nil {
-		r.DN = sch.DN
-	}
+	r.Schema = sch
 
 	return
 }
@@ -58,8 +53,6 @@ func (r *Index) init(sch *schema.SubschemaSubentry) {
 }
 
 type Index struct {
-	DN []byte // schema context DN
-
 	LS LDAPSyntaxProperties
 	MR MatchingRuleProperties
 	AT AttributeTypeProperties
@@ -68,7 +61,8 @@ type Index struct {
 	NF NameFormProperties
 	DS DITStructureRuleProperties
 
-	temp *temporaryReferences
+	temp   *temporaryReferences
+	Schema *schema.SubschemaSubentry
 
 	Timestamp time.Time // create or modify timestamp
 }
