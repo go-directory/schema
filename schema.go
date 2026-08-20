@@ -692,7 +692,8 @@ of this feature, and its invocation is automatic wherever appropriate.
 [§ 4.2 of RFC 4512]: https://datatracker.ietf.org/doc/html/rfc4512#section-4.2
 */
 type SubschemaSubentry struct {
-	DN []byte // schema context DN
+	DN      []byte // schema context DN
+	Private bool   // indicates schema is not to be published indiscriminately
 	*LDAPSyntaxes
 	*MatchingRules
 	*AttributeTypes
@@ -2787,6 +2788,7 @@ type LDAPSyntax struct {
 	NumericOID  string // IDENTIFIER
 	Description string
 	Extensions  map[int]Extension
+	Private     bool               // not for indiscriminate publishing
 	schema      *SubschemaSubentry // internal ptr to schema
 }
 
@@ -3042,6 +3044,7 @@ type MatchingRule struct {
 	Obsolete    bool
 	Syntax      string
 	Extensions  map[int]Extension
+	Private     bool               // not for indiscriminate publishing
 	schema      *SubschemaSubentry // internal ptr to schema
 }
 
@@ -3421,6 +3424,7 @@ type AttributeType struct {
 	Substring          string            // "substrings-match"
 	Usage              string            // "usage"
 	Extensions         map[int]Extension // --
+	Private            bool              // not for indiscriminate publishing
 
 	schema *SubschemaSubentry // internal ptr to schema
 }
@@ -3688,6 +3692,7 @@ type MatchingRuleUse struct {
 	Obsolete    bool
 	Applies     []string
 	Extensions  map[int]Extension
+	Private     bool               // not for indiscriminate publishing
 	schema      *SubschemaSubentry // internal ptr to schema
 }
 
@@ -3941,6 +3946,7 @@ type ObjectClass struct {
 	Must         []string
 	May          []string
 	Extensions   map[int]Extension
+	Private      bool // not for indiscriminate publishing
 
 	schema *SubschemaSubentry // internal ptr to schema
 }
@@ -4307,6 +4313,7 @@ type DITContentRule struct {
 	May         []string
 	Not         []string
 	Extensions  map[int]Extension
+	Private     bool // not for indiscriminate publishing
 
 	schema *SubschemaSubentry // internal ptr to schema
 }
@@ -4513,6 +4520,7 @@ type NameForm struct {
 	Must        []string
 	May         []string
 	Extensions  map[int]Extension
+	Private     bool // not for indiscriminate publishing
 
 	schema *SubschemaSubentry // internal ptr to schema
 }
@@ -4716,6 +4724,7 @@ type DITStructureRule struct {
 	Form        string
 	SuperRules  []string
 	Extensions  map[int]Extension
+	Private     bool // not for indiscriminate publishing
 
 	schema *SubschemaSubentry // internal ptr to schema
 }
