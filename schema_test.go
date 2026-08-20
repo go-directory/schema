@@ -8,6 +8,16 @@ import (
 	"testing"
 )
 
+func ExampleView_demo(){
+	view := exampleSchema.NewView(true) // true: prime w/ standard syntaxes and matching rules
+	err := view.AddAttributeType(`name`)  // add "name" to view.Composite from view.Authoritative
+	if err == nil {
+		get, _  := view.Composite.AttributeTypes.Get(`name`) // call name to an instance
+		fmt.Printf("%s", get)
+	}
+	// Output: ( 2.5.4.41 NAME 'name' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+}
+
 func ExampleLDAPSyntaxes_IsZero() {
 	var defs LDAPSyntaxes
 	fmt.Println(defs.IsZero())
@@ -1534,8 +1544,7 @@ func init() {
 	if err = exampleSchema.ReadDirectory(tempDir); err != nil {
 		panic(fmt.Sprintf("%s failed [dir read]: %v", name, err))
 	}
-	// No need to keep raw file bytes in memory past this point.
-	lsPrimer, mrPrimer, exampleSchemaFile = nil, nil, nil
+	exampleSchemaFile = nil // discard
 
 	want := 282
 	if counters := exampleSchema.Counters(); int(counters[8]) != want {

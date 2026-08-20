@@ -63,10 +63,8 @@ func New(prime ...bool) (sch *SubschemaSubentry, err error) {
 		DITStructureRules: &DITStructureRules{mutex: &sync.Mutex{}},
 	}
 
-	if len(prime) > 0 {
-		if prime[0] {
-			err = sch.primeBuiltIns()
-		}
+	if len(prime) > 0 && prime[0] {
+		err = sch.primeBuiltIns()
 	}
 
 	// Set internal *SubschemaSubentry pointer
@@ -705,8 +703,47 @@ type SubschemaSubentry struct {
 }
 
 /*
+View implements a composite instance of *[SubschemaSubentry], containing select
+definitions from an authoritative *[SubschemaSubentry]. Instances of this type
+are created using the [SubschemaSubentry.NewView] method.
+
+This is mainly used for scenarios in which a directory entry or subtree may bear
+a 'subschemaSubentry' value that differs from others. Most directories only manage
+a single such schema, and in those scenarios there is no need to use an instance
+of this type.
+
+The only exception would be if one were migrating an old, messy schema to a new,
+cleaner instance. In that case, the Composite field represents the "new schema"
+while the Authoritative field represents the "old schema".
+
+See the following methods for incorporating select definitions from Authoritative
+to Composite:
+
+ - [View.AddLDAPSyntax]
+ - [View.AddMatchingRule]
+ - [View.AddAttributeType]
+ - [View.AddObjectClass]
+ - [View.AddDITContentRule]
+ - [View.AddDITNameForm]
+ - [View.AddDITStructureRule]
+
+Note that there is no "AddMatchingRuleUse" method, as [MatchingRuleUse] instances
+are self-managing based on defined [AttributeType] instances that use a particular
+[MatchingRule].
+
+Instances of this type are not meant to be modified after their assembly has been
+completed. If changes to the authoritative *[SubschemaSubentry] instance occur, a
+new View instance should be created to replace the old instance.
+*/
+type View struct {
+	Composite     *SubschemaSubentry
+	Authoritative *SubschemaSubentry
+}
+
+/*
 DefinitionTable implements a basic map[string][]string lookup table for a
-particular [Definitions] instance.
+particular [Definitions] instance. The semantics of the prime variadic input
+argument are identical to that of [New].
 
 With the exception of [DITStructureRules], which uses integer identifiers (e.g.: "1"), the
 keys are numeric OIDs (e.g.: "2.5.4.3").
@@ -725,8 +762,21 @@ Instances of this type may be created using any of the following methods:
   - [DITContentRules.Table]
   - [NameForms.Table]
   - [DITStructureRules.Table]
+
+This method will panic if 
 */
 type DefinitionTable map[string][]string
+
+/*
+NewView returns a freshly initialized instance of [View].
+*/
+func (r *SubschemaSubentry) NewView(prime ...bool) View {
+	c, _ := New(len(prime) > 0 && prime[0])
+	return View{
+		Composite:     c,
+		Authoritative: r,
+	}
+}
 
 /*
 primeBuiltIns is a private method used to pre-load standard LDAPSyntax
@@ -4811,6 +4861,278 @@ func (r DITStructureRule) Valid() bool {
 	}
 
 	return isAttribute(r.Form) && num && bogusNumber == 0
+}
+
+/*
+AddLDAPSyntax returns an error following an attempt to obtain the
+specified definition from the authoritative schema and add it to
+the composite schema.
+
+The id input argument must be the numeric OID of the definition.
+*/
+func (r View) AddLDAPSyntax(id string) (err error) {
+	def, idx := r.Authoritative.LDAPSyntaxes.Get(id)
+	if idx == -1 {
+		err = errors.New(id + " not found in authoritative schema")
+		return
+	} else if _, idx = r.Composite.LDAPSyntaxes.Get(id); idx != -1 {
+		err = errors.New(id + " already defined in composite schema")
+		return
+	}
+
+	r.Composite.LDAPSyntaxes.Push(def)
+	return
+}
+
+/*
+AddMatchingRule returns an error following an attempt to obtain the
+specified definition from the authoritative schema and add it to
+the composite schema.
+
+The id input argument must be the numeric OID or descriptor of the
+definition.
+*/
+func (r View) AddMatchingRule(id string) (err error) {
+        def, idx := r.Authoritative.MatchingRules.Get(id)
+        if idx == -1 {
+                err = errors.New(id + " not found in authoritative schema")
+                return
+        } else if _, idx = r.Composite.MatchingRules.Get(id); idx != -1 {
+                err = errors.New(id + " already defined in composite schema")
+                return
+        } else if _, idx = r.Composite.LDAPSyntaxes.Get(def.Syntax); idx == -1 {
+                err = errors.New(id + " references SYNTAX not found in composite schema")
+                return
+	}
+
+        r.Composite.MatchingRules.Push(def)
+        return
+}
+
+/*
+AddAttributeType returns an error following an attempt to obtain the
+specified definition from the authoritative schema and add it to
+the composite schema.
+
+The id input argument must be the numeric OID or descriptor of the
+definition.
+*/    
+func (r View) AddAttributeType(id string) (err error) {
+        def, idx := r.Authoritative.AttributeTypes.Get(id)
+        if idx == -1 {
+                err = errors.New(id + " not found in authoritative schema")
+                return
+        } else if _, idx = r.Composite.AttributeTypes.Get(id); idx != -1 {
+                err = errors.New(id + " already defined in composite schema")
+                return
+        }
+
+	if def.SuperType != "" {
+		if _, idx = r.Composite.AttributeTypes.Get(def.SuperType); idx == -1 {
+        	        err = errors.New(id + " references SUP type not found in composite schema")
+        	        return
+		}
+	}
+
+	if def.Syntax != "" {
+		if _, idx = r.Composite.LDAPSyntaxes.Get(def.Syntax); idx == -1 {
+        	        err = errors.New(id + " references SYNTAX not found in composite schema")
+        	        return
+		}
+	}
+
+	if def.Equality != "" {
+		if _, idx = r.Composite.MatchingRules.Get(def.Equality); idx == -1 {
+        	        err = errors.New(id + " references EQUALITY rule not found in composite schema")
+        	        return
+		}
+	}
+	
+	if def.Substring != "" {
+		if _, idx = r.Composite.MatchingRules.Get(def.Substring); idx == -1 {
+        	        err = errors.New(id + " references SUBSTR rule not found in composite schema")
+        	        return
+		}
+	}
+
+	if def.Ordering != "" {
+		if _, idx = r.Composite.MatchingRules.Get(def.Ordering); idx == -1 {
+        	        err = errors.New(id + " references ORDERING rule not found in composite schema")
+        	        return
+		}
+	}
+
+        r.Composite.AttributeTypes.Push(def)
+        return
+}
+
+/*
+AddObjectClass returns an error following an attempt to obtain the
+specified definition from the authoritative schema and add it to
+the composite schema.
+
+The id input argument must be the numeric OID or descriptor of the
+definition.
+*/
+func (r View) AddObjectClass(id string) (err error) {
+        def, idx := r.Authoritative.ObjectClasses.Get(id)
+        if idx == -1 {
+                err = errors.New(id + " not found in authoritative schema")
+                return
+        } else if _, idx = r.Composite.ObjectClasses.Get(id); idx != -1 {
+                err = errors.New(id + " already defined in composite schema")
+                return
+        }
+
+	for i := 0; i < len(def.SuperClasses); i++ {
+                if _, idx = r.Composite.ObjectClasses.Get(def.SuperClasses[i]); idx == -1 {
+                        err = errors.New(id + " references SUP type not found in composite schema")
+                        return
+                }
+        }
+
+	for i := 0; i < len(def.Must); i++ {
+                if _, idx = r.Composite.AttributeTypes.Get(def.Must[i]); idx == -1 {
+                        err = errors.New(id + " references MANDATORY type not found in composite schema")
+                        return
+                }
+        }
+
+	for i := 0; i < len(def.May); i++ {
+                if _, idx = r.Composite.AttributeTypes.Get(def.May[i]); idx == -1 {
+                        err = errors.New(id + " references OPTIONAL type not found in composite schema")
+                        return
+                }
+        }
+
+	return
+}
+
+/*
+AddDITContentRule returns an error following an attempt to obtain the
+specified definition from the authoritative schema and add it to
+the composite schema.
+
+The id input argument must be the numeric OID or descriptor of the
+definition.
+*/
+func (r View) AddDITContentRule(id string) (err error) {
+        def, idx := r.Authoritative.DITContentRules.Get(id)
+
+        if idx == -1 {
+                err = errors.New(id + " not found in authoritative schema")
+                return
+        } else if _, idx = r.Composite.DITContentRules.Get(id); idx != -1 {
+                err = errors.New(id + " already defined in composite schema")
+                return
+        } else if _, idx = r.Composite.ObjectClasses.Get(id); idx == -1 {
+		err = errors.New(id + " governs STRUCTURAL class not found in composite schema")
+		return
+	}
+
+        for i := 0; i < len(def.Aux); i++ {
+                if _, idx = r.Composite.ObjectClasses.Get(def.Aux[i]); idx == -1 {
+                        err = errors.New(id + " references SUP type not found in composite schema")
+                        return
+                }
+        }
+
+        for i := 0; i < len(def.Must); i++ {
+                if _, idx = r.Composite.AttributeTypes.Get(def.Must[i]); idx == -1 {
+                        err = errors.New(id + " references MANDATORY type not found in composite schema")
+                        return
+                }
+        }
+
+        for i := 0; i < len(def.May); i++ {
+                if _, idx = r.Composite.AttributeTypes.Get(def.May[i]); idx == -1 {
+                        err = errors.New(id + " references OPTIONAL type not found in composite schema")
+                        return
+                }
+        }
+
+        for i := 0; i < len(def.Not); i++ {
+                if _, idx = r.Composite.AttributeTypes.Get(def.Not[i]); idx == -1 {
+                        err = errors.New(id + " references PROHIBITED type not found in composite schema")
+                        return
+                }
+        }
+
+        return
+}
+
+/*
+AddNameForm returns an error following an attempt to obtain the
+specified definition from the authoritative schema and add it to
+the composite schema.
+
+The id input argument must be the numeric OID or descriptor of the
+definition.
+*/
+func (r View) AddNameForm(id string) (err error) {
+        def, idx := r.Authoritative.NameForms.Get(id)
+        if idx == -1 {
+                err = errors.New(id + " not found in authoritative schema")
+                return
+        } else if _, idx = r.Composite.NameForms.Get(id); idx != -1 {
+                err = errors.New(id + " already defined in composite schema")
+                return
+        } else if _, idx = r.Composite.ObjectClasses.Get(def.OC); idx == -1 {
+	        err = errors.New(id + " references OC id not found in composite schema")
+	        return
+	}
+
+        for i := 0; i < len(def.Must); i++ {
+                if _, idx = r.Composite.AttributeTypes.Get(def.Must[i]); idx == -1 {
+                        err = errors.New(id + " references MANDATORY type not found in composite schema")
+                        return
+                }
+        }
+
+        for i := 0; i < len(def.May); i++ {
+                if _, idx = r.Composite.AttributeTypes.Get(def.May[i]); idx == -1 {
+                        err = errors.New(id + " references OPTIONAL type not found in composite schema")
+                        return
+                }
+        }
+
+        return
+}
+
+/*
+AddDITStructureRule returns an error following an attempt to obtain the
+specified definition from the authoritative schema and add it to
+the composite schema.
+
+The id input argument must be the rule ID or name of the definition.
+*/
+func (r View) AddDITStructureRule(id string) (err error) {
+        def, idx := r.Authoritative.DITStructureRules.Get(id)
+        if idx == -1 {
+                err = errors.New(id + " not found in authoritative schema")
+                return
+        } else if _, idx = r.Composite.DITStructureRules.Get(id); idx != -1 {
+                err = errors.New(id + " already defined in composite schema")
+                return
+        } else if _, idx = r.Composite.NameForms.Get(def.Form); idx == -1 {
+                err = errors.New(id + " references FORM not found in composite schema")
+                return
+	}
+
+        for i := 0; i < len(def.SuperRules); i++ {
+		if def.SuperRules[i] == def.RuleID {
+			// recursive dITStructureRule; we haven't yet added
+			// the rule to the composite schema, so we know it
+			// will definitely error, so we'll skip.
+			continue
+		}
+                if _, idx = r.Composite.DITStructureRules.Get(def.SuperRules[i]); idx == -1 {
+                        err = errors.New(id + " references SUP rule not found in composite schema")
+                        return
+                }
+        }
+
+        return
 }
 
 func marshalExtension(token, typ string, tkz *schemaTokenizer) (ext Extension, err error) {
