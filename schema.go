@@ -1,7 +1,8 @@
 package schema
 
 /*
-schema.go implements much of Section 4 of RFC 4512.
+schema.go implements the subschemaSubentry type and related
+methods.
 */
 
 import (
