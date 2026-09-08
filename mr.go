@@ -26,7 +26,7 @@ func initMatchingRuleProperties(sch *SubschemaSubentry) (mrp *MatchingRuleProper
 		KIND:   make(map[uint]uint8),                              // # to mrXXKind constant (see above)
 		STRING: make(map[uint]string),                             // # to string representation
 		IDX:    make(map[uint]int),                                // # is Nth in ORD collection
-		ORD:    make([]uint, 0),                                   // ordered collection of definition #s
+		ORD:    make([]uint, 0),                                   // ordered collection of mr #s
 		EQFUNC: make(map[uint]func(any, any) (bool, error)),       // # to equality matching func
 		SSFUNC: make(map[uint]func(any, any) (bool, error)),       // # to substring matching func
 		ORFUNC: make(map[uint]func(any, byte, any) (bool, error)), // # to ordering matching func
@@ -124,24 +124,27 @@ func (r *MatchingRuleProperties) makeString(n uint) (err error) {
 	return
 }
 
-func deadEQ(noid []byte) func(any, any) (bool, error) {
+func deadEQ(noid, princ []byte) func(any, any) (bool, error) {
 	return func(_, _ any) (bool, error) {
-		return false, errors.New("No EQUALITY function defined for '" +
-			string(noid) + "'")
+		return false, errors.New("EQUALITY matching rule " +
+			string(noid) + " (" + string(princ) +
+			") not implemented")
 	}
 }
 
-func deadSS(noid []byte) func(any, any) (bool, error) {
+func deadSS(noid, princ []byte) func(any, any) (bool, error) {
 	return func(_, _ any) (bool, error) {
-		return false, errors.New("No SUBSTR function defined for '" +
-			string(noid) + "'")
+		return false, errors.New("SUBSTR matching rule " +
+			string(noid) + " (" + string(princ) +
+			") not implemented")
 	}
 }
 
-func deadOR(noid []byte) func(any, byte, any) (bool, error) {
+func deadOR(noid, princ []byte) func(any, byte, any) (bool, error) {
 	return func(_ any, _ byte, _ any) (bool, error) {
-		return false, errors.New("No ORDERING function defined for '" +
-			string(noid) + "'")
+		return false, errors.New("ORDERING matching rule " +
+			string(noid) + " (" + string(princ) +
+			") not implemented")
 	}
 }
 
@@ -170,22 +173,25 @@ type matchingRuleDefinition struct {
 }
 
 func (r *MatchingRuleProperties) commit(def matchingRuleDefinition) error {
-	r.MAP[string(def.noid)] = def.n
-	r.ID[def.n] = def.noid
-
-	r.commitDescr(def.n, def.noid, def.descrs)
-
-	r.KIND[def.n] = kindOfMatchingRule(r.PRINC[def.n])
-	if def.text != nil {
-		r.TEXT[def.n] = def.text
-	}
-
 	syn, _, synid := r.schema.ls.Resolve(def.syntax)
 	if syn == nil {
 		return errors.New("MatchingRule '" + string(def.noid) +
 			"' bears unregistered SYNTAX '" +
 			string(def.syntax) + "'")
 	}
+
+	if err := r.commitDescr(def.n, def.noid, def.descrs); err != nil {
+		return err
+	}
+
+	r.MAP[string(def.noid)] = def.n
+	r.ID[def.n] = def.noid
+
+	r.KIND[def.n] = kindOfMatchingRule(r.PRINC[def.n])
+	if def.text != nil {
+		r.TEXT[def.n] = def.text
+	}
+
 	r.SYNTAX[def.n] = synid
 	if _, found := r.schema.ls.MR[synid]; !found {
 		r.schema.ls.MR[synid] = make(map[uint]struct{})
@@ -207,11 +213,11 @@ func (r *MatchingRuleProperties) commit(def matchingRuleDefinition) error {
 	// panic.
 	switch r.KIND[def.n] {
 	case mrEqKind:
-		r.EQFUNC[def.n] = deadEQ(def.noid)
+		r.EQFUNC[def.n] = deadEQ(def.noid, r.PRINC[def.n])
 	case mrSsKind:
-		r.SSFUNC[def.n] = deadSS(def.noid)
+		r.SSFUNC[def.n] = deadSS(def.noid, r.PRINC[def.n])
 	case mrOrKind:
-		r.ORFUNC[def.n] = deadOR(def.noid)
+		r.ORFUNC[def.n] = deadOR(def.noid, r.PRINC[def.n])
 	}
 
 	r.makeString(def.n)
@@ -220,9 +226,19 @@ func (r *MatchingRuleProperties) commit(def matchingRuleDefinition) error {
 }
 
 func (r *MatchingRuleProperties) commitDescr(n uint, noid []byte, descrs [][]byte) error {
-	if len(descrs) > 0 {
-		for i := 0; i < len(descrs); i++ {
-			r.MAP[string(lc(descrs[i]))] = n
+	ldescrs := []string{}
+	for i := 0; i < len(descrs); i++ {
+		item := string(lc(descrs[i]))
+		ldescrs = append(ldescrs, item)
+		if n, found := r.MAP[item]; found {
+			return errors.New("MatchingRule NAME '" + string(descrs[i]) +
+				"' already registered to '" + string(r.PRINC[n]) + "'")
+		}
+	}
+
+	if len(ldescrs) > 0 {
+		for i := 0; i < len(ldescrs); i++ {
+			r.MAP[ldescrs[i]] = n
 		}
 		r.PRINC[n] = descrs[0]
 		r.DESCR[n] = descrs
@@ -364,15 +380,6 @@ func (r *MatchingRuleProperties) checkDescriptor(
 	if checkOnly {
 		return
 	}
-	for i := 0; i < len(descrs); i++ {
-		item := string(lc(descrs[i]))
-		if n, found := r.MAP[item]; found {
-			err = errors.New("MatchingRule NAME '" + string(descrs[i]) +
-				"' already registered to '" + string(r.PRINC[n]) + "'")
-			break
-		}
-	}
-
 	return
 }
 */
