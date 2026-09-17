@@ -21,14 +21,14 @@ type DITContentRuleProperties struct {
 	MUST    map[uint]map[uint]struct{}  // rule (k) to mandatory types (k2)
 	MAY     map[uint]map[uint]struct{}  // rule (k) to optional types (k2)
 	NOT     map[uint]map[uint]struct{}  // rule (k) to prohibited types (k2)
-	DESCR   map[uint][][]byte           // rule (k) to principal descriptor (v)
+	DESCR   map[uint][][]byte           // rule (k) to descriptor(s) (v)
 	AUXORD  map[uint][]uint             // ordered collection of auxiliary object classes
 	MUSTORD map[uint][]uint             // ordered collection of mandatory attribute types
 	MAYORD  map[uint][]uint             // ordered collection of optional attribute types
 	NOTORD  map[uint][]uint             // ordered collection of prohibited attribute types
 	IDX     map[uint]int                // rule (k) resides at ORD slice N
-	EXT     map[uint]map[uint]Extension // rule (k) bears extension(s) (k2, v)
-	ORD     []uint                      // ordered collection of content rule OIDs
+	EXT     map[uint]map[uint]Extension // rule (k) bears numbered extension(s) (k2, v)
+	ORD     []uint                      // ordered collection of content rules
 
 	schema *SubschemaSubentry
 }
