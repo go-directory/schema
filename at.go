@@ -48,7 +48,7 @@ type AttributeTypeProperties struct {
 	EQMR   map[uint]uint               // type (k) uses equality matching rule (v)
 	SSMR   map[uint]uint               // type (k) uses substring matching rule (v)
 	ORMR   map[uint]uint               // type (k) uses ordering matching rule (v)
-	USAGE  map[uint]uint8              // type (k) [dirOp:1|distOp:2|dSAOp|3]; excl. userApps:0
+	USAGE  map[uint]uint8              // type (k) [dirOp:1|distOp:2|dSAOp:3]; excl. userApps:0
 	SUPT   map[uint]uint               // type (k) has super type (v)
 	SUBT   map[uint]map[uint]struct{}  // type (k1) has dependent sub types (k2)
 	OC     map[uint]map[uint]struct{}  // type (k1) has dependent classes (k2)
