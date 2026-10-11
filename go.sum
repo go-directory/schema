@@ -2,3 +2,5 @@ github.com/go-directory/common v0.0.0-20261011064511-8106c22684eb h1:CQCpma/F5no
 github.com/go-directory/common v0.0.0-20261011064511-8106c22684eb/go.mod h1:38wymd8zkOxcZC/oRKK8a82xopDQRSz42XTd97NKgqg=
 github.com/go-directory/common v0.0.0-20261011084555-4a29ce28b730 h1:zQeddScaDiaOI9MtqmiOYnT8tELe8FOuSuz0WXyO1es=
 github.com/go-directory/common v0.0.0-20261011084555-4a29ce28b730/go.mod h1:38wymd8zkOxcZC/oRKK8a82xopDQRSz42XTd97NKgqg=
+github.com/go-directory/common v0.0.0-20261011092812-ee1a68d2b0cb h1:RXlaLD3QXih8g5kijTpBNC+7ggawbokPuj7KIl7mRVo=
+github.com/go-directory/common v0.0.0-20261011092812-ee1a68d2b0cb/go.mod h1:38wymd8zkOxcZC/oRKK8a82xopDQRSz42XTd97NKgqg=
