@@ -3,7 +3,6 @@ package schema
 import (
 	"bufio"
 	"bytes"
-	"errors"
 	"regexp"
 	"strconv"
 	"unicode"
@@ -345,10 +344,10 @@ func isAttribute(val []byte) (is bool) {
 func checkDescriptors(descrs [][]byte, noid []byte) (err error) {
 	for i := 0; i < len(descrs); i++ {
 		if !isAttributeDescriptor(descrs[i]) {
-			err = errors.New("Definition '" +
-				string(noid) +
-				"' bears malformed descriptor '" +
-				string(descrs[i]) + "'")
+			err = syntaxError("Definition '",
+				string(noid),
+				"' bears malformed descriptor '",
+				string(descrs[i]), "'")
 			break
 		}
 	}

@@ -2,7 +2,6 @@ package schema
 
 import (
 	"bytes"
-	"errors"
 	"strconv"
 	"strings"
 )
@@ -601,7 +600,7 @@ func (r *AttributeTypeProperties) marshal(in []byte, checkOnly bool) (err error)
 	for tkz.next() && err == nil {
 		token := string(tkz.this())
 		if _, found := seen[token]; found {
-			err = errors.New("AttributeType clause '" + token +
+			err = syntaxError("AttributeType clause '", token,
 				"' appears more than once")
 			break
 		}
@@ -950,46 +949,46 @@ func (r *SubschemaSubentry) UnregisterAttributeType(id []byte) (err error) {
 }
 
 func errATNotUnique(noid []byte) error {
-	return errors.New("AttributeType '" + string(noid) + "' already registered")
+	return schemaError("AttributeType '", string(noid), "' already registered")
 }
 
 func errATNotFound(noid []byte) error {
-	return errors.New("AttributeType '" + string(noid) + "' not found")
+	return schemaError("AttributeType '", string(noid), "' not found")
 }
 
 func errATNameReg(name, other []byte) error {
-	return errors.New("AttributeType NAME '" + string(name) +
-		"' already registered to '" + string(other) + "'")
+	return schemaError("AttributeType NAME '", string(name),
+		"' already registered to '", string(other), "'")
 }
 
 func errATMalformedType(noid, sup []byte) error {
-	return errors.New("AttributeType '" + string(noid) +
-		"' bears malformed super type '" + string(sup) + "'")
+	return syntaxError("AttributeType '", string(noid),
+		"' bears malformed super type '", string(sup), "'")
 }
 
 func errATBadUsage(noid []byte, token string) error {
-	return errors.New("AttributeType '" + string(noid) +
-		"bears invalid USAGE clause member '" + token + "'")
+	return syntaxError("AttributeType '", string(noid),
+		"bears invalid USAGE clause member '", token, "'")
 }
 
 func errATDep(noid []byte, dep string, count int) error {
-	return errors.New("AttributeType '" + string(noid) +
-		"' is depended upon by " + strconv.Itoa(count) +
+	return schemaError("AttributeType '", string(noid),
+		"' is depended upon by ", strconv.Itoa(count),
 		dep)
 }
 
 func errATUnregClauseMember(noid, value []byte, clause string) error {
-	return errors.New("AttributeType '" + string(noid) +
-		"' bears unregistered " + clause + " clause member '" +
-		string(value) + "'")
+	return schemaError("AttributeType '"+string(noid),
+		"' bears unregistered ", clause, " clause member '",
+		string(value), "'")
 }
 
 func errATNegUB(noid, ub []byte) error {
-	return errors.New("AttributeType '" + string(noid) +
-		"' bears a negative UB '" + string(ub) + "'")
+	return syntaxError("AttributeType '", string(noid),
+		"' bears a negative UB '", string(ub), "'")
 }
 
 func errATBadForm(noid []byte) error {
-	return errors.New("AttributeType '" + string(noid) +
+	return syntaxError("AttributeType '", string(noid),
 		"' must bear a SUP or SYNTAX at a minimum")
 }

@@ -8,7 +8,6 @@ methods.
 import (
 	"bytes"
 	_ "embed"
-	"errors"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -167,7 +166,7 @@ func (r *SubschemaSubentry) ReadDirectory(dir string) (err error) {
 
 	// avoid panicking if the directory does not exist during
 	// the "walking" process.
-	if _, err = os.Stat(dir); !errors.Is(err, errNotExist) {
+	if _, err = os.Stat(dir); !errorIs(err, errNotExist) {
 		// recurse dir path
 		err = filepath.Walk(dir, func(p string, d fs.FileInfo, err error) error {
 			if !d.IsDir() && strings.HasSuffix(d.Name(), ".schema") {
@@ -190,7 +189,7 @@ The filename MUST end in ".schema", else an error shall be raised.
 */
 func (r *SubschemaSubentry) ReadFile(file string) (err error) {
 	if !strings.HasSuffix(file, `.schema`) {
-		err = errors.New("Filename MUST end in `.schema`")
+		err = schemaError("Filename MUST end in `.schema`")
 		return
 	}
 
@@ -303,7 +302,7 @@ func (r *SubschemaSubentry) registerDefinitionByCase(defs [][]byte) (err error) 
 		} else if bytes.HasPrefix(low, lc([]byte(headerTokens[15]))) {
 			err = r.ds.marshal(def, false)
 		} else {
-			err = errors.New("Invalid definition: " + string(def))
+			err = schemaError("Invalid definition: " + string(def))
 		}
 	}
 

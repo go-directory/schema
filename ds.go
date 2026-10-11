@@ -2,7 +2,6 @@ package schema
 
 import (
 	"bytes"
-	"errors"
 	"strconv"
 	"strings"
 )
@@ -138,7 +137,7 @@ func (r *DITStructureRuleProperties) marshal(in []byte, checkOnly bool) (err err
 	for tkz.next() && err == nil {
 		token := string(tkz.this())
 		if _, found := seen[token]; found {
-			err = errors.New("DITStructureRule clause '" + token +
+			err = syntaxError("DITStructureRule clause '", token,
 				"' appears more than once")
 			break
 		}
@@ -469,55 +468,55 @@ func (r *SubschemaSubentry) UnregisterDITStructureRule(id []byte) (err error) {
 
 func errDSRMalformedID(id, sup []byte) error {
 	if sup != nil {
-		return errors.New("DITStructureRule '" + string(id) +
-			"' bears malformed superior integer identifier '" +
-			string(sup) + "'")
+		return syntaxError("DITStructureRule '", string(id),
+			"' bears malformed superior integer identifier '",
+			string(sup), "'")
 	}
-	return errors.New("DITStructureRule bears a malformed integer identifier '" +
-		string(id) + "'")
+	return syntaxError("DITStructureRule bears a malformed integer identifier '",
+		string(id), "'")
 }
 
 func errDSRMalformedForm(id, form []byte) error {
-	return errors.New("DITStructureRule '" + string(id) +
-		"' bears malformed FORM clause member '" +
-		string(form) + "'")
+	return syntaxError("DITStructureRule '", string(id),
+		"' bears malformed FORM clause member '",
+		string(form), "'")
 }
 
 func errDSRUnregSup(id, sup []byte) error {
-	return errors.New("DITStructureRule '" + string(id) +
-		"' bears unregistered SUP clause member '" +
-		string(sup) + "'")
+	return schemaError("DITStructureRule '", string(id),
+		"' bears unregistered SUP clause member '",
+		string(sup), "'")
 }
 
 func errDSRDuplicate(id, sup []byte) error {
-	return errors.New("DITStructureRule '" + string(id) +
-		"' bears a duplicate SUP clause member '" +
-		string(sup) + "'")
+	return schemaError("DITStructureRule '", string(id),
+		"' bears a duplicate SUP clause member '",
+		string(sup), "'")
 }
 
 func errDSRUnregForm(id, form []byte) error {
-	return errors.New("DITStructureRule '" + string(id) +
-		"' bears unregistered FORM clause member '" +
-		string(form) + "'")
+	return schemaError("DITStructureRule '", string(id),
+		"' bears unregistered FORM clause member '",
+		string(form), "'")
 }
 
 func errDSRNameNotUnique(descr, other []byte) error {
-	return errors.New("DITStructureRule NAME '" + string(descr) +
-		"' already registered to '" + string(other) + "'")
+	return schemaError("DITStructureRule NAME '", string(descr),
+		"' already registered to '", string(other), "'")
 }
 
 func errDSRNotUnique(id []byte) error {
-	return errors.New("DITStructureRule integer identifier '" +
-		string(id) + "' already registered")
+	return schemaError("DITStructureRule integer identifier '",
+		string(id), "' already registered")
 }
 
 func errDSRNotFound(id []byte) error {
-	return errors.New("DITStructureRule integer identifier '" +
-		string(id) + "' not found")
+	return schemaError("DITStructureRule integer identifier '",
+		string(id), "' not found")
 }
 
 func errDSRHasDependents(id []byte, count int) error {
-	return errors.New("DITStructureRule '" + string(id) +
-		"' has " + strconv.Itoa(count) +
+	return schemaError("DITStructureRule '", string(id),
+		"' has ", strconv.Itoa(count),
 		" dependent structure rules")
 }

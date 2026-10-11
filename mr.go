@@ -2,7 +2,6 @@ package schema
 
 import (
 	"bytes"
-	"errors"
 	"strconv"
 	"strings"
 )
@@ -126,24 +125,24 @@ func (r *MatchingRuleProperties) makeString(n uint) (err error) {
 
 func deadEQ(noid, princ []byte) func(any, any) (bool, error) {
 	return func(_, _ any) (bool, error) {
-		return false, errors.New("EQUALITY matching rule " +
-			string(noid) + " (" + string(princ) +
+		return false, schemaError("EQUALITY matching rule ",
+			string(noid), " (", string(princ),
 			") not implemented")
 	}
 }
 
 func deadSS(noid, princ []byte) func(any, any) (bool, error) {
 	return func(_, _ any) (bool, error) {
-		return false, errors.New("SUBSTR matching rule " +
-			string(noid) + " (" + string(princ) +
+		return false, schemaError("SUBSTR matching rule ",
+			string(noid), " (", string(princ),
 			") not implemented")
 	}
 }
 
 func deadOR(noid, princ []byte) func(any, byte, any) (bool, error) {
 	return func(_ any, _ byte, _ any) (bool, error) {
-		return false, errors.New("ORDERING matching rule " +
-			string(noid) + " (" + string(princ) +
+		return false, schemaError("ORDERING matching rule ",
+			string(noid), " (", string(princ),
 			") not implemented")
 	}
 }
@@ -175,9 +174,9 @@ type matchingRuleDefinition struct {
 func (r *MatchingRuleProperties) commit(def matchingRuleDefinition) error {
 	syn, _, synid := r.schema.ls.Resolve(def.syntax)
 	if syn == nil {
-		return errors.New("MatchingRule '" + string(def.noid) +
-			"' bears unregistered SYNTAX '" +
-			string(def.syntax) + "'")
+		return schemaError("MatchingRule '", string(def.noid),
+			"' bears unregistered SYNTAX '",
+			string(def.syntax), "'")
 	}
 
 	if err := r.commitDescr(def.n, def.noid, def.descrs); err != nil {
@@ -231,8 +230,8 @@ func (r *MatchingRuleProperties) commitDescr(n uint, noid []byte, descrs [][]byt
 		item := string(lc(descrs[i]))
 		ldescrs = append(ldescrs, item)
 		if n, found := r.MAP[item]; found {
-			return errors.New("MatchingRule NAME '" + string(descrs[i]) +
-				"' already registered to '" + string(r.PRINC[n]) + "'")
+			return schemaError("MatchingRule NAME '", string(descrs[i]),
+				"' already registered to '", string(r.PRINC[n]), "'")
 		}
 	}
 
@@ -261,8 +260,8 @@ func (r *MatchingRuleProperties) unregister(x []byte) (err error) {
 	if _, found := r.schema.mu.APPORD[n]; found {
 		appl, _ := r.schema.mu.APPORD[n]
 		if L := len(appl); L > 0 {
-			err = errors.New("MatchingRule '" + string(noid) +
-				"' is depended upon by " + strconv.Itoa(L) +
+			err = schemaError("MatchingRule '", string(noid),
+				"' is depended upon by ", strconv.Itoa(L),
 				"attribute types")
 		}
 		return
@@ -304,7 +303,7 @@ func (r *MatchingRuleProperties) unregister(x []byte) (err error) {
 
 func (r *MatchingRuleProperties) marshal(in []byte, checkOnly bool) (err error) {
 	if r.schema.ls == nil || r.schema.mr == nil {
-		err = errors.New("Schema not initialized")
+		err = schemaError("Schema not initialized")
 		return
 	}
 
@@ -314,7 +313,7 @@ func (r *MatchingRuleProperties) marshal(in []byte, checkOnly bool) (err error) 
 
 	noid := tkz.this()
 	if mr, _, _, _ := r.Resolve(noid); mr != nil && !checkOnly {
-		err = errors.New("MatchingRule OID '" + string(noid) +
+		err = schemaError("MatchingRule OID '", string(noid),
 			"' already registered")
 		return
 	}
@@ -330,7 +329,7 @@ func (r *MatchingRuleProperties) marshal(in []byte, checkOnly bool) (err error) 
 	for tkz.next() && err == nil {
 		token := string(tkz.this())
 		if _, found := seen[token]; found {
-			err = errors.New("MatchingRule clause '" + token +
+			err = syntaxError("MatchingRule clause '", token,
 				"' appears more than once")
 			break
 		}
@@ -388,8 +387,8 @@ func (r *MatchingRuleProperties) checkSyntaxClause(
 	noid, clause []byte,
 ) (err error) {
 	if !isObjectIdentifier(clause) {
-		err = errors.New("MatchingRule '" + string(noid) +
-			"' bears malformed SYNTAX '" + string(clause) + "'")
+		err = syntaxError("MatchingRule '", string(noid),
+			"' bears malformed SYNTAX '", string(clause), "'")
 		return
 	}
 

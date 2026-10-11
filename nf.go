@@ -2,7 +2,6 @@ package schema
 
 import (
 	"bytes"
-	"errors"
 	"strconv"
 	"strings"
 )
@@ -151,7 +150,7 @@ func (r *NameFormProperties) marshal(in []byte, checkOnly bool) (err error) {
 	for tkz.next() && err == nil {
 		token := string(tkz.this())
 		if _, found := seen[token]; found {
-			err = errors.New("NameForm clause '" + token +
+			err = syntaxError("NameForm clause '", token,
 				"' appears more than once")
 			break
 		}
@@ -551,55 +550,55 @@ func (r *SubschemaSubentry) UnregisterNameForm(id []byte) (err error) {
 }
 
 func errNFMalformedType(noid, descr []byte, clause string) error {
-	return errors.New("NameForm '" + string(noid) +
-		"' bears malformed " + clause + " clause member '" +
-		string(descr) + "'")
+	return syntaxError("NameForm '", string(noid),
+		"' bears malformed ", clause, " clause member '",
+		string(descr), "'")
 }
 
 func errNFIneligibleType(noid, descr []byte) error {
-	return errors.New("NameForm '" + string(noid) +
-		"' bears a MUST or MAY clause member '" + string(descr) +
+	return schemaError("NameForm '", string(noid),
+		"' bears a MUST or MAY clause member '", string(descr),
 		"' neither required nor allowed by OC")
 }
 
 func errNFDuplicateType(noid, atoid, atdescr []byte, clause string) error {
-	return errors.New("NameForm '" + string(noid) +
-		"' bears a duplicate " + clause + " clause member '" +
-		string(atdescr) + "' (" + string(atoid) + ")")
+	return schemaError("NameForm '", string(noid),
+		"' bears a duplicate ", clause, " clause member '",
+		string(atdescr), "' (", string(atoid), ")")
 }
 
 func errNFUnregType(noid, atoid []byte, clause string) error {
-	return errors.New("NameForm '" + string(noid) +
-		"' bears an unregistered " + clause + " clause member '" +
-		string(atoid) + "'")
+	return schemaError("NameForm '", string(noid),
+		"' bears an unregistered ", clause, " clause member '",
+		string(atoid), "'")
 }
 
 func errNFBadOC(noid, oc []byte) error {
-	return errors.New("NameForm '" + string(noid) +
-		"' bears an invalid OC clause member '" +
-		string(oc) + "'")
+	return syntaxError("NameForm '", string(noid),
+		"' bears an invalid OC clause member '",
+		string(oc), "'")
 }
 
 func errNFUnregOC(noid, oc []byte) error {
-	return errors.New("NameForm '" + string(noid) +
-		"' bears an unregistered OC clause member '" +
-		string(oc) + "'")
+	return schemaError("NameForm '", string(noid),
+		"' bears an unregistered OC clause member '",
+		string(oc), "'")
 }
 
 func errNFNameReg(name, other []byte) error {
-	return errors.New("NameForm NAME '" + string(name) +
-		"' already registered to '" + string(other) + "'")
+	return schemaError("NameForm NAME '", string(name),
+		"' already registered to '", string(other), "'")
 }
 
 func errNFHasDependents(noid []byte, count int) error {
-	return errors.New("NameForm '" + string(noid) + "' has " +
-		strconv.Itoa(count) + " structure rule dependents")
+	return schemaError("NameForm '", string(noid), "' has ",
+		strconv.Itoa(count), " structure rule dependents")
 }
 
 func errNFNotUnique(noid []byte) error {
-	return errors.New("NameForm OID '" + string(noid) + "' already registered")
+	return schemaError("NameForm OID '", string(noid), "' already registered")
 }
 
 func errNFNotFound(noid []byte) error {
-	return errors.New("NameForm id '" + string(noid) + "' not found")
+	return schemaError("NameForm id '", string(noid), "' not found")
 }

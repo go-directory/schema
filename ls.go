@@ -2,11 +2,9 @@ package schema
 
 import (
 	"bytes"
-	"errors"
 	"regexp"
 	"strconv"
 	"strings"
-	//"sync"
 )
 
 func initLDAPSyntaxProperties(sch *SubschemaSubentry) (lsp *LDAPSyntaxProperties) {
@@ -190,7 +188,7 @@ func (r *LDAPSyntaxProperties) marshal(in []byte, checkOnly bool) (err error) {
 
 	noid := tkz.this()
 	if ls, _, _ := r.Resolve(noid); ls != nil && !checkOnly {
-		err = errors.New("LDAPSyntax OID '" + string(noid) +
+		err = schemaError("LDAPSyntax OID '", string(noid),
 			"' already registered")
 		return
 	}
@@ -206,7 +204,7 @@ func (r *LDAPSyntaxProperties) marshal(in []byte, checkOnly bool) (err error) {
 	for tkz.next() && err == nil {
 		token := string(tkz.this())
 		if _, found := seen[token]; found {
-			err = errors.New("LDAPSyntax clause '" + token +
+			err = syntaxError("LDAPSyntax clause '", token,
 				"' appears more than once")
 			break
 		}
@@ -301,8 +299,8 @@ func (r *LDAPSyntaxProperties) syntaxHandler(
 	// set a dead syntax verification
 	// placeholder for the moment.
 	funk = func(_ any) (bool, error) {
-		return false, errors.New("LDAPSyntax " +
-			string(noid) + " (" + string(text) +
+		return false, schemaError("LDAPSyntax ",
+			string(noid), " (", string(text),
 			") not implemented")
 	}
 
@@ -346,8 +344,8 @@ func (r *LDAPSyntaxProperties) unregister(x []byte) (err error) {
 
 	checkATMRDep := func(col map[uint]struct{}, typ string) (err error) {
 		if L := len(col); L > 0 {
-			err = errors.New("LDAPSyntax is a depended upon by " +
-				strconv.Itoa(L) + typ)
+			err = schemaError("LDAPSyntax is a depended upon by ",
+				strconv.Itoa(L), typ)
 		}
 		return
 	}

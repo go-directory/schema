@@ -2,7 +2,6 @@ package schema
 
 import (
 	"bytes"
-	"errors"
 	"strings"
 )
 
@@ -81,7 +80,7 @@ func (r *DITContentRuleProperties) marshal(in []byte, checkOnly bool) (err error
 	for tkz.next() && err == nil {
 		token := string(tkz.this())
 		if _, found := seen[token]; found {
-			err = errors.New("DITContentRule clause '" + token +
+			err = syntaxError("DITContentRule clause '", token,
 				"' appears more than once")
 			break
 		}
@@ -609,61 +608,61 @@ func (r *SubschemaSubentry) UnregisterDITContentRule(id []byte) (err error) {
 }
 
 func errDCRIneligibleType(noid, descr []byte, clause string) error {
-	return errors.New("DITContentRule '" + string(noid) +
-		"' bears a " + clause + " clause member '" + string(descr) +
+	return schemaError("DITContentRule '", string(noid),
+		"' bears a ", clause, " clause member '", string(descr),
 		"' neither required nor allowed by any invoked class")
 }
 
 func errDCRUnregType(noid, descr []byte, clause string) error {
-	return errors.New("DITContentRule '" + string(noid) +
-		"' bears unregistered " + clause + " clause member '" +
-		string(descr) + "'")
+	return schemaError("DITContentRule '", string(noid),
+		"' bears unregistered ", clause, " clause member '",
+		string(descr), "'")
 }
 
 func errDCRMalformedType(noid, descr []byte, clause string) error {
-	return errors.New("DITContentRule '" + string(noid) +
-		"' bears malformed " + clause +
-		" clause member '" + string(descr) + "'")
+	return syntaxError("DITContentRule '", string(noid),
+		"' bears malformed ", clause,
+		" clause member '", string(descr), "'")
 }
 
 func errDCRBadAuxKind(noid []byte, kind uint8) error {
-	return errors.New("DITContentRule '" + string(noid) +
-		"' bears AUX clause member of an inappropriate kind '" +
-		classKind(kind) + "'")
+	return schemaError("DITContentRule '", string(noid),
+		"' bears AUX clause member of an inappropriate kind '",
+		classKind(kind), "'")
 }
 
 func errDCRBadStrcKind(noid []byte, kind uint8) error {
-	return errors.New("DITContentRule '" + string(noid) +
-		"' bears a class OID of inappropriate kind '" +
-		classKind(kind) + "' (must be 'STRUCTURAL')")
+	return schemaError("DITContentRule '", string(noid),
+		"' bears a class OID of inappropriate kind '",
+		classKind(kind), "' (must be 'STRUCTURAL')")
 }
 
 func errDCRNotUnique(noid, other []byte) error {
 	if other != nil {
-		return errors.New("DITContentRule NAME '" + string(noid) +
-			"' already registered to '" + string(other) + "'")
+		return schemaError("DITContentRule NAME '", string(noid),
+			"' already registered to '", string(other), "'")
 	}
-	return errors.New("DITContentRule '" + string(noid) +
+	return schemaError("DITContentRule '", string(noid),
 		"' already registered")
 }
 
 func errDCRNoClass(noid []byte) error {
-	return errors.New("DITContentRule '" + string(noid) +
+	return schemaError("DITContentRule '", string(noid),
 		"' bears an unregistered 'STRUCTURAL' class OID")
 }
 
 func errDCRMalformedOID(noid []byte) error {
-	return errors.New("DITContentRule bears an malformed numeric OID '" +
-		string(noid) + "'")
+	return syntaxError("DITContentRule bears an malformed numeric OID '",
+		string(noid), "'")
 }
 
 func errDCRDuplicateType(noid, atoid, atdescr []byte, clause string) error {
-	return errors.New("DITContentRule '" + string(noid) +
-		"' bears a duplicate " + clause + " clause member '" +
-		string(atdescr) + "' (" + string(atoid) + ")")
+	return schemaError("DITContentRule '", string(noid),
+		"' bears a duplicate ", clause, " clause member '",
+		string(atdescr), "' (", string(atoid), ")")
 }
 
 func errDCRNotFound(id []byte) error {
-	return errors.New("DITContentRule id '" +
-		string(id) + "' not found")
+	return schemaError("DITContentRule id '",
+		string(id), "' not found")
 }

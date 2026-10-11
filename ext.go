@@ -2,7 +2,6 @@ package schema
 
 import (
 	"bytes"
-	"errors"
 	"strconv"
 	"strings"
 )
@@ -25,7 +24,7 @@ func marshalExtension(token, typ string, tkz *schemaTokenizer) (ext Extension, e
 			Values:  parseMultiVal(tkz),
 		}
 	} else {
-		err = errors.New(typ + ": Unknown token in definition: " + token)
+		err = syntaxError(typ, ": Unknown token in definition: ", token)
 	}
 
 	return

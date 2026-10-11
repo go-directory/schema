@@ -22,5 +22,5 @@ func ExampleSubschemaSubentry_UnregisterDITStructureRule_dependencyViolation() {
 	if err := exampleSchema.UnregisterDITStructureRule([]byte(`1`)); err != nil {
 		fmt.Println(err)
 	}
-	// Output: DITStructureRule '1' has 1 dependent structure rules
+	// Output: Schema error: DITStructureRule '1' has 1 dependent structure rules
 }

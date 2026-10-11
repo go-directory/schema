@@ -2,7 +2,6 @@ package schema
 
 import (
 	"bytes"
-	"errors"
 	"strconv"
 	"strings"
 )
@@ -122,7 +121,7 @@ func (r *ObjectClassProperties) marshal(in []byte, checkOnly bool) (err error) {
 	for tkz.next() && err == nil {
 		token := string(tkz.this())
 		if _, found := seen[token]; found {
-			err = errors.New("ObjectClass clause '" + token +
+			err = syntaxError("ObjectClass clause '", token,
 				"' appears more than once")
 			break
 		}
@@ -762,68 +761,68 @@ func (r *SubschemaSubentry) UnregisterObjectClass(id []byte) (err error) {
 }
 
 func errOCDuplicateType(noid, atoid, atdescr []byte, clause string) error {
-	return errors.New("ObjectClass '" + string(noid) +
-		"' bears a duplicate " + clause + " clause member '" +
-		string(atdescr) + "' (" + string(atoid) + ")")
+	return schemaError("ObjectClass '", string(noid),
+		"' bears a duplicate ", clause, " clause member '",
+		string(atdescr), "' (", string(atoid), ")")
 }
 
 func errOCStructAux(noid, resd []byte) error {
-	return errors.New("STRUCTURAL ObjectClass '" + string(noid) +
-		"' bears a SUP clause member of 'AUXILIARY' kind '" +
-		string(resd) + "'")
+	return schemaError("STRUCTURAL ObjectClass '", string(noid),
+		"' bears a SUP clause member of 'AUXILIARY' kind '",
+		string(resd), "'")
 }
 
 func errOCUnregSup(noid, sup []byte) error {
-	return errors.New("ObjectClass '" + string(noid) +
-		"' bears an unregistered SUP clause member '" +
-		string(sup) + "'")
+	return schemaError("ObjectClass '", string(noid),
+		"' bears an unregistered SUP clause member '",
+		string(sup), "'")
 }
 
 func errOCUnregType(noid, atoid []byte, clause string) error {
-	return errors.New("ObjectClass '" + string(noid) +
-		"' bears an unregistered " + clause + " clause member '" +
-		string(atoid) + "'")
+	return schemaError("ObjectClass '", string(noid),
+		"' bears an unregistered ", clause, " clause member '",
+		string(atoid), "'")
 }
 
 func errOCNotFound(noid []byte) error {
-	return errors.New("ObjectClass id '" + string(noid) + "' not found")
+	return schemaError("ObjectClass id '", string(noid), "' not found")
 }
 
 func errOCDepDCR(noid, dep []byte) error {
-	return errors.New("ObjectClass '" + string(noid) +
-		" is depended upon by content rule '" +
-		string(dep) + "'")
+	return schemaError("ObjectClass '", string(noid),
+		" is depended upon by content rule '",
+		string(dep), "'")
 }
 
 func errOCDepNF(noid []byte, count int) error {
-	return errors.New("ObjectClass '" + string(noid) +
-		" is depended upon by " + strconv.Itoa(count) +
+	return schemaError("ObjectClass '", string(noid),
+		" is depended upon by ", strconv.Itoa(count),
 		" name forms")
 }
 
 func errOCDepOC(noid []byte, count int) error {
-	return errors.New("ObjectClass '" + string(noid) +
-		" is depended upon by " + strconv.Itoa(count) +
+	return schemaError("ObjectClass '", string(noid),
+		" is depended upon by ", strconv.Itoa(count),
 		" sub classes")
 }
 
 func errOCNameReg(name, other []byte) error {
-	return errors.New("ObjectClass NAME '" + string(name) +
-		"' already registered to '" + string(other) + "'")
+	return schemaError("ObjectClass NAME '", string(name),
+		"' already registered to '", string(other), "'")
 }
 
 func errOCMalformedType(noid, descr []byte, clause string) error {
-	return errors.New("ObjectClass '" + string(noid) +
-		"' bears malformed " + clause + " clause member '" +
-		string(descr) + "'")
+	return syntaxError("ObjectClass '", string(noid),
+		"' bears malformed ", clause, " clause member '",
+		string(descr), "'")
 }
 
 func errOCNotUnique(noid []byte) error {
-	return errors.New("ObjectClass OID '" + string(noid) +
+	return schemaError("ObjectClass OID '", string(noid),
 		"' already registered")
 }
 
 func errOCIllegalKind(token string) error {
-	return errors.New("ObjectClass bears illegal KIND '" +
-		token + "'; want 'STRUCTURAL', 'AUXILIARY' or 'ABSTRACT'")
+	return syntaxError("ObjectClass bears illegal KIND '",
+		token, "'; want 'STRUCTURAL', 'AUXILIARY' or 'ABSTRACT'")
 }
