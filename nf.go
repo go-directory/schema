@@ -249,12 +249,19 @@ func (r *NameFormProperties) gatherAvailableTypes(
 ) {
 	avail = make(map[uint]struct{})
 
-	// add structurally-provided types first
-	for at := range r.schema.oc.MUST[classN] {
+	must := r.schema.oc.ALLMUST
+	may := r.schema.oc.ALLMAY
+
+	if NameFormDirectAttributesOnly {
+		must = r.schema.oc.MUST
+		may = r.schema.oc.MAY
+	}
+
+	for at := range must[classN] {
 		avail[at] = struct{}{}
 	}
 
-	for at := range r.schema.oc.MAY[classN] {
+	for at := range may[classN] {
 		avail[at] = struct{}{}
 	}
 
@@ -283,7 +290,7 @@ func (r *NameFormProperties) resolveMM(
 			}
 
 			seen[string(atoid)] = struct{}{}
-			if _, found := avail[atn]; !found {
+			if _, found := avail[atn]; !found && ErrorOnUnavailableNameFormAttribute {
 				err = errNFIneligibleType(def.noid, atdescr)
 				return
 			}
