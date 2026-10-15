@@ -22,11 +22,41 @@ clause member -- that is, a descriptor or numeric OID
 residing within 'MUST', 'SUP' or any other multi-valued
 clause -- is encountered at any point.
 
-When false, any duplicates encountered are silently discarded.
+The default, false, is to silently discard duplicates.
 
 This variable can be changed at any point.
 */
 var ErrorOnDuplicateClauseMember = false
+
+/*
+ErrorOnUnavailableNameFormAttribute, when true, will error
+on the presence of a MUST or MAY clause member attribute
+type that was not extended by the object class (or possibly
+its super classes, if any exist) implemented by the name
+form.
+
+The default, false, results in no error being returned if
+this condition is detected during name form parsing.
+*/
+var ErrorOnUnavailableNameFormAttribute = false
+
+/*
+NameFormDirectAttributesOnly, when true, will only consider
+attribute types valid for MUST or MAY clause use that are
+directly extended by the implemented object class's MUST and
+MAY clauses, and NOT by way of super class type inheritance.
+
+The default, false, will result in the inclusion of types
+extended by any and all super class MAY/MUST clauses in
+addition to those directly extended by the name form's
+implemented class.
+
+Alternatively, see the [ErrorOnUnavailableNameFormAttribute]
+option to suppress errors relating to the presence of any
+unavailable attribute type within the name form's MUST or MAY
+clauses *for any reason*.
+*/
+var NameFormDirectAttributesOnly = false
 
 //go:embed synmr/ls.schema
 var lsPrimer []byte
