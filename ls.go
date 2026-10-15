@@ -72,6 +72,47 @@ func (r LDAPSyntaxProperties) Resolve(term []byte) (noid, description []byte, n 
 	return
 }
 
+func (r LDAPSyntaxProperties) String() string {
+	bld := strings.Builder{}
+	for i := 0; i < len(r.ORD); i++ {
+		x := r.ORD[i]
+		if id := r.ID[x]; r.Advertise(id) {
+			bld.WriteString(headerTokens[0])
+			bld.WriteRune(' ')
+			bld.WriteString(r.STRING[x])
+			bld.WriteRune(10)
+		}
+	}
+
+	return bld.String()
+}
+
+/*
+Advertise returns a Boolean value indicative of the whether the specified
+definition should be disclosed when the subschema is returned via a search
+result entry.
+
+A value of true indicates the definition is intended for normal advertisement.
+A value of false indicates that either the definition does not exist, or that
+it is not intended for disclosure.
+*/
+func (r LDAPSyntaxProperties) Advertise(id []byte) bool {
+	var do bool // assume false by default
+	if noid, _, n := r.Resolve(id); noid != nil {
+		do = true // now assume true by default
+		if exts, _ := r.EXT[n]; len(exts) > 0 {
+			for _, v := range exts {
+				if eqFoldASCII(doNotAdvert, v.XString) {
+					do = !eqFoldASCII(v.Values[0], []byte(`TRUE`)) // invert!
+					break
+				}
+			}
+		}
+	}
+
+	return do
+}
+
 /*
 makeString returns an error following an attempt to create the string
 representation of the specified definition.

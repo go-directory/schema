@@ -55,7 +55,6 @@ type AttributeTypeProperties struct {
 	NF     map[uint]map[uint]struct{}  // type (k1) has dependent name forms (k2)
 	EXT    map[uint]map[uint]Extension // type (k1) bears numbered (k2) extensions (v)
 	CHAIN  map[uint][]uint             // type (k) is base type in chain
-	PRIV   map[uint]struct{}           // type (k) is private
 	FLAGS  map[uint]uint8              // type (k) has bool flags (v) [SNGL:1|COL:2|RO:4|OBS:8]
 	UB     map[uint]uint               // type (k) is constrained by upper bounds >0
 	IDX    map[uint]int                // type (k) is Nth in ORD collection
@@ -85,7 +84,6 @@ func initAttributeTypeProperties(sch *SubschemaSubentry) (atp *AttributeTypeProp
 		OC:     make(map[uint]map[uint]struct{}),
 		DC:     make(map[uint]map[uint]struct{}),
 		NF:     make(map[uint]map[uint]struct{}),
-		PRIV:   make(map[uint]struct{}),
 		CHAIN:  make(map[uint][]uint),
 		UB:     make(map[uint]uint),
 		ORD:    make([]uint, 0),
@@ -93,32 +91,6 @@ func initAttributeTypeProperties(sch *SubschemaSubentry) (atp *AttributeTypeProp
 	}
 
 	return
-}
-
-/*
-SetPrivate classifies the specified attribute as private. This is useful
-if the schema administrator wishes to prevent disclosure of the specified
-type in a given subschemaSubentry.
-
-The attribute can still be interrogated directly like any other when this
-package is being interacted with directly. However, when tied into a DSA,
-end users ostensibly shall not be able to interrogate or interact with
-a private type through conventional means.
-
-Valid input values are the numeric OID or descriptor (name) associated
-with the desired definition.
-
-Case is not significant in the name matching process.
-
-See also [ObjectClassProperties.SetPrivate].
-*/
-func (r *AttributeTypeProperties) SetPrivate(id []byte) {
-	res, _, _, n := r.Resolve(id)
-	if res != nil {
-		r.schema.lock.Lock()
-		r.PRIV[n] = struct{}{}
-		r.schema.lock.Unlock()
-	}
 }
 
 func (r AttributeTypeProperties) attributeTypeDescription(x any) (result bool, err error) {
@@ -181,29 +153,6 @@ func (r AttributeTypeProperties) buildChain(id uint) (chain []uint) {
 	}
 
 	return
-}
-
-/*
-String returns the ordered string representation for every
-registered attribute type that is not classified as private.
-*/
-func (r AttributeTypeProperties) String() string {
-	var s string
-
-	if L := len(r.ORD); L > 0 {
-		bld := &strings.Builder{}
-
-		for i := 0; i < L; i++ {
-			if _, priv := r.PRIV[r.ORD[i]]; !priv {
-				bld.WriteString(r.STRING[r.ORD[i]])
-				bld.WriteRune(10)
-			}
-		}
-
-		s = bld.String()
-	}
-
-	return s
 }
 
 /*
@@ -492,7 +441,6 @@ func (r *AttributeTypeProperties) unregister(id []byte) (err error) {
 	delete(r.TEXT, n)
 	delete(r.SUPT, n)
 	delete(r.SUBT, n)
-	delete(r.PRIV, n)
 	delete(r.PRINC, n)
 	delete(r.FLAGS, n)
 	delete(r.USAGE, n)
@@ -892,6 +840,47 @@ func (r AttributeTypeProperties) Resolve(term []byte) (noid, princ []byte, descr
 	}
 
 	return
+}
+
+func (r AttributeTypeProperties) String() string {
+	bld := strings.Builder{}
+	for i := 0; i < len(r.ORD); i++ {
+		x := r.ORD[i]
+		if id := r.ID[x]; r.Advertise(id) {
+			bld.WriteString(headerTokens[4])
+			bld.WriteRune(' ')
+			bld.WriteString(r.STRING[x])
+			bld.WriteRune(10)
+		}
+	}
+
+	return bld.String()
+}
+
+/*
+Advertise returns a Boolean value indicative of the whether the specified
+definition should be disclosed when the subschema is returned via a search
+result entry.
+
+A value of true indicates the definition is intended for normal advertisement.
+A value of false indicates that either the definition does not exist, or that
+it is not intended for disclosure.
+*/
+func (r AttributeTypeProperties) Advertise(id []byte) bool {
+	var do bool // assume false by default
+	if noid, _, _, n := r.Resolve(id); noid != nil {
+		do = true // now assume true by default
+		if exts, _ := r.EXT[n]; len(exts) > 0 {
+			for _, v := range exts {
+				if eqFoldASCII(doNotAdvert, v.XString) {
+					do = !eqFoldASCII(v.Values[0], []byte(`TRUE`)) // invert!
+					break
+				}
+			}
+		}
+	}
+
+	return do
 }
 
 /*

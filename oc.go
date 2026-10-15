@@ -23,7 +23,6 @@ type ObjectClassProperties struct {
 	ALLMAY  map[uint]map[uint]struct{}  // class (k1) to optional global types (k2)
 	EXT     map[uint]map[uint]Extension // class (k1) bears numbered (k2) extensions (v)
 	OBS     map[uint]struct{}           // class (k) is obsolete
-	PRIV    map[uint]struct{}           // class (k) is private
 	KIND    map[uint]uint8              // class (k) to kind (v) [0=STRC/1=AUX/2=ABS]
 	PRINC   map[uint][]byte             // class (k) to principal descriptor (v)
 	TEXT    map[uint][]byte             // class (k) bears descriptive text (v)
@@ -626,30 +625,45 @@ func (r ObjectClassProperties) Resolve(term []byte) (noid, princ []byte, descrs 
 	return
 }
 
-/*
-SetPrivate classifies the specified object class as private. This is useful
-if the schema administrator wishes to prevent disclosure of the specified
-class in a given subschemaSubentry.
-
-The class can still be interrogated directly like any other when this
-package is being interacted with directly. However, when tied into a DSA,
-end users ostensibly shall not be able to interrogate or interact with
-a private class through conventional means.
-
-Valid input values are the numeric OID or descriptor (name) associated
-with the desired definition.
-
-Case is not significant in the name matching process.
-
-See also [AttributeTypeProperties.SetPrivate].
-*/
-func (r *ObjectClassProperties) SetPrivate(id []byte) {
-	res, _, _, n := r.Resolve(id)
-	if res != nil {
-		r.schema.lock.Lock()
-		r.PRIV[n] = struct{}{}
-		r.schema.lock.Unlock()
+func (r ObjectClassProperties) String() string {
+	bld := strings.Builder{}
+	for i := 0; i < len(r.ORD); i++ {
+		x := r.ORD[i]
+		if id := r.ID[x]; r.Advertise(id) {
+			bld.WriteString(headerTokens[8])
+			bld.WriteRune(' ')
+			bld.WriteString(r.STRING[x])
+			bld.WriteRune(10)
+		}
 	}
+
+	return bld.String()
+}
+
+/*
+Advertise returns a Boolean value indicative of the whether the specified
+definition should be disclosed when the subschema is returned via a search
+result entry.
+
+A value of true indicates the definition is intended for normal advertisement.
+A value of false indicates that either the definition does not exist, or that
+it is not intended for disclosure.
+*/
+func (r ObjectClassProperties) Advertise(id []byte) bool {
+	var do bool // assume false by default
+	if noid, _, _, n := r.Resolve(id); noid != nil {
+		do = true // now assume true by default
+		if exts, _ := r.EXT[n]; len(exts) > 0 {
+			for _, v := range exts {
+				if eqFoldASCII(doNotAdvert, v.XString) {
+					do = !eqFoldASCII(v.Values[0], []byte(`TRUE`)) // invert!
+					break
+				}
+			}
+		}
+	}
+
+	return do
 }
 
 func (r *ObjectClassProperties) makeString(n uint) (err error) {

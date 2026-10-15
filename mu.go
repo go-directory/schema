@@ -12,6 +12,22 @@ type MatchingRuleUseProperties struct {
 	schema *SubschemaSubentry
 }
 
+func (r MatchingRuleUseProperties) String() string {
+	bld := strings.Builder{}
+	for i := 0; i < len(r.schema.mr.ORD); i++ {
+		x := r.schema.mr.ORD[i]
+		_, present := r.STRING[x]
+		if id := r.schema.mr.ID[x]; present && r.schema.mr.Advertise(id) {
+			bld.WriteString(headerTokens[6])
+			bld.WriteRune(' ')
+			bld.WriteString(r.STRING[x])
+			bld.WriteRune(10)
+		}
+	}
+
+	return bld.String()
+}
+
 func initMatchingRuleUseProperties(sch *SubschemaSubentry) (mup *MatchingRuleUseProperties) {
 	mup = &MatchingRuleUseProperties{
 		APPLIES: make(map[uint]map[uint]struct{}),

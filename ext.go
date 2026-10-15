@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+var doNotAdvert = []byte(`X-DO-NOT-ADVERTISE`)
+
 /*
 Extension implements [§ 4.2 of RFC 4512] and describes a single extension
 using an "xstring" ([]byte) and one or more quoted []byte values.

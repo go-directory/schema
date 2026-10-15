@@ -42,12 +42,13 @@ var ErrorOnUnavailableNameFormAttribute = false
 
 /*
 NameFormDirectAttributesOnly, when true, will only consider
-attribute types valid for MUST or MAY clause use that are
-directly extended by the implemented object class's MUST and
-MAY clauses, and NOT by way of super class type inheritance.
+attribute types valid for use in a name form's MUST or MAY
+clause if they are *directly* extended by the implemented
+object class's MUST and MAY clauses, and NOT by way of super
+class type inheritance.
 
 The default, false, will result in the inclusion of types
-extended by any and all super class MAY/MUST clauses in
+extended by any and all super class MAY and MUST clauses in
 addition to those directly extended by the name form's
 implemented class.
 
@@ -376,6 +377,26 @@ func (r *SubschemaSubentry) primeBuiltIns() (err error) {
 	}
 
 	return
+}
+
+/*
+String returns the string representation of the receiver instance. Note
+that definitions bearing the X-DO-NOT-ADVERTISE extension with a value
+of 'TRUE' will NOT be included in the output.
+*/
+func (r SubschemaSubentry) String() string {
+	bld := strings.Builder{}
+
+	bld.WriteString(r.ls.String())
+	bld.WriteString(r.mr.String())
+	bld.WriteString(r.at.String())
+	bld.WriteString(r.mu.String())
+	bld.WriteString(r.oc.String())
+	bld.WriteString(r.dc.String())
+	bld.WriteString(r.nf.String())
+	bld.WriteString(r.ds.String())
+
+	return bld.String()
 }
 
 /*
