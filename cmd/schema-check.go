@@ -137,7 +137,7 @@ func extendedUsage() {
 
 	fmt.Printf("\t-d\t<no argument>\n\n")
 	fmt.Printf("\t  \tPrint the contents of the schema after successful parsing; mutually\n")
-	fmt.Printf("\t  \texclusie to the -s (stats) flag.\n\n")
+	fmt.Printf("\t  \texclusive to the -s (stats) flag.\n\n")
 
 	fmt.Printf("\t-s\t<no argument>\n\n")
 	fmt.Printf("\t  \tPrint a counter for all definitions parsed by category after successful\n")
