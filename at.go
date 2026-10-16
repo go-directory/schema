@@ -353,9 +353,31 @@ func (r *AttributeTypeProperties) commit(def attributeTypeDefinition, checkOnly 
 
 	r.makeString(def.n)
 
-	r.schema.mu.commit(def)
+	r.schema.mu.commit(def.deferEffective(r))
 
 	return
+}
+
+/*
+deferEffective will update any nil matching rule reference it its effective
+equivalent. This is only used in cases where a sub type needs to be included
+in the matchingRuleUse maps no differently than its super type.
+
+However the mechanics of the matchingRuleUse handler require *something* be
+specified, else no processing occurs.
+*/
+func (r attributeTypeDefinition) deferEffective(prop *AttributeTypeProperties) attributeTypeDefinition {
+	if len(r.equality) == 0 {
+		r.equality, _ = prop.EffectiveEquality(r.noid)
+	}
+	if len(r.substring) == 0 {
+		r.substring, _ = prop.EffectiveSubstring(r.noid)
+	}
+	if len(r.ordering) == 0 {
+		r.ordering, _ = prop.EffectiveOrdering(r.noid)
+	}
+
+	return r
 }
 
 func (r *AttributeTypeProperties) commitSup(def attributeTypeDefinition) error {
