@@ -45,7 +45,7 @@ func (r *MatchingRuleUseProperties) commit(def attributeTypeDefinition) {
 		def.substring,
 		def.ordering,
 	} {
-		if mr != nil {
+		if len(mr) > 0 {
 			if moid, _, _, n := r.schema.mr.Resolve(mr); moid != nil {
 				if _, found := r.APPLIES[n]; !found {
 					r.APPLIES[n] = make(map[uint]struct{})
