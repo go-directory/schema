@@ -341,20 +341,418 @@ func (r *SubschemaSubentry) registerDefinitionByCase(defs [][]byte) (err error) 
 }
 
 /*
-SubschemaSubentry implements [§ 4.2 of RFC 4512] and contains slice types
-of various [Definition] types.
+SubschemaSubentries implements a map of string indices to *[SubschemaSubentry]
+instances.
 
-Instances of this type are thread safe by way of an internal instance
-of [sync/Mutex]. No special actions are required by users to make use
-of this feature, and its invocation is automatic wherever appropriate.
+While not derived as is from any standard, this type does facilitate some of
+the components needed for advanced schema management with respect to the use
+of administrativeRole-controlled subtrees.
+
+This type also serves to facilitate administrative ease with respect to the
+creation or migration of a complete schema using definitions derived from other
+sources.
+
+Each map index string label should be the string representation of the schema
+schema distinguished name. Each map index value (*[SubschemaSubentry]) MUST bear
+an identical distinguished name via the "DN" []byte field.
+
+The "authoritative" *[SubschemaSubentry] instance SHOULD bear the standard naming
+context of "cn=schema". For implementations managing only a single *[SubschemaSubentry]
+instance, the same naming recommendation stands.
+
+All distinguished names are normalized to lower case.
+
+It is an error for any of the following conditions to evaluate as true:
+
+  - Any *[SubschemaSubentry] map value bears a distinguished name that differs from its map index
+  - Any *[SubschemaSubentry] map value lacks a distinguished name, or its distinguished name is malformed
+  - Any *[SubschemaSubentry] map value bears a distinguished name identical to that of another instance in the same map
+  - None of the *[SubschemaSubentry] map values bears an "Authoritative" field value of true
+  - More than one of the *[SubschemaSubentry] map values bears an "Authoritative" field value of true
+
+NOTE: This type is still largely conceptual and lacks most of the intended functionality
+at this time.
+*/
+type SubschemaSubentries map[string]*SubschemaSubentry
+
+/*
+Authoritative returns the authoritative instance of *[SubschemaSubentry], or nil if not found.
+*/
+func (r SubschemaSubentries) Authoritative() *SubschemaSubentry {
+	var ath *SubschemaSubentry
+	for _, v := range r {
+		if v.Authoritative {
+			ath = v
+			break
+		}
+	}
+
+	return ath
+}
+
+/*
+Get returns an instance of *[SubschemaSubentry] alongside a presence-indicative
+Boolean value following an attempt to match the input DN to a registered instance.
+
+Case is not significant in the matching process.
+*/
+func (r SubschemaSubentries) Get(dn []byte) (*SubschemaSubentry, bool) {
+	sch, found := r[string(lc(dn))]
+	return sch, found
+}
+
+/*
+Add returns an error following an attempt to add the input *[SubschemaSubentry] to
+the receiver instance.
+
+The error will be non-zero if any of the following conditions evaluate as true:
+
+  - Input *[SubschemaSubentry] is bogus or nil
+  - Input *[SubschemaSubentry] lacks a distinguished name
+*/
+func (r *SubschemaSubentries) Add(sch *SubschemaSubentry) error {
+	var err error
+	if sch == nil || sch.ls == nil {
+		err = schemaError("Unable to add new schema: receiver is nil")
+		return err
+	}
+
+	dn := sch.DN
+	name := string(dn)
+
+	if len(dn) == 0 {
+		err = schemaError("Unable to add new schema: DN is zero length or nil")
+		return err
+	}
+
+	if _, found := r.Get(dn); found {
+		err = schemaError("Unable to add new schema: DN '", name, "' already registered")
+	}
+
+	isAth := sch.Authoritative
+	ath := r.Authoritative()
+
+	if isAth && ath != nil {
+		err = schemaError("Unable to add new schema: cannot add new authoritative schema (",
+			name, ")  without demoting the existing one (", string(ath.DN), ")")
+		return err
+	}
+
+	(*r)[name] = sch
+
+	return err
+}
+
+/*
+SetAuthoritative returns an error following an attempt to modify the specified
+*[SubschemaSubentry]'s "Authoritative" field.
+
+The error will be non-zero if any of the following conditions evaluate as true:
+
+  - Input DN is zero length or nil
+  - No match was found for the specified DN
+  - Another preexisting *[SubschemaSubentry] is already authoritative
+
+The optional variadic bool allows the override of the default value state of true.
+In other words, the user may supply a boolean of false to *unset* authoritative
+status if another *[SubschemaSubentry] instance is slated for that role.
+*/
+func (r *SubschemaSubentries) SetAuthoritative(dn []byte, authoritative ...bool) error {
+	var err error
+	var name = string(lc(dn))
+
+	var b bool = true // assume true for the moment
+	if len(authoritative) > 0 {
+		b = authoritative[0]
+	}
+
+	if ath := r.Authoritative(); ath != nil {
+		if eq := bytes.EqualFold(ath.DN, dn); eq {
+			ath.Authoritative = b
+			return err
+		}
+
+		err = schemaError("Authoritative schema '", string(ath.DN),
+			"' already in force; cannot promote '", name, "'")
+		return err
+	}
+
+	sch, found := (*r)[name]
+	if !found || sch == nil || len(sch.DN) == 0 {
+		err = schemaError("Schema '", name, "' not registered")
+		return err
+	}
+	sch.Authoritative = b
+
+	return err
+}
+
+/*
+New returns an error following an attempt to initialize a new instance of
+*[SubschemaSubentry] in association with the specified dn map index.
+*/
+func (r *SubschemaSubentries) New(dn []byte, prime ...bool) error {
+	dn = lc(dn)
+
+	var err error
+	var name = string(dn)
+
+	if _, found := (*r)[name]; found {
+		err = schemaError("Schema '", name, "' already registered")
+		return err
+	}
+
+	var sch *SubschemaSubentry
+	if sch, err = New(len(prime) > 0 && prime[0]); err == nil {
+		sch.DN = dn
+		(*r)[name] = sch
+	}
+
+	return err
+}
+
+/*
+ImportLDAPSyntaxes returns an error following an attempt to import some, or all, LDAP
+syntaxes from the underlying authoritative schema and into the registered schema
+associated with the input distinguished name (dest).
+
+The variadic def input argument can be used to specify any number of desired definitions
+by numeric OID. If none are provided, all are imported en masse.
+*/
+func (r *SubschemaSubentries) ImportLDAPSyntaxes(dest []byte, def ...[]byte) error {
+	return r.importDefs(0, dest, def...)
+}
+
+/*
+ImportMatchingRules returns an error following an attempt to import some, or all, matching
+rules from the underlying authoritative schema and into the registered schema associated
+with the input distinguished name (dest).
+
+The variadic def input argument can be used to specify any number of desired definitions
+by numeric OID or descriptor. If none are provided, all are imported en masse.
+*/
+func (r *SubschemaSubentries) ImportMatchingRules(dest []byte, def ...[]byte) error {
+	return r.importDefs(1, dest, def...)
+}
+
+/*
+ImportAttributeTypes returns an error following an attempt to import some, or all, attribute
+types from the underlying authoritative schema and into the registered schema associated with
+the input distinguished name (dest).
+
+The variadic def input argument can be used to specify any number of desired definitions
+by numeric OID or descriptor. If none are provided, all are imported en masse.
+
+Successful use of this method results in the targeted schema's matchingRuleUse tables being
+updated accordingly, wherever applicable.
+*/
+func (r *SubschemaSubentries) ImportAttributeTypes(dest []byte, def ...[]byte) error {
+	return r.importDefs(2, dest, def...)
+}
+
+/*
+ImportObjectClasses returns an error following an attempt to import some, or all, object
+classes from the underlying authoritative schema and into the registered schema associated
+with the input distinguished name (dest).
+
+The variadic def input argument can be used to specify any number of desired definitions
+by numeric OID or descriptor. If none are provided, all are imported en masse.
+*/
+func (r *SubschemaSubentries) ImportObjectClasses(dest []byte, def ...[]byte) error {
+	return r.importDefs(4, dest, def...)
+}
+
+/*
+ImportDITContentRules returns an error following an attempt to import some, or all, content
+rules from the underlying authoritative schema and into the registered schema associated with
+the input distinguished name (dest).
+
+The variadic def input argument can be used to specify any number of desired definitions
+by numeric OID or descriptor. If none are provided, all are imported en masse.
+*/
+func (r *SubschemaSubentries) ImportDITContentRules(dest []byte, def ...[]byte) error {
+	return r.importDefs(5, dest, def...)
+}
+
+/*
+ImportNameForms returns an error following an attempt to import some, or all, name forms
+from the underlying authoritative schema and into the registered schema associated with the
+input distinguished name (dest).
+
+The variadic def input argument can be used to specify any number of desired definitions
+by numeric OID or descriptor. If none are provided, all are imported en masse.
+*/
+func (r *SubschemaSubentries) ImportNameForms(dest []byte, def ...[]byte) error {
+	return r.importDefs(6, dest, def...)
+}
+
+/*
+ImportDITStructureRules returns an error following an attempt to import some, or all, structure
+rules from the underlying authoritative schema and into the registered schema associated with the
+input distinguished name (dest).
+
+The variadic def input argument can be used to specify any number of desired definitions
+by numeric OID or descriptor. If none are provided, all are imported en masse.
+*/
+func (r *SubschemaSubentries) ImportDITStructureRules(dest []byte, def ...[]byte) error {
+	return r.importDefs(7, dest, def...)
+}
+
+/*
+importDefs returns an error following an attempt to import the specified definition into
+the destination *[SubschemaSubentry].
+
+The return error will be non-nil if any of the following conditions evaluate as true:
+
+  - The category is bogus
+  - The destination distinguished name is not associated with a registered *[SubschemaSubentry]
+  - The destination distinguished name is the same as the authoritative *[SubschemaSubentry]
+  - Imported definition does not exist, or cannot be resolved
+  - Imported definition depends on one or more other definitions not yet imported
+  - No authoritative *[SubschemaSubentry] is registered
+
+Valid categories are as follows:
+
+  - (0) LDAP Syntax
+  - (1) Matching Rule
+  - (2) Attribute Type
+  - (4) Object Class
+  - (5) DIT Content Rule
+  - (6) Name Form
+  - (7) DIT Structure Rule
+
+Note that (3) -- Matching Rule Use -- is unlisted, as this category is self-managing
+based on the present Matching Rules and Attribute Types, and not something that should
+be "imported" in the traditional sense.
+
+If the variadic def is unused, all definitions of the specified category will be imported.
+Otherwise, each def []byte slice should contain the numeric OID, rule ID or descriptor of
+the desired definition.
+*/
+func (r *SubschemaSubentries) importDefs(cat int, dest []byte, def ...[]byte) error {
+	var err error
+
+	if cat == 3 {
+		err = schemaError("cannot import 'matchingRuleUse'")
+		return err
+	} else if !(0 <= cat && cat <= 7) {
+		err = schemaError("bad import category '", itoa(cat), "'")
+		return err
+	}
+
+	ath := r.Authoritative()
+	if ath == nil {
+		err = schemaError("no authoritative subschemaSubentry in force")
+		return err
+	} else if bytes.EqualFold(dest, ath.DN) {
+		err = schemaError("illogical import: authoritative subschemaSubentry cannot import from itself")
+		return err
+	}
+
+	dn := lc(dest)
+	name := string(dn)
+
+	target, found := (*r)[name]
+	if !found {
+		err = schemaError("target subschemaSubentry '", name, "' not found")
+		return err
+	}
+
+	err = doImport(cat, ath, target, def...)
+	return err
+}
+
+func doImport(cat int, ath, target *SubschemaSubentry, def ...[]byte) (err error) {
+	// replace def with ALL definitions
+	getAll := func(ord []uint, source map[uint][]byte) [][]byte {
+		var defs [][]byte
+		for i := 0; i < len(ord); i++ {
+			defs = append(defs, source[ord[i]])
+		}
+		return defs
+	}
+
+	all := len(def) == 0
+	imp := func(
+		typ string,
+		ord []uint,
+		ids map[uint][]byte,
+		strs map[uint]string,
+		resolver func([]byte) ([]byte, []byte, [][]byte, uint),
+		marshaler func([]byte, bool) error,
+	) (err error) {
+		if all {
+			def = getAll(ord, ids)
+		}
+
+		tk := append([]byte(typ), []byte(` `)...)
+		for i := 0; i < len(def); i++ {
+			noid, _, _, n := resolver(def[i])
+			if noid == nil {
+				err = schemaError("target definition '", string(def[i]), "' (",
+					typ, ") not found in authoritative subschemaSubentry")
+				break
+			}
+
+			b := append(tk, []byte(strs[n])...)
+			if err = marshaler(b, false); err != nil {
+				err = schemaError(string(tk), "import failed for '", string(noid),
+					"': ", err.Error())
+				break
+			}
+		}
+
+		return
+	}
+
+	switch cat {
+	case 0:
+		// ldap syntax resolver is different from all the others,
+		// so we wrap it specially here.
+		res := func(in []byte) ([]byte, []byte, [][]byte, uint) {
+			noid, _, n := ath.ls.Resolve(in)
+			return noid, nil, nil, n
+		}
+		src := ath.LS()
+		err = imp(headerTokens[0], src.ORD, src.ID, src.STRING, res, target.ls.marshal)
+	case 1:
+		src := ath.MR()
+		err = imp(headerTokens[2], src.ORD, src.ID, src.STRING, src.Resolve, target.mr.marshal)
+	case 2:
+		src := ath.AT()
+		err = imp(headerTokens[4], src.ORD, src.ID, src.STRING, src.Resolve, target.at.marshal)
+	case 4:
+		src := ath.OC()
+		err = imp(headerTokens[8], src.ORD, src.ID, src.STRING, src.Resolve, target.oc.marshal)
+	case 5:
+		src := ath.DC()
+		err = imp(headerTokens[10], src.ORD, src.ID, src.STRING, src.Resolve, target.dc.marshal)
+	case 6:
+		src := ath.NF()
+		err = imp(headerTokens[10], src.ORD, src.ID, src.STRING, src.Resolve, target.nf.marshal)
+	case 7:
+		src := ath.DS()
+		err = imp(headerTokens[14], src.ORD, src.ID, src.STRING, src.Resolve, target.ds.marshal)
+	}
+
+	return err
+}
+
+/*
+SubschemaSubentry implements [§ 4.2 of RFC 4512] through a collection of fast lookup
+tables (maps).
+
+Instances of this type are thread safe by way of an internal instance of [sync/Mutex].
+No special actions are required by users to make use of this feature, and its invocation
+is automatic wherever appropriate.
 
 [§ 4.2 of RFC 4512]: https://datatracker.ietf.org/doc/html/rfc4512#section-4.2
 */
 type SubschemaSubentry struct {
-	DN      []byte // schema context DN
-	Private bool   // indicates schema is not to be published indiscriminately
-	lock    *sync.Mutex
-	ath     *SubschemaSubentry // if rcv.ath not nil, rcv is a VIEW schema
+	DN            []byte // schema context DN
+	Authoritative bool   // Set to true if schema is authoritative (or solitary)
+	Unadvertised  bool   // indicates schema is not to be published indiscriminately
+	lock          *sync.Mutex
 
 	ls *LDAPSyntaxProperties
 	mr *MatchingRuleProperties
@@ -371,7 +769,6 @@ primeBuiltIns is a private method used to pre-load standard LDAPSyntax
 and MatchingRule instances sourced from formalized RFCs.
 */
 func (r *SubschemaSubentry) primeBuiltIns() (err error) {
-
 	if err = r.ReadBytes(lsPrimer); err == nil {
 		err = r.ReadBytes(mrPrimer)
 	}
@@ -410,12 +807,12 @@ func (r SubschemaSubentry) OID() string { return `2.5.18.10` }
 // the respective indices correlate to the return values of the
 // Type method held by collection and definition description types.
 var headerTokens []string = []string{
-	"ldapSyntaxes", "ldapSyntax",
-	"matchingRules", "matchingRule",
-	"attributeTypes", "attributeType",
-	"matchingRuleUses", "matchingRuleUse",
-	"objectClasses", "objectClass",
-	"dITContentRules", "dITContentRule",
-	"nameForms", "nameForm",
-	"dITStructureRules", "dITStructureRule",
+	"ldapSyntaxes", "ldapSyntax", // 0, 1
+	"matchingRules", "matchingRule", // 2, 3
+	"attributeTypes", "attributeType", // 4, 5
+	"matchingRuleUses", "matchingRuleUse", // 6, 7
+	"objectClasses", "objectClass", // 8, 9
+	"dITContentRules", "dITContentRule", // 10, 11
+	"nameForms", "nameForm", // 12, 13
+	"dITStructureRules", "dITStructureRule", // 14, 15
 }
