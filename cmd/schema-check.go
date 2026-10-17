@@ -25,8 +25,9 @@ func main() {
 	var (
 		err   error
 		sch   *schema.SubschemaSubentry
-		fFlag = flag.String("f", "", "Path of schema file or directory")
+		fFlag = flag.String("f", "", "Path of schema file or directory (required)")
 		dFlag = flag.Bool("d", false, "Print schema to stdout")
+		xFlag = flag.Bool("x", false, "Show X-DO-NOT-ADVERTISE definitions")
 		sFlag = flag.Bool("s", false, "Show number of parsed definitions per category")
 		pFlag = flag.Bool("p", false, "Prime the schema with syntaxes and matching rules")
 		eFlag = flag.Bool("e", false, "Show extended usage information and then exit")
@@ -39,6 +40,7 @@ func main() {
 	prime := *pFlag
 	target := *fFlag
 	exhelp := *eFlag
+	sxdna := *xFlag
 
 	if exhelp {
 		extendedUsage()
@@ -72,14 +74,47 @@ func main() {
 	if showStats {
 		schemaStats(sch)
 	} else if dump {
-		dumpSchema(sch)
+		dumpSchema(sch, sxdna)
 	}
 
 	// Cool schema, bro 8)
 }
 
-func dumpSchema(sch *schema.SubschemaSubentry) {
-	fmt.Printf("%s\n", sch.String())
+func dumpSchema(sch *schema.SubschemaSubentry, showHidden bool) {
+	if !showHidden {
+		fmt.Printf("%s\n", sch.String())
+	} else {
+		ls, mr, at, mu, oc, dc, nf, ds := 
+			sch.LS(), sch.MR(), sch.AT(), sch.MU(),
+			sch.OC(), sch.DC(), sch.NF(), sch.DS()
+
+		labels := []string{
+			"ldapSyntaxes", "matchingRules",
+			"attributeTypes", "matchingRuleUses",
+			"objectClasses", "dITContentRules",
+			"nameForms", "dITStructureRules",
+		}
+
+		strtbs := []map[uint]string{
+			ls.STRING,mr.STRING,
+			at.STRING,mu.STRING,
+			oc.STRING,dc.STRING,
+			nf.STRING,ds.STRING,
+		}
+
+		ord := [][]uint{
+			ls.ORD,mr.ORD,at.ORD,mr.ORD,
+			oc.ORD,dc.ORD,nf.ORD,ds.ORD,
+		}
+
+		for i := 0; i < len(ord); i++ {
+			for j := 0; j < len(ord[i]); j++ {
+				if str := strtbs[i][ord[i][j]]; str != "" {
+					fmt.Printf("%s %s\n", labels[i], str)
+				}
+			}
+		}
+	}
 }
 
 func schemaStats(sch *schema.SubschemaSubentry) {
@@ -137,11 +172,15 @@ func extendedUsage() {
 
 	fmt.Printf("\t-d\t<no argument>\n\n")
 	fmt.Printf("\t  \tPrint the contents of the schema after successful parsing; mutually\n")
-	fmt.Printf("\t  \texclusive to the -s (stats) flag.\n\n")
+	fmt.Printf("\t  \texclusive to the -s (stats) flag. Can be enhanced with -x.\n\n")
 
 	fmt.Printf("\t-s\t<no argument>\n\n")
 	fmt.Printf("\t  \tPrint a counter for all definitions parsed by category after successful\n")
 	fmt.Printf("\t  \tparsing; mutually exclusive to the -d (dump) flag.\n\n")
+
+	fmt.Printf("\t-x\t<no argument\n\n")
+	fmt.Printf("\t  \tWhen using -d, include definitions that are normally hidden via the\n")
+	fmt.Printf("\t  \t'X-DO-NOT-ADVERTISE' eXtension.")
 
 	fmt.Printf("\t-p\t<no argument>\n\n")
 	fmt.Printf("\t  \tAutomatically 'prime' the subschemaSubentry with LDAP syntaxes and\n")
