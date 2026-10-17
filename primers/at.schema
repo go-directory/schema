@@ -5,7 +5,40 @@
 ## the testdata/example.schema file, if present.
 attributeTypes ( 2.5.4.0 NAME 'objectClass'
   EQUALITY objectIdentifierMatch
-  SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
+  X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC4512' ) )
+attributeType: ( 2.5.18.3 NAME 'creatorsName'
+  EQUALITY distinguishedNameMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+  SINGLE-VALUE NO-USER-MODIFICATION
+  USAGE directoryOperation
+  X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC4512' ) )
+attributeType: ( 2.5.18.1 NAME 'createTimestamp'
+  EQUALITY generalizedTimeMatch
+  ORDERING generalizedTimeOrderingMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+  SINGLE-VALUE NO-USER-MODIFICATION
+  USAGE directoryOperation
+  X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC4512' ) )
+attributeType: ( 2.5.18.4 NAME 'modifiersName'
+  EQUALITY distinguishedNameMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+  SINGLE-VALUE NO-USER-MODIFICATION
+  USAGE directoryOperation
+  X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC4512' ) )
+attributeType: ( 2.5.18.2 NAME 'modifyTimestamp'
+  EQUALITY generalizedTimeMatch
+  ORDERING generalizedTimeOrderingMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+  SINGLE-VALUE NO-USER-MODIFICATION
+  USAGE directoryOperation
+  X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC4512' ) )
+attributeType: ( 2.5.21.9 NAME 'structuralObjectClass'
+  EQUALITY objectIdentifierMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
+  SINGLE-VALUE NO-USER-MODIFICATION
+  USAGE directoryOperation
+  X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC4512' ) )
 attributeTypes ( 2.5.4.41 NAME 'name'
   EQUALITY caseIgnoreMatch
   SUBSTR caseIgnoreSubstringsMatch
