@@ -13,7 +13,10 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"time"
 )
+
+var now = time.Now
 
 /*
 ErrorOnDuplicateClauseMember, when true, will cause any
@@ -314,7 +317,7 @@ func (r *SubschemaSubentry) registerDefinitionByCase(defs [][]byte) (err error) 
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
-	for i := 0; i < len(defs) && err == nil; i++ {
+	for i := 0; i < len(defs); i++ {
 		def := defs[i]
 		low := lc(def)
 		if bytes.HasPrefix(low, lc([]byte(headerTokens[1]))) {
@@ -335,6 +338,11 @@ func (r *SubschemaSubentry) registerDefinitionByCase(defs [][]byte) (err error) 
 		} else {
 			err = schemaError("Invalid definition: " + string(def))
 		}
+
+		if err != nil {
+			break
+		}
+		r.Timestamp = now()
 	}
 
 	return
@@ -749,9 +757,10 @@ is automatic wherever appropriate.
 [§ 4.2 of RFC 4512]: https://datatracker.ietf.org/doc/html/rfc4512#section-4.2
 */
 type SubschemaSubentry struct {
-	DN            []byte // schema context DN
-	Authoritative bool   // Set to true if schema is authoritative (or solitary)
-	Unadvertised  bool   // indicates schema is not to be published indiscriminately
+	DN            []byte    // schema context DN
+	Authoritative bool      // Set to true if schema is authoritative (or solitary)
+	Unadvertised  bool      // indicates schema is not to be published indiscriminately
+	Timestamp     time.Time // schemaTimestamp
 	lock          *sync.Mutex
 
 	ls *LDAPSyntaxProperties
