@@ -14,14 +14,6 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	/*
-		fmt.Printf("MUST: %#v\n", exampleSchema.OC().MUST[`0.9.2342.19200300.100.4.13`])
-		fmt.Printf("ALLMUST: %#v\n", exampleSchema.OC().ALLMUST[`0.9.2342.19200300.100.4.13`])
-
-		fmt.Printf("MAY: %#v\n", exampleSchema.OC().MAY[`0.9.2342.19200300.100.4.13`])
-		fmt.Printf("ALLMAY: %#v\n", exampleSchema.OC().ALLMAY[`0.9.2342.19200300.100.4.13`])
-	*/
-
 	code := m.Run()
 	os.Exit(code)
 }
@@ -142,17 +134,17 @@ func ExampleSubschemaSubentries() {
 	// Authoritative schema: "cn=schema"
 	// attribute types imported into new schema "cn=alt-schema":
 	//
-	// attributeTypes ( 2.5.4.49 NAME 'distinguishedName' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+	// attributeTypes ( 2.5.4.49 NAME 'distinguishedName' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
 	// attributeTypes ( 2.5.4.13 NAME 'description' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-	// attributeTypes ( 2.5.4.41 NAME 'name' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-	// attributeTypes ( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC4519: common name(s) for which the entity is known by' SUP name )
-	// attributeTypes ( 2.5.4.0 NAME 'objectClass' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
-	// attributeTypes ( 2.5.21.9 NAME 'structuralObjectClass' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION )
-	// attributeTypes ( 2.5.4.4 NAME 'sn' SUP name )
-	// attributeTypes ( 2.5.4.35 NAME 'userPassword' EQUALITY octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
-	// attributeTypes ( 2.5.18.6 NAME 'subtreeSpecification' SYNTAX 1.3.6.1.4.1.1466.115.121.1.45 SINGLE-VALUE X-ORIGIN 'RFC3672' )
-	// attributeTypes ( 2.5.4.20 NAME 'telephoneNumber' EQUALITY telephoneNumberMatch SUBSTR telephoneNumberSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
-	// attributeTypes ( 2.5.4.34 NAME 'seeAlso' SUP distinguishedName )
+	// attributeTypes ( 2.5.4.41 NAME 'name' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
+	// attributeTypes ( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC4519: common name(s) for which the entity is known by' SUP name X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
+	// attributeTypes ( 2.5.4.0 NAME 'objectClass' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC4512' ) )
+	// attributeTypes ( 2.5.21.9 NAME 'structuralObjectClass' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC4512' ) )
+	// attributeTypes ( 2.5.4.4 NAME ( 'sn' 'surname' ) SUP name X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
+	// attributeTypes ( 2.5.4.35 NAME 'userPassword' EQUALITY octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
+	// attributeTypes ( 2.5.18.6 NAME 'subtreeSpecification' SYNTAX 1.3.6.1.4.1.1466.115.121.1.45 SINGLE-VALUE X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC3672' ) )
+	// attributeTypes ( 2.5.4.20 NAME 'telephoneNumber' EQUALITY telephoneNumberMatch SUBSTR telephoneNumberSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
+	// attributeTypes ( 2.5.4.34 NAME 'seeAlso' SUP distinguishedName X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
 }
 
 /*

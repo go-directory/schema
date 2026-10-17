@@ -6,36 +6,36 @@ attributeType: ( 2.5.4.1 NAME 'aliasedObjectName'
         EQUALITY distinguishedNameMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
         SINGLE-VALUE )
-attributeType: ( 2.5.4.0 NAME 'objectClass'
-        EQUALITY objectIdentifierMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
-attributeType: ( 2.5.18.3 NAME 'creatorsName'
-        EQUALITY distinguishedNameMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
-        SINGLE-VALUE NO-USER-MODIFICATION
-        USAGE directoryOperation )
-attributeType: ( 2.5.18.1 NAME 'createTimestamp'
-        EQUALITY generalizedTimeMatch
-        ORDERING generalizedTimeOrderingMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
-        SINGLE-VALUE NO-USER-MODIFICATION
-        USAGE directoryOperation )
-attributeType: ( 2.5.18.4 NAME 'modifiersName'
-        EQUALITY distinguishedNameMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
-        SINGLE-VALUE NO-USER-MODIFICATION
-        USAGE directoryOperation )
-attributeType: ( 2.5.18.2 NAME 'modifyTimestamp'
-        EQUALITY generalizedTimeMatch
-        ORDERING generalizedTimeOrderingMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
-        SINGLE-VALUE NO-USER-MODIFICATION
-        USAGE directoryOperation )
-attributeType: ( 2.5.21.9 NAME 'structuralObjectClass'
-        EQUALITY objectIdentifierMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
-        SINGLE-VALUE NO-USER-MODIFICATION
-        USAGE directoryOperation )
+#attributeType: ( 2.5.4.0 NAME 'objectClass'
+#        EQUALITY objectIdentifierMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
+#attributeType: ( 2.5.18.3 NAME 'creatorsName'
+#        EQUALITY distinguishedNameMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+#        SINGLE-VALUE NO-USER-MODIFICATION
+#        USAGE directoryOperation )
+#attributeType: ( 2.5.18.1 NAME 'createTimestamp'
+#        EQUALITY generalizedTimeMatch
+#        ORDERING generalizedTimeOrderingMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+#        SINGLE-VALUE NO-USER-MODIFICATION
+#        USAGE directoryOperation )
+#attributeType: ( 2.5.18.4 NAME 'modifiersName'
+#        EQUALITY distinguishedNameMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+#        SINGLE-VALUE NO-USER-MODIFICATION
+#        USAGE directoryOperation )
+#attributeType: ( 2.5.18.2 NAME 'modifyTimestamp'
+#        EQUALITY generalizedTimeMatch
+#        ORDERING generalizedTimeOrderingMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+#        SINGLE-VALUE NO-USER-MODIFICATION
+#        USAGE directoryOperation )
+#attributeType: ( 2.5.21.9 NAME 'structuralObjectClass'
+#        EQUALITY objectIdentifierMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
+#        SINGLE-VALUE NO-USER-MODIFICATION
+#        USAGE directoryOperation )
 attributeType: ( 2.5.21.10 NAME 'governingStructureRule'
         EQUALITY integerMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
@@ -104,23 +104,23 @@ attributeType: ( 2.5.4.15 NAME 'businessCategory'
         EQUALITY caseIgnoreMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 2.5.4.41 NAME 'name'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 2.5.4.6 NAME 'c'
-        SUP name
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.11
-        SINGLE-VALUE )
-attributeType: ( 2.5.4.3
-        NAME ( 'cn' 'commonName' )
-        DESC 'RFC4519: common name(s) for which the entity is known by'
-        SUP name )
-attributeType: ( 0.9.2342.19200300.100.1.25 NAME 'dc'
-        EQUALITY caseIgnoreIA5Match
-        SUBSTR caseIgnoreIA5SubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
-        SINGLE-VALUE )
+#attributeType: ( 2.5.4.41 NAME 'name'
+#        EQUALITY caseIgnoreMatch
+#        SUBSTR caseIgnoreSubstringsMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+#attributeType: ( 2.5.4.6 NAME 'c'
+#        SUP name
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.11
+#        SINGLE-VALUE )
+#attributeType: ( 2.5.4.3
+#        NAME ( 'cn' 'commonName' )
+#        DESC 'RFC4519: common name(s) for which the entity is known by'
+#        SUP name )
+#attributeType: ( 0.9.2342.19200300.100.1.25 NAME 'dc'
+#        EQUALITY caseIgnoreIA5Match
+#        SUBSTR caseIgnoreIA5SubstringsMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+#        SINGLE-VALUE )
 attributeType: ( 2.5.4.13 NAME 'description'
         EQUALITY caseIgnoreMatch
         SUBSTR caseIgnoreSubstringsMatch
@@ -129,9 +129,9 @@ attributeType: ( 2.5.4.27 NAME 'destinationIndicator'
         EQUALITY caseIgnoreMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
-attributeType: ( 2.5.4.49 NAME 'distinguishedName'
-        EQUALITY distinguishedNameMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+#attributeType: ( 2.5.4.49 NAME 'distinguishedName'
+#        EQUALITY distinguishedNameMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
 attributeType: ( 2.5.4.46 NAME 'dnQualifier'
         EQUALITY caseIgnoreMatch
         ORDERING caseIgnoreOrderingMatch
@@ -154,14 +154,14 @@ attributeType: ( 2.5.4.25 NAME 'internationalISDNNumber'
         EQUALITY numericStringMatch
         SUBSTR numericStringSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 )
-attributeType: ( 2.5.4.7
-        NAME ( 'l' 'localityName' )
-        SUP name )
+#attributeType: ( 2.5.4.7
+#        NAME ( 'l' 'localityName' )
+#        SUP name )
 attributeType: ( 2.5.4.31 NAME 'member' SUP distinguishedName )
-attributeType: ( 2.5.4.10 NAME 'o' SUP name )
-attributeType: ( 2.5.4.11
-        NAME ( 'ou' 'organizationalUnitName' )
-        SUP name )
+#attributeType: ( 2.5.4.10 NAME 'o' SUP name )
+#attributeType: ( 2.5.4.11
+#        NAME ( 'ou' 'organizationalUnitName' )
+#        SUP name )
 attributeType: ( 2.5.4.32 NAME 'owner' SUP distinguishedName )
 attributeType: ( 2.5.4.19 NAME 'physicalDeliveryOfficeName'
         EQUALITY caseIgnoreMatch
@@ -190,36 +190,41 @@ attributeType: ( 2.5.4.33 NAME 'roleOccupant'
 attributeType: ( 2.5.4.14 NAME 'searchGuide'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.25 )
 attributeType: ( 2.5.4.34 NAME 'seeAlso'
-        SUP distinguishedName )
-attributeType: ( 2.5.4.5 NAME 'serialNumber'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
-attributeType: ( 2.5.4.4 NAME 'sn' SUP name )
-attributeType: ( 2.5.4.8 NAME 'st' SUP name )
-attributeType: ( 2.5.4.9 NAME 'street'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+        SUP distinguishedName
+        X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
+#attributeType: ( 2.5.4.5 NAME 'serialNumber'
+#        EQUALITY caseIgnoreMatch
+#        SUBSTR caseIgnoreSubstringsMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+attributeType: ( 2.5.4.4 NAME ( 'sn' 'surname' )
+        SUP name
+        X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
+#attributeType: ( 2.5.4.8 NAME 'st' SUP name )
+#attributeType: ( 2.5.4.9 NAME 'street'
+#        EQUALITY caseIgnoreMatch
+#        SUBSTR caseIgnoreSubstringsMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 attributeType: ( 2.5.4.20 NAME 'telephoneNumber'
         EQUALITY telephoneNumberMatch
         SUBSTR telephoneNumberSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50
+        X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
 attributeType: ( 2.5.4.22 NAME 'teletexTerminalIdentifier'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.51 )
 attributeType: ( 2.5.4.21 NAME 'telexNumber'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.52 )
 attributeType: ( 2.5.4.12 NAME 'title' SUP name )
-attributeType: ( 0.9.2342.19200300.100.1.1 NAME 'uid'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+#attributeType: ( 0.9.2342.19200300.100.1.1 NAME 'uid'
+#        EQUALITY caseIgnoreMatch
+#        SUBSTR caseIgnoreSubstringsMatch
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 attributeType: ( 2.5.4.50 NAME 'uniqueMember'
         EQUALITY uniqueMemberMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 )
 attributeType: ( 2.5.4.35 NAME 'userPassword'
         EQUALITY octetStringMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.40
+	X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
 attributeType: ( 2.5.4.24 NAME 'x121Address'
         EQUALITY numericStringMatch
         SUBSTR numericStringSubstringsMatch
@@ -331,7 +336,7 @@ attributeType: ( 2.5.18.6 NAME 'subtreeSpecification'
         SINGLE-VALUE
         USAGE directoryOperation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.45
-	X-ORIGIN 'RFC3672' )
+	X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC3672' ) )
 attributeType: ( 1.3.6.1.4.1.250.1.57
 	NAME 'labeledURI'
 	EQUALITY caseExactMatch

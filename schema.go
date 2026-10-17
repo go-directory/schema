@@ -62,11 +62,14 @@ clauses *for any reason*.
 */
 var NameFormDirectAttributesOnly = false
 
-//go:embed synmr/ls.schema
+//go:embed primers/ls.schema
 var lsPrimer []byte
 
-//go:embed synmr/mr.schema
+//go:embed primers/mr.schema
 var mrPrimer []byte
+
+//go:embed primers/at.schema
+var atPrimer []byte
 
 /*
 New returns a freshly initialized instance of *[SubschemaSubentry]. Instances of
@@ -77,14 +80,14 @@ Instances of *[SubschemaSubentry] that were NOT created as a result of using
 this package level function will almost certainly panic when used.
 
 The prime variadic argument controls whether to prime, or "pre-load", standard
-[LDAPSyntax] and [MatchingRule] definitions sourced from RFC 4512, RFC 4523 and
-RFC 2307 into the receiver instance. The default is false, which results in no
-such definitions being pre-loaded.
+LDAP syntax, matching rule and (limited) attribute type definitions sourced from
+RFC 4512, RFC 4523, RFC 4519 and RFC 2307 into the receiver instance. The default
+is false, which results in no such definitions being pre-loaded.
 
 Generally speaking, it is RECOMMENDED that users pre-load these definitions UNLESS
 they are constructing a very stringent schema structure which only contains select
-syntaxes and matching rules -- a most unusual circumstance. In such a case, users
-will be required to register those select syntaxes and matching rules MANUALLY.
+definition -- a fairly uncommon circumstance. In such a case, users will be required
+to register those selected definitions MANUALLY.
 */
 func New(prime ...bool) (sch *SubschemaSubentry, err error) {
 	sch = &SubschemaSubentry{
@@ -774,12 +777,15 @@ type SubschemaSubentry struct {
 }
 
 /*
-primeBuiltIns is a private method used to pre-load standard LDAPSyntax
-and MatchingRule instances sourced from formalized RFCs.
+primeBuiltIns is a private method used to pre-load standard LDAPSyntax,
+MatchingRule and (limited) AttributeType instances sourced from formalized
+RFCs.
 */
 func (r *SubschemaSubentry) primeBuiltIns() (err error) {
 	if err = r.ReadBytes(lsPrimer); err == nil {
-		err = r.ReadBytes(mrPrimer)
+		if err = r.ReadBytes(mrPrimer); err == nil {
+			err = r.ReadBytes(atPrimer)
+		}
 	}
 
 	return
