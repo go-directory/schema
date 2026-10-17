@@ -74,7 +74,7 @@ var atPrimer []byte
 /*
 New returns a freshly initialized instance of *[SubschemaSubentry]. Instances of
 this type serve as a platform upon which individual text definitions may be
-parsed into usable instances of [Definition].
+parsed into usable instances of definition.
 
 Instances of *[SubschemaSubentry] that were NOT created as a result of using
 this package level function will almost certainly panic when used.
