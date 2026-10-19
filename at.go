@@ -334,6 +334,10 @@ func (r *AttributeTypeProperties) commit(def attributeTypeDefinition, checkOnly 
 		r.SYNTAX[def.n] = synid
 	}
 
+	if def.usage > usageUser {
+		r.USAGE[def.n] = def.usage
+	}
+
 	r.commitSup(def)
 	r.commitMR(def)
 
