@@ -6,3 +6,5 @@ github.com/go-directory/common v0.0.0-20261011092812-ee1a68d2b0cb h1:RXlaLD3QXih
 github.com/go-directory/common v0.0.0-20261011092812-ee1a68d2b0cb/go.mod h1:38wymd8zkOxcZC/oRKK8a82xopDQRSz42XTd97NKgqg=
 github.com/go-directory/common v0.0.0-20261015062816-e8d71838f720 h1:uwCCK+kkiae+MQ2SGmztUr20oIGOjA47X0hNXqW11aU=
 github.com/go-directory/common v0.0.0-20261015062816-e8d71838f720/go.mod h1:PFlbjODkcvDFXO8FZU+WFvq4ThT7cErjxdY6VrAol74=
+github.com/go-directory/common v0.0.0-20261019055452-0b69be22f6a2 h1:oDggdUbMsRRjrlelCwh/ueRHfAnr1stRPlGZ2lzL6ek=
+github.com/go-directory/common v0.0.0-20261019055452-0b69be22f6a2/go.mod h1:PFlbjODkcvDFXO8FZU+WFvq4ThT7cErjxdY6VrAol74=
