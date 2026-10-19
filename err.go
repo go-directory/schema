@@ -3,19 +3,22 @@ package schema
 import (
 	"errors"
 	"os"
-	"strconv"
 
 	"github.com/go-directory/common"
 )
 
-func syntaxError(msg ...string) error {
-	m := append([]string{"Syntax error: "}, msg...)
-	return common.LDAPResultInvalidAttributeSyntax.New(m...)
+type commonErr = common.Error
+
+func syntaxError(msg ...string) (err commonErr) {
+	err = common.NewError(uint16(common.LDAPResultInvalidAttributeSyntax), msg...)
+	err.SetHeader("syntax:")
+	return
 }
 
-func schemaError(msg ...string) error {
-	m := append([]string{"Schema error: "}, msg...)
-	return common.ErrorSchema.New(m...)
+func schemaError(msg ...string) (err commonErr) {
+	err = common.NewError(uint16(common.ErrorSchema), msg...)
+	err.SetHeader("schema:")
+	return
 }
 
 var (
@@ -27,20 +30,12 @@ var (
 var errorIs = errors.Is
 
 func errorBadLength(name string, length int) error {
-	return schemaError(`Invalid length '` + strconv.FormatInt(int64(length), 10) + `' for ` + name)
+	return schemaError(`Invalid length '` +
+		fint(int64(length), 10) + `' for ` + name)
 }
 
 func errorBadType(name string) error {
 	return schemaError(`Incompatible input type for ` + name)
-}
-
-func errorPrimerFailed(ls, mr int) (err error) {
-	if ls != 0 || mr != 0 {
-		err = schemaError("Failed to prime schema: " + strconv.Itoa(ls) + " ldapSyntaxes, " +
-			strconv.Itoa(mr) + " matchingRules")
-	}
-
-	return
 }
 
 func errMalformedOID(typ, noid string) error {
