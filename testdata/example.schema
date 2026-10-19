@@ -1,571 +1,403 @@
-## This schema file is purely for testing general functionality
-## as well as edge cases. Some of the definitions present are
-## intentionally perverse and/or illogical. Don't use these
-## definitions in real life.
-attributeType: ( 2.5.4.1 NAME 'aliasedObjectName'
-        EQUALITY distinguishedNameMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
-        SINGLE-VALUE )
-#attributeType: ( 2.5.4.0 NAME 'objectClass'
-#        EQUALITY objectIdentifierMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
-#attributeType: ( 2.5.18.3 NAME 'creatorsName'
-#        EQUALITY distinguishedNameMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
-#        SINGLE-VALUE NO-USER-MODIFICATION
-#        USAGE directoryOperation )
-#attributeType: ( 2.5.18.1 NAME 'createTimestamp'
-#        EQUALITY generalizedTimeMatch
-#        ORDERING generalizedTimeOrderingMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
-#        SINGLE-VALUE NO-USER-MODIFICATION
-#        USAGE directoryOperation )
-#attributeType: ( 2.5.18.4 NAME 'modifiersName'
-#        EQUALITY distinguishedNameMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
-#        SINGLE-VALUE NO-USER-MODIFICATION
-#        USAGE directoryOperation )
-#attributeType: ( 2.5.18.2 NAME 'modifyTimestamp'
-#        EQUALITY generalizedTimeMatch
-#        ORDERING generalizedTimeOrderingMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
-#        SINGLE-VALUE NO-USER-MODIFICATION
-#        USAGE directoryOperation )
-#attributeType: ( 2.5.21.9 NAME 'structuralObjectClass'
-#        EQUALITY objectIdentifierMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
-#        SINGLE-VALUE NO-USER-MODIFICATION
-#        USAGE directoryOperation )
-attributeType: ( 2.5.21.10 NAME 'governingStructureRule'
-        EQUALITY integerMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
-        SINGLE-VALUE NO-USER-MODIFICATION
-        USAGE directoryOperation )
-attributeType: ( 2.5.18.10 NAME 'subschemaSubentry'
-        EQUALITY distinguishedNameMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
-        SINGLE-VALUE NO-USER-MODIFICATION
-        USAGE directoryOperation )
-attributeType: ( 2.5.21.6 NAME 'objectClasses'
-        EQUALITY objectIdentifierFirstComponentMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.37
-        USAGE directoryOperation )
-attributeType: ( 2.5.21.5 NAME 'attributeTypes'
-        EQUALITY objectIdentifierFirstComponentMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.3
-        USAGE directoryOperation )
-attributeType: ( 2.5.21.4 NAME 'matchingRules'
-        EQUALITY objectIdentifierFirstComponentMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.30
-        USAGE directoryOperation )
-attributeType: ( 2.5.21.8 NAME 'matchingRuleUse'
-        EQUALITY objectIdentifierFirstComponentMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.31
-        USAGE directoryOperation )
-attributeType: ( 1.3.6.1.4.1.1466.101.120.16 NAME 'ldapSyntaxes'
-        EQUALITY objectIdentifierFirstComponentMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.54
-        USAGE directoryOperation )
-attributeType: ( 2.5.21.2 NAME 'dITContentRules'
-        EQUALITY objectIdentifierFirstComponentMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.16
-        USAGE directoryOperation )
-attributeType: ( 2.5.21.1 NAME 'dITStructureRules'
-        EQUALITY integerFirstComponentMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.17
-        USAGE directoryOperation )
-attributeType: ( 2.5.21.7 NAME 'nameForms'
-        EQUALITY objectIdentifierFirstComponentMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.35
-        USAGE directoryOperation )
-attributeType: ( 1.3.6.1.4.1.1466.101.120.6 NAME 'altServer'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
-        USAGE dSAOperation )
-attributeType: ( 1.3.6.1.4.1.1466.101.120.5 NAME 'namingContexts'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
-        USAGE dSAOperation )
-attributeType: ( 1.3.6.1.4.1.1466.101.120.13 NAME 'supportedControl'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
-        USAGE dSAOperation )
-attributeType: ( 1.3.6.1.4.1.1466.101.120.7 NAME 'supportedExtension'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
-        USAGE dSAOperation )
-attributeType: ( 1.3.6.1.4.1.4203.1.3.5 NAME 'supportedFeatures'
-        EQUALITY objectIdentifierMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
-        USAGE dSAOperation )
-attributeType: ( 1.3.6.1.4.1.1466.101.120.15 NAME 'supportedLDAPVersion'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
-        USAGE dSAOperation )
-attributeType: ( 1.3.6.1.4.1.1466.101.120.14 NAME 'supportedSASLMechanisms'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
-        USAGE dSAOperation )
-attributeType: ( 2.5.4.15 NAME 'businessCategory'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-#attributeType: ( 2.5.4.41 NAME 'name'
-#        EQUALITY caseIgnoreMatch
-#        SUBSTR caseIgnoreSubstringsMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-#attributeType: ( 2.5.4.6 NAME 'c'
-#        SUP name
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.11
-#        SINGLE-VALUE )
-#attributeType: ( 2.5.4.3
-#        NAME ( 'cn' 'commonName' )
-#        DESC 'RFC4519: common name(s) for which the entity is known by'
-#        SUP name )
-#attributeType: ( 0.9.2342.19200300.100.1.25 NAME 'dc'
-#        EQUALITY caseIgnoreIA5Match
-#        SUBSTR caseIgnoreIA5SubstringsMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
-#        SINGLE-VALUE )
-attributeType: ( 2.5.4.13 NAME 'description'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 2.5.4.27 NAME 'destinationIndicator'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
-#attributeType: ( 2.5.4.49 NAME 'distinguishedName'
-#        EQUALITY distinguishedNameMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
-attributeType: ( 2.5.4.46 NAME 'dnQualifier'
-        EQUALITY caseIgnoreMatch
-        ORDERING caseIgnoreOrderingMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
-attributeType: ( 2.5.4.47 NAME 'enhancedSearchGuide'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.21 )
-attributeType: ( 2.5.4.23 NAME 'facsimileTelephoneNumber'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.22 )
-attributeType: ( 2.5.4.44 NAME 'generationQualifier'
-        SUP name )
-attributeType: ( 2.5.4.42 NAME 'givenName'
-        SUP name )
-attributeType: ( 2.5.4.51 NAME 'houseIdentifier'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 2.5.4.43 NAME 'initials' SUP name )
-attributeType: ( 2.5.4.25 NAME 'internationalISDNNumber'
-        EQUALITY numericStringMatch
-        SUBSTR numericStringSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 )
-#attributeType: ( 2.5.4.7
-#        NAME ( 'l' 'localityName' )
-#        SUP name )
-attributeType: ( 2.5.4.31 NAME 'member' SUP distinguishedName )
-#attributeType: ( 2.5.4.10 NAME 'o' SUP name )
-#attributeType: ( 2.5.4.11
-#        NAME ( 'ou' 'organizationalUnitName' )
-#        SUP name )
-attributeType: ( 2.5.4.32 NAME 'owner' SUP distinguishedName )
-attributeType: ( 2.5.4.19 NAME 'physicalDeliveryOfficeName'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 2.5.4.16 NAME 'postalAddress'
-        EQUALITY caseIgnoreListMatch
-        SUBSTR caseIgnoreListSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 )
-attributeType: ( 2.5.4.17 NAME 'postalCode'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 2.5.4.18 NAME 'postOfficeBox'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 2.5.4.28 NAME 'preferredDeliveryMethod'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.14
-        SINGLE-VALUE )
-attributeType: ( 2.5.4.26 NAME 'registeredAddress'
-        SUP postalAddress
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 )
-attributeType: ( 2.5.4.33 NAME 'roleOccupant'
-        SUP distinguishedName )
-attributeType: ( 2.5.4.14 NAME 'searchGuide'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.25 )
-attributeType: ( 2.5.4.34 NAME 'seeAlso'
-        SUP distinguishedName
-        X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
-#attributeType: ( 2.5.4.5 NAME 'serialNumber'
-#        EQUALITY caseIgnoreMatch
-#        SUBSTR caseIgnoreSubstringsMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
-attributeType: ( 2.5.4.4 NAME ( 'sn' 'surname' )
-        SUP name
-        X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
-#attributeType: ( 2.5.4.8 NAME 'st' SUP name )
-#attributeType: ( 2.5.4.9 NAME 'street'
-#        EQUALITY caseIgnoreMatch
-#        SUBSTR caseIgnoreSubstringsMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 2.5.4.20 NAME 'telephoneNumber'
-        EQUALITY telephoneNumberMatch
-        SUBSTR telephoneNumberSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50
-        X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
-attributeType: ( 2.5.4.22 NAME 'teletexTerminalIdentifier'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.51 )
-attributeType: ( 2.5.4.21 NAME 'telexNumber'
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.52 )
-attributeType: ( 2.5.4.12 NAME 'title' SUP name )
-#attributeType: ( 0.9.2342.19200300.100.1.1 NAME 'uid'
-#        EQUALITY caseIgnoreMatch
-#        SUBSTR caseIgnoreSubstringsMatch
-#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 2.5.4.50 NAME 'uniqueMember'
-        EQUALITY uniqueMemberMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 )
-attributeType: ( 2.5.4.35 NAME 'userPassword'
-        EQUALITY octetStringMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.40
-	X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
-attributeType: ( 2.5.4.24 NAME 'x121Address'
-        EQUALITY numericStringMatch
-        SUBSTR numericStringSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 )
-attributeType: ( 2.5.4.45 NAME 'x500UniqueIdentifier'
-        EQUALITY bitStringMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.6 )
-attributeType: ( 0.9.2342.19200300.100.1.37 NAME 'associatedDomain'
-        EQUALITY caseIgnoreIA5Match
-        SUBSTR caseIgnoreIA5SubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
-attributeType: ( 0.9.2342.19200300.100.1.38 NAME 'associatedName'
-        EQUALITY distinguishedNameMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
-attributeType: ( 0.9.2342.19200300.100.1.48 NAME 'buildingName'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.43 NAME 'co'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 0.9.2342.19200300.100.1.14 NAME 'documentAuthor'
-        EQUALITY distinguishedNameMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
-attributeType: ( 0.9.2342.19200300.100.1.11 NAME 'documentIdentifier'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.15 NAME 'documentLocation'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.56 NAME 'documentPublisher'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributeType: ( 0.9.2342.19200300.100.1.12 NAME 'documentTitle'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.13 NAME 'documentVersion'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.5 NAME 'drink'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.20 NAME 'homePhone'
-        EQUALITY telephoneNumberMatch
-        SUBSTR telephoneNumberSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
-attributeType: ( 0.9.2342.19200300.100.1.39 NAME 'homePostalAddress'
-        EQUALITY caseIgnoreListMatch
-        SUBSTR caseIgnoreListSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 )
-attributeType: ( 0.9.2342.19200300.100.1.9 NAME 'host'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.4 NAME 'info'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{2048} )
-attributeType: ( 0.9.2342.19200300.100.1.3 NAME 'mail'
-        EQUALITY caseIgnoreIA5Match
-        SUBSTR caseIgnoreIA5SubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{256} )
-attributeType: ( 0.9.2342.19200300.100.1.10 NAME 'manager'
-        EQUALITY distinguishedNameMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
-attributeType: ( 0.9.2342.19200300.100.1.41 NAME 'mobile'
-        EQUALITY telephoneNumberMatch
-        SUBSTR telephoneNumberSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
-attributeType: ( 0.9.2342.19200300.100.1.45 NAME 'organizationalStatus'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.42 NAME 'pager'
-        EQUALITY telephoneNumberMatch
-        SUBSTR telephoneNumberSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
-attributeType: ( 0.9.2342.19200300.100.1.40 NAME 'personalTitle'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.6 NAME 'roomNumber'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.21 NAME 'secretary'
-        EQUALITY distinguishedNameMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
-attributeType: ( 0.9.2342.19200300.100.1.44 NAME 'uniqueIdentifier'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 0.9.2342.19200300.100.1.8 NAME 'userClass'
-        EQUALITY caseIgnoreMatch
-        SUBSTR caseIgnoreSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
-attributeType: ( 2.5.18.5 NAME 'administrativeRole'
-        EQUALITY objectIdentifierMatch
-        USAGE directoryOperation
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
-attributeType: ( 2.5.18.6 NAME 'subtreeSpecification'
-        SINGLE-VALUE
-        USAGE directoryOperation
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.45
-	X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC3672' ) )
-attributeType: ( 1.3.6.1.4.1.250.1.57
-	NAME 'labeledURI'
-	EQUALITY caseExactMatch
-	SUBSTR caseExactSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-
-objectClass: ( 2.5.6.0 NAME 'top' ABSTRACT MUST objectClass )
-objectClass: ( 2.5.6.1 NAME 'alias'
-        SUP top STRUCTURAL
-        MUST aliasedObjectName )
-objectClass: ( 2.5.20.1 NAME 'subschema' AUXILIARY
-        MAY ( dITStructureRules $ nameForms $ dITContentRules $
-          objectClasses $ attributeTypes $ matchingRules $
-          matchingRuleUse ) )
-objectClass: ( 1.3.6.1.4.1.1466.101.120.111 NAME 'extensibleObject'
-        SUP top AUXILIARY )
-objectClass: ( 2.5.6.11 NAME 'applicationProcess'
-        SUP top
-        STRUCTURAL
-        MUST cn
-        MAY ( seeAlso $
-              ou $
-              l $
-              description ) )
-objectClass: ( 2.5.6.2 NAME 'country'
-        SUP top
-        STRUCTURAL
-        MUST c
-        MAY ( searchGuide $
-              description ) )
-objectClass: ( 1.3.6.1.4.1.1466.344 NAME 'dcObject'
-        SUP top
-        AUXILIARY
-        MUST dc )
-objectClass: ( 2.5.6.14 NAME 'device'
-        SUP top
-        STRUCTURAL
-        MUST cn
-        MAY ( serialNumber $
-              seeAlso $
-              owner $
-              ou $
-              o $
-              l $
-              description ) )
-objectClass: ( 2.5.6.9 NAME 'groupOfNames'
-        SUP top
-        STRUCTURAL
-        MUST ( member $
-              cn )
-        MAY ( businessCategory
-            $  seeAlso
-            $  owner
-            $  ou
-            $  o
-            $  description ) )
-objectClass: ( 2.5.6.17 NAME 'groupOfUniqueNames'
-        SUP top
-        STRUCTURAL
-        MUST ( uniqueMember $
-              cn )
-        MAY ( businessCategory $
-              seeAlso $
-              owner $
-              ou $
-              o $
-              description ) )
-objectClass: ( 2.5.6.3 NAME 'locality'
-        SUP top
-        STRUCTURAL
-        MAY ( street $
-              seeAlso $
-              searchGuide $
-              st $
-              l $
-              description ) )
-objectClass: ( 2.5.6.4 NAME 'organization'
-        SUP top
-        STRUCTURAL
-        MUST o
-        MAY ( userPassword $ searchGuide $ seeAlso $
-              businessCategory $ x121Address $ registeredAddress $
-              destinationIndicator $ preferredDeliveryMethod $
-              telexNumber $ teletexTerminalIdentifier $
-              telephoneNumber $ internationalISDNNumber $
-              facsimileTelephoneNumber $ street $ postOfficeBox $
-              postalCode $ postalAddress $ physicalDeliveryOfficeName $
-              st $ l $ description ) )
-objectClass: ( 2.5.6.6 NAME 'person'
-        SUP top
-        STRUCTURAL
-        MUST ( sn $
-              cn )
-        MAY ( userPassword $
-              telephoneNumber $
-              seeAlso $ description ) )
-objectClass: ( 2.5.6.7 NAME 'organizationalPerson'
-        SUP person
-        STRUCTURAL
-        MAY ( title $ x121Address $ registeredAddress $
-              destinationIndicator $ preferredDeliveryMethod $
-              telexNumber $ teletexTerminalIdentifier $
-              telephoneNumber $ internationalISDNNumber $
-              facsimileTelephoneNumber $ street $ postOfficeBox $
-              postalCode $ postalAddress $ physicalDeliveryOfficeName $
-              ou $ st $ l ) )
-objectClass: ( 2.5.6.8 NAME 'organizationalRole'
-        SUP top
-        STRUCTURAL
-        MUST cn
-        MAY ( x121Address $ registeredAddress $ destinationIndicator $
-              preferredDeliveryMethod $ telexNumber $
-              teletexTerminalIdentifier $ telephoneNumber $
-              internationalISDNNumber $ facsimileTelephoneNumber $
-              seeAlso $ roleOccupant $ preferredDeliveryMethod $
-              street $ postOfficeBox $ postalCode $ postalAddress $
-              physicalDeliveryOfficeName $ ou $ st $ l $
-              description ) )
-objectClass: ( 2.5.6.5 NAME 'organizationalUnit'
-        SUP top
-        STRUCTURAL
-        MUST ou
-        MAY ( businessCategory $ description $ destinationIndicator $
-              facsimileTelephoneNumber $ internationalISDNNumber $ l $
-              physicalDeliveryOfficeName $ postalAddress $ postalCode $
-              postOfficeBox $ preferredDeliveryMethod $
-              registeredAddress $ searchGuide $ seeAlso $ st $ street $
-              telephoneNumber $ teletexTerminalIdentifier $
-              telexNumber $ userPassword $ x121Address ) )
-objectClass: ( 2.5.6.10 NAME 'residentialPerson'
-        SUP person
-        STRUCTURAL
-        MUST l
-        MAY ( businessCategory $ x121Address $ registeredAddress $
-              destinationIndicator $ preferredDeliveryMethod $
-              telexNumber $ teletexTerminalIdentifier $
-              telephoneNumber $ internationalISDNNumber $
-              facsimileTelephoneNumber $ preferredDeliveryMethod $
-              street $ postOfficeBox $ postalCode $ postalAddress $
-              physicalDeliveryOfficeName $ st $ l ) )
-objectClass: ( 1.3.6.1.1.3.1 NAME 'uidObject'
-        SUP top
-        AUXILIARY
-        MUST uid )
-objectClass: ( 0.9.2342.19200300.100.4.5 NAME 'account'
-        SUP top STRUCTURAL
-        MUST uid
-        MAY ( description $ seeAlso $ l $ o $ ou $ host ) )
-objectClass: ( 0.9.2342.19200300.100.4.6 NAME 'document'
-        SUP top STRUCTURAL
-        MUST documentIdentifier
-        MAY ( cn $ description $ seeAlso $ l $ o $ ou $
-          documentTitle $ documentVersion $ documentAuthor $
-          documentLocation $ documentPublisher ) )
-objectClass: ( 0.9.2342.19200300.100.4.9 NAME 'documentSeries'
-        SUP top STRUCTURAL
-        MUST cn
-        MAY ( description $ l $ o $ ou $ seeAlso $
-          telephonenumber ) )
-objectClass: ( 0.9.2342.19200300.100.4.13 NAME 'domain'
-        SUP top STRUCTURAL
-        MUST dc
-        MAY ( userPassword $ searchGuide $ seeAlso $ businessCategory $
-          x121Address $ registeredAddress $ destinationIndicator $
-          preferredDeliveryMethod $ telexNumber $
-          teletexTerminalIdentifier $ telephoneNumber $
-          internationaliSDNNumber $ facsimileTelephoneNumber $ street $
-          postOfficeBox $ postalCode $ postalAddress $
-          physicalDeliveryOfficeName $ st $ l $ description $ o $
-          associatedName ) )
-objectClass: ( 0.9.2342.19200300.100.4.17 NAME 'domainRelatedObject'
-        SUP top AUXILIARY
-        MUST associatedDomain )
-objectClass: ( 0.9.2342.19200300.100.4.18 NAME 'friendlyCountry'
-        SUP country STRUCTURAL
-        MUST co )
-objectClass: ( 0.9.2342.19200300.100.4.14 NAME 'rFC822localPart'
-        SUP domain STRUCTURAL
-        MAY ( cn $ description $ destinationIndicator $
-          facsimileTelephoneNumber $ internationaliSDNNumber $
-          physicalDeliveryOfficeName $ postalAddress $ postalCode $
-          postOfficeBox $ preferredDeliveryMethod $ registeredAddress $
-          seeAlso $ sn $ street $ telephoneNumber $
-          teletexTerminalIdentifier $ telexNumber $ x121Address ) )
-objectClass: ( 0.9.2342.19200300.100.4.7 NAME 'room'
-        SUP top STRUCTURAL
-        MUST cn
-        MAY ( roomNumber $ description $ seeAlso $ telephoneNumber ) )
-objectClass: ( 0.9.2342.19200300.100.4.19 NAME 'simpleSecurityObject'
-        SUP top AUXILIARY
-        MUST userPassword )
-objectClass: ( 2.5.17.0
-        NAME 'subentry'
-        SUP top
-        STRUCTURAL
-        MUST ( cn
-             $ subtreeSpecification )
-        X-ORIGIN 'RFC3672' )
-objectClass: ( 1.3.6.1.4.1.56521.999.108.65.3.2.1
-	NAME 'chainTestClass'
-	DESC 'This is only a test'
-	SUP ( organizationalPerson $ document )
-        MUST cn
-	X-ORIGIN 'FAKE' )
-dITContentRule: ( 0.9.2342.19200300.100.4.7
-	NAME 'roomContent'
-	DESC 'This is only a test'
-	AUX simpleSecurityObject
-	MUST cn
-	MAY ( description $ roomNumber )
-	NOT seeAlso )
-dITContentRule: ( 0.9.2342.19200300.100.4.13
-	NAME 'domainContent'
-	DESC 'This is only a test'
-	AUX extensibleObject
-	MUST dc
-	MAY ( description $ manager )
-	NOT owner )
-nameForm: ( 1.3.6.1.4.1.56521.999.1234
-        NAME 'documentNameForm'
-	DESC 'Requires use of cn, allows l'
-        OC documentSeries
-        MUST cn
-        MAY l
-        X-ORIGIN 'FAKE' )
-dITStructureRule: ( 1
-        NAME 'documentStructure'
-        FORM documentNameForm )
-dITStructureRule: ( 2
-        NAME 'substructureRule'
-        FORM documentNameForm
-        SUP ( 1 2 ) )
+attributeTypes ( 1.3.6.1.4.1.250.1.57 NAME 'labeledURI' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN ( 'RFC2079' 'RFC2798' ) )
+attributeTypes ( 1.16.840.1.113730.3.1.1 NAME 'carLicense' DESC 'vehicle license or registration plate' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC2798' )
+attributeTypes ( 2.16.840.1.113730.3.1.2 NAME 'departmentNumber' DESC 'identifies a department within an organization' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC2798' )
+attributeTypes ( 2.16.840.1.113730.3.1.241 NAME 'displayName' DESC 'preferred name of a person to be used when displaying entries' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE X-ORIGIN 'RFC2798' )
+attributeTypes ( 2.16.840.1.113730.3.1.3 NAME 'employeeNumber' DESC 'numerically identifies an employee within an organization' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE X-ORIGIN 'RFC2798' )
+attributeTypes ( 2.16.840.1.113730.3.1.4 NAME 'employeeType' DESC 'type of employment for a person' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC2798' )
+attributeTypes ( 0.9.2342.19200300.100.1.60 NAME 'jpegPhoto' DESC 'a JPEG image' SYNTAX 1.3.6.1.4.1.1466.115.121.1.28 X-ORIGIN 'RFC2798' )
+attributeTypes ( 2.16.840.1.113730.3.1.39 NAME 'preferredLanguage' DESC 'preferred written or spoken language for a person' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE X-ORIGIN 'RFC2798' )
+attributeTypes ( 1.3.6.1.1.4 NAME 'vendorName' EQUALITY caseExactIA5Match SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation )
+attributeTypes ( 1.3.6.1.1.5 NAME 'vendorVersion' EQUALITY caseExactIA5Match SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation )
+attributeTypes ( 2.5.21.6 NAME 'objectClasses' EQUALITY objectIdentifierFirstComponentMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.37 USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.18.10 NAME 'subschemaSubentry' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.21.5 NAME 'attributeTypes' EQUALITY objectIdentifierFirstComponentMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.3 USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.21.4 NAME 'matchingRules' EQUALITY objectIdentifierFirstComponentMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.30 USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.21.8 NAME 'matchingRuleUse' EQUALITY objectIdentifierFirstComponentMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.31 USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 1.3.6.1.4.1.1466.101.120.16 NAME 'ldapSyntaxes' EQUALITY objectIdentifierFirstComponentMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.54 USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.21.2 NAME 'dITContentRules' EQUALITY objectIdentifierFirstComponentMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.16 USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.21.1 NAME 'dITStructureRules' EQUALITY integerFirstComponentMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.17 USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.21.7 NAME 'nameForms' EQUALITY objectIdentifierFirstComponentMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.35 USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 1.3.6.1.4.1.1466.101.120.6 NAME 'altServer' SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 USAGE dSAOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 1.3.6.1.4.1.1466.101.120.5 NAME 'namingContexts' SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 USAGE dSAOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 1.3.6.1.4.1.1466.101.120.13 NAME 'supportedControl' SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 USAGE dSAOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 1.3.6.1.4.1.1466.101.120.7 NAME 'supportedExtension' SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 USAGE dSAOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 1.3.6.1.4.1.4203.1.3.5 NAME 'supportedFeatures' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 USAGE dSAOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 1.3.6.1.4.1.1466.101.120.15 NAME 'supportedLDAPVersion' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 USAGE dSAOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 1.3.6.1.4.1.1466.101.120.14 NAME 'supportedSASLMechanisms' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE dSAOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.4.1 NAME 'aliasedObjectName' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.21.10 NAME 'governingStructureRule' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'RFC4512' )
+attributeTypes ( 2.5.4.15 NAME 'businessCategory' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.13 NAME 'description' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.27 NAME 'destinationIndicator' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.46 NAME 'dnQualifier' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.47 NAME 'enhancedSearchGuide' SYNTAX 1.3.6.1.4.1.1466.115.121.1.21 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.23 NAME 'facsimileTelephoneNumber' SYNTAX 1.3.6.1.4.1.1466.115.121.1.22 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.44 NAME 'generationQualifier' SUP name X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.42 NAME 'givenName' SUP name X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.51 NAME 'houseIdentifier' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.43 NAME 'initials' SUP name X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.25 NAME 'internationalISDNNumber' EQUALITY numericStringMatch SUBSTR numericStringSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.31 NAME 'member' SUP distinguishedName X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.32 NAME 'owner' SUP distinguishedName X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.19 NAME 'physicalDeliveryOfficeName' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.16 NAME 'postalAddress' EQUALITY caseIgnoreListMatch SUBSTR caseIgnoreListSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.17 NAME 'postalCode' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.18 NAME 'postOfficeBox' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.28 NAME 'preferredDeliveryMethod' SYNTAX 1.3.6.1.4.1.1466.115.121.1.14 SINGLE-VALUE X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.26 NAME 'registeredAddress' SUP postalAddress SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.33 NAME 'roleOccupant' SUP distinguishedName X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.14 NAME 'searchGuide' SYNTAX 1.3.6.1.4.1.1466.115.121.1.25 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.34 NAME 'seeAlso' SUP distinguishedName X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
+attributeTypes ( 2.5.4.4 NAME ( 'sn' 'surname' ) SUP name X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.20 NAME 'telephoneNumber' EQUALITY telephoneNumberMatch SUBSTR telephoneNumberSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
+attributeTypes ( 2.5.4.22 NAME 'teletexTerminalIdentifier' SYNTAX 1.3.6.1.4.1.1466.115.121.1.51 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.21 NAME 'telexNumber' SYNTAX 1.3.6.1.4.1.1466.115.121.1.52 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.12 NAME 'title' SUP name X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.50 NAME 'uniqueMember' EQUALITY uniqueMemberMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.35 NAME 'userPassword' EQUALITY octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.24 NAME 'x121Address' EQUALITY numericStringMatch SUBSTR numericStringSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.45 NAME 'x500UniqueIdentifier' EQUALITY bitStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.6 X-ORIGIN 'RFC4519' )
+attributeTypes ( 2.5.4.36 NAME 'userCertificate' DESC 'X.509 user certificate' EQUALITY certificateExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.8 X-ORIGIN 'RFC4523' )
+attributeTypes ( 2.5.4.37 NAME 'cACertificate' DESC 'X.509 CA certificate' EQUALITY certificateExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.8 X-ORIGIN 'RFC4523' )
+attributeTypes ( 2.5.4.40 NAME 'crossCertificatePair' DESC 'X.509 cross certificate pair' EQUALITY certificatePairExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.10 X-ORIGIN 'RFC4523' )
+attributeTypes ( 2.5.4.39 NAME 'certificateRevocationList' DESC 'X.509 certificate revocation list' EQUALITY certificateListExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.9 X-ORIGIN 'RFC4523' )
+attributeTypes ( 2.5.4.38 NAME 'authorityRevocationList' DESC 'X.509 authority revocation list' EQUALITY certificateListExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.9 X-ORIGIN 'RFC4523' )
+attributeTypes ( 2.5.4.53 NAME 'deltaRevocationList' DESC 'X.509 delta revocation list' EQUALITY certificateListExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.9 X-ORIGIN 'RFC4523' )
+attributeTypes ( 2.5.4.52 NAME 'supportedAlgorithms' DESC 'X.509 supported algorithms' EQUALITY algorithmIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.49 X-ORIGIN 'RFC4523' )
+attributeTypes ( 0.9.2342.19200300.100.1.37 NAME 'associatedDomain' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.38 NAME 'associatedName' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.48 NAME 'buildingName' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.43 NAME ( 'co' 'friendlyCountryName' ) EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.14 NAME 'documentAuthor' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.11 NAME 'documentIdentifier' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.15 NAME 'documentLocation' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.56 NAME 'documentPublisher' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.12 NAME 'documentTitle' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.13 NAME 'documentVersion' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.5 NAME ( 'drink' 'favouriteDrink' ) EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.20 NAME ( 'homePhone' 'homeTelephoneNumber' ) EQUALITY telephoneNumberMatch SUBSTR telephoneNumberSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.39 NAME 'homePostalAddress' EQUALITY caseIgnoreListMatch SUBSTR caseIgnoreListSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.9 NAME 'host' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.4 NAME 'info' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{2048} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.3 NAME ( 'mail' 'rfc822Mailbox' ) EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.10 NAME 'manager' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.41 NAME ( 'mobile' 'mobileTelephoneNumber' ) EQUALITY telephoneNumberMatch SUBSTR telephoneNumberSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.45 NAME 'organizationalStatus' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.42 NAME ( 'pager' 'pagerTelephoneNumber' ) EQUALITY telephoneNumberMatch SUBSTR telephoneNumberSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.40 NAME 'personalTitle' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.6 NAME 'roomNumber' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.21 NAME 'secretary' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.44 NAME 'uniqueIdentifier' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 0.9.2342.19200300.100.1.8 NAME 'userClass' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC4524' )
+attributeTypes ( 1.3.6.1.1.16.4 NAME 'entryUUID' DESC 'UUID of the entry' EQUALITY uuidMatch ORDERING uuidOrderingMatch SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'RFC4530' )
+attributeTypes ( 1.3.6.1.4.1.453.16.2.103 NAME 'numSubordinates' DESC 'count of immediate subordinates' EQUALITY integerMatch ORDERING integerOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'draft-boreham-numsubordinates' )
+attributeTypes ( 2.5.18.8 NAME 'subschemaTimestamp' DESC 'X.501 cl. 14.4.1 - an omnipresent schema update timestamp' EQUALITY generalizedTimeMatch ORDERING generalizedTimeOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'ITU-T Rec. X.501' )
+attributeTypes ( 2.5.18.9 NAME 'hasSubordinates' DESC 'X.501, cl. 14.4.4: Whether an entry has subordinates' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'ITU-T Rec. X.501' )
+attributeTypes ( 2.5.18.17 NAME 'hierarchyLevel' DESC 'X.501, cl. 14.10: The logical depth of an hierarchical group member entry' EQUALITY integerMatch ORDERING integerOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'ITU-T Rec. X.501' )
+attributeTypes ( 2.5.18.18 NAME 'hierarchyBelow' DESC 'X.501, cl. 14.10: Whether the hierarchical group member entry has any children' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'ITU-T Rec. X.501' )
+attributeTypes ( 2.5.18.19 NAME 'hierarchyParent' DESC 'X.501, cl. 14.10: The distinguished name of the parent entry of the hierarchical child' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'ITU-T Rec. X.501' )
+attributeTypes ( 2.5.18.20 NAME 'hierarchyTop' DESC 'X.501, cl. 14.10: The distinguished name of entry residing at the top (root) of the hierarchical group structure' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'ITU-T Rec. X.501' )
+attributeTypes ( 2.5.1.0.9.0 NAME 'dseType' DESC 'X.501, cl. 23.4.2: The particular purpose or role of a DSE' EQUALITY bitStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.20 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'ITU-T Rec. X.501' )
+attributeTypes ( 1.3.6.1.1.20 NAME 'entryDN' DESC 'DN of the entry' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'RFC5020' )
+attributeTypes ( 2.5.18.12 NAME 'collectiveAttributeSubentries' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 NO-USER-MODIFICATION USAGE directoryOperation )
+attributeTypes ( 2.5.18.7 NAME 'collectiveExclusions' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 USAGE directoryOperation )
+attributeTypes ( 2.5.4.7.1 NAME 'c-l' SUP l COLLECTIVE )
+attributeTypes ( 2.5.4.8.1 NAME 'c-st' SUP st COLLECTIVE )
+attributeTypes ( 2.5.4.9.1 NAME 'c-street' SUP street COLLECTIVE )
+attributeTypes ( 2.5.4.10.1 NAME 'c-o' SUP o COLLECTIVE )
+attributeTypes ( 2.5.4.11.1 NAME 'c-ou' SUP ou COLLECTIVE )
+attributeTypes ( 2.5.4.16.1 NAME 'c-PostalAddress' SUP postalAddress COLLECTIVE )
+attributeTypes ( 2.5.4.17.1 NAME 'c-PostalCode' SUP postalCode COLLECTIVE )
+attributeTypes ( 2.5.4.18.1 NAME 'c-PostOfficeBox' SUP postOfficeBox COLLECTIVE )
+attributeTypes ( 2.5.4.19.1 NAME 'c-PhysicalDeliveryOfficeName' SUP physicalDeliveryOfficeName COLLECTIVE )
+attributeTypes ( 2.5.4.20.1 NAME 'c-TelephoneNumber' SUP telephoneNumber COLLECTIVE )
+attributeTypes ( 2.5.4.21.1 NAME 'c-TelexNumber' SUP telexNumber COLLECTIVE )
+attributeTypes ( 2.5.4.23.1 NAME 'c-FacsimileTelephoneNumber' SUP facsimileTelephoneNumber COLLECTIVE )
+attributeTypes ( 2.5.4.25.1 NAME 'c-InternationalISDNNumber' SUP internationalISDNNumber COLLECTIVE )
+attributeTypes ( 2.5.18.5 NAME 'administrativeRole' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 USAGE directoryOperation X-ORIGIN 'RFC3672' )
+attributeTypes ( 2.5.18.6 NAME 'subtreeSpecification' SYNTAX 1.3.6.1.4.1.1466.115.121.1.45 SINGLE-VALUE USAGE directoryOperation X-ORIGIN ( 'ITU-T Rec. X.501' 'RFC3672' ) )
+attributeTypes ( 1.3.6.1.1.10.4.1 NAME 'uddiBusinessKey' DESC 'businessEntity unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.2 NAME 'uddiAuthorizedName' DESC 'businessEntity publisher name' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.3 NAME 'uddiOperator' DESC 'registry site operator of businessEntitys master copy' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.4 NAME 'uddiName' DESC 'human readable name' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.5 NAME 'uddiDescription' DESC 'short description' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.6 NAME 'uddiDiscoveryURLs' DESC 'URL to retrieve a businessEntity instance' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.7 NAME 'uddiUseType' DESC 'name of convention the referenced document follows' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.8 NAME 'uddiPersonName' DESC 'name of person or job role available for contact' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.9 NAME 'uddiPhone' DESC 'telephone number for contact' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.10 NAME 'uddiEMail' DESC 'e-mail address for contact' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.11 NAME 'uddiSortCode' DESC 'specifies an external display mechanism' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.12 NAME 'uddiTModelKey' DESC 'tModel unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.13 NAME 'uddiAddressLine' DESC 'address' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.14 NAME 'uddiIdentifierBag' DESC 'identification information' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.15 NAME 'uddiCategoryBag' DESC 'categorization information' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.16 NAME 'uddiKeyedReference' DESC 'categorization information' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.17 NAME 'uddiServiceKey' DESC 'businessService unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.18 NAME 'uddiBindingKey' DESC 'bindingTemplate unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.19 NAME 'uddiAccessPoint' DESC 'entry point address to call a web service' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.20 NAME 'uddiHostingRedirector' DESC 'designates a pointer to another bindingTemplate' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.21 NAME 'uddiInstanceDescription' DESC 'instance details description' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.22 NAME 'uddiInstanceParms' DESC 'URL reference to required settings' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.23 NAME 'uddiOverviewDescription' DESC 'outlines tModel usage' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.24 NAME 'uddiOverviewURL' DESC 'URL reference to overview document' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.25 NAME 'uddiFromKey' DESC 'unique businessEntity key reference' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.26 NAME 'uddiToKey' DESC 'unique businessEntity key reference' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.27 NAME 'uddiUUID' DESC 'unique attribute' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.28 NAME 'uddiIsHidden' DESC 'isHidden attribute' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.29 NAME 'uddiIsProjection' DESC 'isServiceProjection attribute' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.30 NAME 'uddiLang' DESC 'xml:lang value in v3 Address structure' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.31 NAME 'uddiv3BusinessKey' DESC 'UDDIv3 businessEntity unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.32 NAME 'uddiv3ServiceKey' DESC 'UDDIv3 businessService unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.33 NAME 'uddiv3BindingKey' DESC 'UDDIv3 BindingTemplate unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.34 NAME 'uddiv3TModelKey' DESC 'UDDIv3 TModel unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.35 NAME 'uddiv3DigitalSignature' DESC 'UDDIv3 entity digital signature' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes ( 1.3.6.1.1.10.4.36 NAME 'uddiv3NodeId' DESC 'UDDIv3 Node Identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.37 NAME 'uddiv3EntityModificationTime' DESC 'UDDIv3 Last Modified Time for Entity' EQUALITY generalizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.38 NAME 'uddiv3SubscriptionKey' DESC 'UDDIv3 Subscription unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.39 NAME 'uddiv3SubscriptionFilter' DESC 'UDDIv3 Subscription Filter' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.40 NAME 'uddiv3NotificationInterval' DESC 'UDDIv3 Notification Interval' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.41 NAME 'uddiv3MaxEntities' DESC 'UDDIv3 Subscription maxEntities field' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.42 NAME 'uddiv3ExpiresAfter' DESC 'UDDIv3 Subscription ExpiresAfter field' EQUALITY generalizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.43 NAME 'uddiv3BriefResponse' DESC 'UDDIv3 Subscription ExpiresAfter field' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.44 NAME 'uddiv3EntityKey' DESC 'UDDIv3 Entity unique identifier' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.45 NAME 'uddiv3EntityCreationTime' DESC 'UDDIv3 Entity Creation Time' EQUALITY generalizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.1.10.4.46 NAME 'uddiv3EntityDeletionTime' DESC 'UDDIv3 Entity Deletion Time' EQUALITY generalizedTimeMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.1 NAME 'configDSEPath' DESC 'Path and filename of central configuration DSE LDIF' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.2 NAME 'configSchemaDN' DESC 'The intended DN of the associated schema subentry' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.3 NAME 'configTLSListenerCert' DESC 'X.509 listener certificate for the DSA' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.4 NAME 'configTLSClientCert' DESC 'X.509 client certificate for a component of the DSA' SUP configTLSListenerCert X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.5 NAME 'configTLSListenerKey' DESC 'Listener private key for the DSA' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.6 NAME 'configTLSClientKey' DESC 'Client private key for a component of the DSA' SUP configTLSListenerKey X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.7 NAME 'configDITType' DESC 'Integer identifier of the underlying DIT type - ephemeral (1) or persistent (2)' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.8 NAME 'configDITSuffix' DESC 'Naming context of a configured DIT' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.9 NAME 'configGlueParentSuffix' DESC 'Naming context of the configured superior DIT' SUP configDITSuffix X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.10 NAME 'configTLSClientMutual' DESC 'Whether to perform TLS Mutual Authentication' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.11 NAME 'configIndexEquality' DESC 'Whether to index the associated attribute by EQUALITY' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.12 NAME 'configIndexSubstring' DESC 'Whether to index the associated attribute by SUBSTR' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.13 NAME 'configIndexPresence' DESC 'Whether to index the associated attribute by PRESENCE' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.14 NAME 'configIndexApprox' DESC 'Whether to index the associated attribute by APPROX' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.15 NAME 'configTLSCA' DESC 'The certificate or certificate bundle to be used for TLS verification' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.16 NAME 'configReplAgreementBaseDN' DESC 'The replicated context' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.17 NAME 'configReplAgreementProviderURI' DESC 'The URI of the upstream provider of DIT content in a PULL replicated topology' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.18 NAME 'configReplAgreementConsumerURI' DESC 'The URI of the downstream consumer of DIT content in a PUSH replicated topology' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.19 NAME 'configReplAgreementSimpleBindDN' DESC 'The bind DN used for SIMPLE authentication in a replicated topology' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.20 NAME 'configReplAgreementSimpleBindPW' DESC 'The bind password used for SIMPLE authentication in a replicated topology' EQUALITY octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.21 NAME 'configReplAgreementSearchScope' DESC 'The search scope, or subset, used when polling entries during content replication' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.22 NAME 'configReplAgreementSearchFilter' DESC 'The search filter used when polling entries during content replication' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.23 NAME 'configReplAgreementAttribute' DESC 'Specific attributes disclosed from polled entries during content replication' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.24 NAME 'configReplAgreementPush' DESC 'Push content from provider to consumer as opposed to a consumer pulling from provider' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.25 NAME 'configReplAgreementUseTxLog' DESC 'Whether to use a transaction log for delta synchronization' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.26 NAME 'configChainingEndpointURI' DESC 'The endpoint URI to which chained requests are sent' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.27 NAME 'configChainingSimpleBindDN' DESC 'The bind DN used for SIMPLE authentication in a chaining request' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.28 NAME 'configChainingSimpleBindPW' DESC 'The bind password used for SIMPLE authentication in a chaining request' EQUALITY octetStringMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.29 NAME 'configSASLMechanism' DESC 'The mechanism employed for SASL authentication' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.30 NAME 'configMetaSchema' DESC 'Whether to initialize and maintain a meta schema structure instance of a schema' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.31 NAME 'configSizeLimit' DESC 'Integer value defining the maximum search result entry limit' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.32 NAME 'configTimeLimit' DESC 'Integer value defining the maximum search time limit' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.33 NAME 'configDataDir' DESC 'Directory path of DIT data storage ' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.34 NAME 'configDITName' DESC 'Friendly name of the DIT' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.35 NAME 'configDBNoSync' DESC 'Whether to perform so-called dirty writes to the backend; use with caution' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.36 NAME 'configDataFileMode' DESC 'Octal privilege value defining rwx access for the data files of the DIT' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.37 NAME 'configReadOnly' DESC 'Whether the DIT is treated as read-only' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.60.3.38 NAME 'configSubordinatesPolicy' DESC 'Disclosure of subordinates info: (0)disabled, (1)numSub, (2)hasSub or (3)both' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.1 NAME 'monitorDN' DESC 'The DN of the monitoring DIT' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.2 NAME 'monitorThreadNumber' DESC 'Unique integer identifier for a thread entry' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.3 NAME 'monitorOpsInit' DESC 'Counter for operations initiated' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.4 NAME 'monitorOpsDone' DESC 'Counter for operations completed' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.5 NAME 'monitorConnectionID' DESC 'Unique integer identifier for a connection' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.6 NAME 'monitorConnectionStartTime' DESC 'Time at which a connection was established' EQUALITY generalizedTimeMatch ORDERING generalizedTimeOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.7 NAME 'monitorConnectionLastActive' DESC 'Time at which a connection was most recently active' EQUALITY generalizedTimeMatch ORDERING generalizedTimeOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.8 NAME 'monitorConnectionLocalAddr' DESC 'The address and port of the DSA to which a connection was established' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.9 NAME 'monitorConnectionRemoteAddr' DESC 'The source address and port of the incoming connection' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.10 NAME 'monitorConnectionBindDN' DESC 'The authenticated bind DN of a connection; if absent, bind is anonymous' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.11 NAME 'monitorCurrentConnections' DESC 'The number of current connections' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.12 NAME 'monitorTotalConnections' DESC 'The total number of connections established since service start' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.13 NAME 'monitorFailedConnections' DESC 'The total number of connections not successfully established since service start' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.14 NAME 'monitorTLSCertificateFile' DESC 'The local path and filename of a monitored DSA certificate' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.15 NAME 'monitorTLSCertificateSubject' DESC 'The X.509 subject distinguished name of a monitored DSA certificate' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.16 NAME 'monitorTLSCertificateIssuer' DESC 'The X.509 issuer distinguished name of a monitored DSA certificate' EQUALITY caseExactMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.17 NAME 'monitorTLSCertificateExpirationDays' DESC 'The number of days until (or, if negative, since) expiration for a monitored DSA certificate' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.18 NAME 'monitorTLSCertificateSerial' DESC 'The unique identifier for a monitored DSA certificate' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.19 NAME 'monitorConnectionResultCode' DESC 'The LDAP ResultCode returned following the most recent request sent by the connection' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.20 NAME 'monitorConnectionControl' DESC 'The control(s) submitted for a connection' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.21 NAME 'monitorConnectionTLS' DESC 'Whether the connection is TLS encrypted' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.22 NAME 'monitorConnectionAuthChoice' DESC 'Authentication choice for a connection: SIMPLE or SASL' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.23 NAME 'monitorConnectionSASLMechanism' DESC 'Mechanism for a connection using SASL authentication' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.31.3.24 NAME 'monitorDSAStartTime' DESC 'Time at which the DSA was initialized' EQUALITY generalizedTimeMatch ORDERING generalizedTimeOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.77.3.1 NAME 'stateContext' DESC 'The distinguished name of the state entry' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.77.3.2 NAME 'stateAvailable' DESC 'Whether the DSA is available for general use' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.1 NAME 'metaDefNumericOID' DESC 'Numeric OID held by a definition' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.2 NAME 'metaDefRuleID' DESC 'Integer identifier of a structure rule' EQUALITY integerMatch ORDERING integerOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.3 NAME 'metaDefName' DESC 'Name(s) by which a definition is known' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.4 NAME 'metaDefDesc' DESC 'Description of a definition' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.5 NAME 'metaDefSupC' DESC 'Superior class(es) of a class' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.6 NAME 'metaDefSupR' DESC 'Superior structure rules of a rule' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.7 NAME 'metaDefSupT' DESC 'Superior type of a type' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.8 NAME 'metaDefSyntax' DESC 'Syntax honored by a matching rule or attribute type' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.9 NAME 'metaDefUB' DESC 'Upper bounds of an attribute value' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.10 NAME 'metaDefEquality' DESC 'Equality matching rule honored by an attribute type' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.11 NAME 'metaDefSubstring' DESC 'Substring matching rule honored by an attribute type' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.12 NAME 'metaDefOrdering' DESC 'Ordering matching rule honored by an attribute type' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.13 NAME 'metaDefUsage' DESC 'Classification of an attribute type' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.14 NAME 'metaDefMay' DESC 'Optional attribute types permitted by a class, content rule or name form' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.15 NAME 'metaDefMust' DESC 'Mandatory attribute types required by a class, content rule or name form' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.16 NAME 'metaDefNot' DESC 'Forbidden attribute types for a content rule' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.17 NAME 'metaDefAux' DESC 'Auxiliary classes allowed by a content rule' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.18 NAME 'metaDefKind' DESC 'Kind or classification, of a class' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.19 NAME 'metaDefOC' DESC 'Structural class referenced by a name form' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.20 NAME 'metaDefApplies' DESC 'Attribute types which use a particular matching rule' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.21 NAME 'metaDefXDepr' DESC 'Deprecated, non obsolete definition' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.22 NAME 'metaDefXOrigin' DESC 'Standards document, entity or group from which the definition originates' EQUALITY caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.23 NAME 'metaDefObsolete' DESC 'Definition is obsolete' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.24 NAME 'metaDefXNotHuman' DESC 'Syntax is not human readable' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.25 NAME 'metaDefXPattern' DESC 'Regular expression implemented by a custom syntax' SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.26 NAME 'metaDefSingleValue' DESC 'Attribute type is single-valued' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.27 NAME 'metaDefNoUserMods' DESC 'Attribute type prohibits user modifications' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.28 NAME 'metaDefCollective' DESC 'Attribute type is collective' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+attributeTypes ( 1.3.6.1.4.1.56521.389.2.44.3.29 NAME 'metaDefForm' DESC 'Name Form implemented by a DIT Structure Rule' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 SINGLE-VALUE NO-USER-MODIFICATION X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 2.5.6.0 NAME 'top' ABSTRACT MUST objectClass X-ORIGIN 'RFC4512' )
+objectClasses ( 2.5.6.1 NAME 'alias' SUP top STRUCTURAL MUST aliasedObjectName X-ORIGIN 'RFC4512' )
+objectClasses ( 2.5.20.1 NAME 'subschema' AUXILIARY MAY ( dITStructureRules $ nameForms $ dITContentRules $ objectClasses $ attributeTypes $ matchingRules $ matchingRuleUse ) X-ORIGIN 'RFC4512' )
+objectClasses ( 1.3.6.1.4.1.1466.101.120.111 NAME 'extensibleObject' SUP top AUXILIARY X-ORIGIN 'RFC4512' )
+objectClasses ( 2.5.6.11 NAME 'applicationProcess' SUP top STRUCTURAL MUST cn MAY ( seeAlso $ ou $ l $ description ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.2 NAME 'country' SUP top STRUCTURAL MUST c MAY ( searchGuide $ description ) X-ORIGIN 'RFC4519' )
+objectClasses ( 1.3.6.1.4.1.1466.344 NAME 'dcObject' SUP top AUXILIARY MUST dc X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.14 NAME 'device' SUP top STRUCTURAL MUST cn MAY ( serialNumber $ seeAlso $ owner $ ou $ o $ l $ description ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.9 NAME 'groupOfNames' SUP top STRUCTURAL MUST ( member $ cn ) MAY ( businessCategory $ seeAlso $ owner $ ou $ o $ description ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.17 NAME 'groupOfUniqueNames' SUP top STRUCTURAL MUST ( uniqueMember $ cn ) MAY ( businessCategory $ seeAlso $ owner $ ou $ o $ description ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.3 NAME 'locality' SUP top STRUCTURAL MAY ( street $ seeAlso $ searchGuide $ st $ l $ description ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.4 NAME 'organization' SUP top STRUCTURAL MUST o MAY ( userPassword $ searchGuide $ seeAlso $ businessCategory $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationalISDNNumber $ facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ st $ l $ description ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.6 NAME 'person' SUP top STRUCTURAL MUST ( sn $ cn ) MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.7 NAME 'organizationalPerson' SUP person STRUCTURAL MAY ( title $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationalISDNNumber $ facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ ou $ st $ l ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.8 NAME 'organizationalRole' SUP top STRUCTURAL MUST cn MAY ( x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationalISDNNumber $ facsimileTelephoneNumber $ seeAlso $ roleOccupant $ preferredDeliveryMethod $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ ou $ st $ l $ description ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.5 NAME 'organizationalUnit' SUP top STRUCTURAL MUST ou MAY ( businessCategory $ description $ destinationIndicator $ facsimileTelephoneNumber $ internationalISDNNumber $ l $ physicalDeliveryOfficeName $ postalAddress $ postalCode $ postOfficeBox $ preferredDeliveryMethod $ registeredAddress $ searchGuide $ seeAlso $ st $ street $ telephoneNumber $ teletexTerminalIdentifier $ telexNumber $ userPassword $ x121Address ) X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.10 NAME 'residentialPerson' SUP person STRUCTURAL MUST l MAY ( businessCategory $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationalISDNNumber $ facsimileTelephoneNumber $ preferredDeliveryMethod $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ st $ l ) X-ORIGIN 'RFC4519' )
+objectClasses ( 1.3.6.1.1.3.1 NAME 'uidObject' SUP top AUXILIARY MUST uid X-ORIGIN 'RFC4519' )
+objectClasses ( 2.5.6.21 NAME 'pkiUser' DESC 'X.509 PKI User' SUP top AUXILIARY MAY userCertificate X-ORIGIN 'RFC4523' )
+objectClasses ( 2.5.6.22 NAME 'pkiCA' DESC 'X.509 PKI Certificate Authority' SUP top AUXILIARY MAY ( cACertificate $ certificateRevocationList $ authorityRevocationList $ crossCertificatePair ) X-ORIGIN 'RFC4523' )
+objectClasses ( 2.5.6.19 NAME 'cRLDistributionPoint' DESC 'X.509 CRL distribution point' SUP top STRUCTURAL MUST cn MAY ( certificateRevocationList $ authorityRevocationList $ deltaRevocationList ) X-ORIGIN 'RFC4523' )
+objectClasses ( 2.5.6.23 NAME 'deltaCRL' DESC 'X.509 delta CRL' SUP top AUXILIARY MAY deltaRevocationList X-ORIGIN 'RFC4523' )
+objectClasses ( 2.5.6.15 NAME 'strongAuthenticationUser' DESC 'X.521 strong authentication user' SUP top AUXILIARY MUST userCertificate X-ORIGIN 'RFC4523' )
+objectClasses ( 2.5.6.18 NAME 'userSecurityInformation' DESC 'X.521 user security information' SUP top AUXILIARY MAY supportedAlgorithms X-ORIGIN 'RFC4523' )
+objectClasses ( 2.5.6.16 NAME 'certificationAuthority' DESC 'X.509 certificate authority' SUP top AUXILIARY MUST ( authorityRevocationList $ certificateRevocationList $ cACertificate ) MAY crossCertificatePair X-ORIGIN 'RFC4523' )
+objectClasses ( 2.5.6.16.2 NAME 'certificationAuthority-V2' DESC 'X.509 certificate authority, version 2' SUP certificationAuthority AUXILIARY MAY deltaRevocationList X-ORIGIN 'RFC4523' )
+objectClasses ( 0.9.2342.19200300.100.4.5 NAME 'account' SUP top STRUCTURAL MUST uid MAY ( description $ seeAlso $ l $ o $ ou $ host ) X-ORIGIN 'RFC4524' )
+objectClasses ( 0.9.2342.19200300.100.4.6 NAME 'document' SUP top STRUCTURAL MUST documentIdentifier MAY ( cn $ description $ seeAlso $ l $ o $ ou $ documentTitle $ documentVersion $ documentAuthor $ documentLocation $ documentPublisher ) X-ORIGIN 'RFC4524' )
+objectClasses ( 0.9.2342.19200300.100.4.9 NAME 'documentSeries' SUP top STRUCTURAL MUST cn MAY ( description $ l $ o $ ou $ seeAlso $ telephoneNumber ) X-ORIGIN 'RFC4524' )
+objectClasses ( 0.9.2342.19200300.100.4.13 NAME 'domain' SUP top STRUCTURAL MUST dc MAY ( userPassword $ searchGuide $ seeAlso $ businessCategory $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationalISDNNumber $ facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ st $ l $ description $ o $ associatedName ) X-ORIGIN 'RFC4524' )
+objectClasses ( 0.9.2342.19200300.100.4.17 NAME 'domainRelatedObject' SUP top AUXILIARY MUST associatedDomain X-ORIGIN 'RFC4524' )
+objectClasses ( 0.9.2342.19200300.100.4.18 NAME 'friendlyCountry' SUP country STRUCTURAL MUST co X-ORIGIN 'RFC4524' )
+objectClasses ( 0.9.2342.19200300.100.4.14 NAME 'rFC822localPart' SUP domain STRUCTURAL MAY ( cn $ description $ destinationIndicator $ facsimileTelephoneNumber $ internationalISDNNumber $ physicalDeliveryOfficeName $ postalAddress $ postalCode $ postOfficeBox $ preferredDeliveryMethod $ registeredAddress $ seeAlso $ sn $ street $ telephoneNumber $ teletexTerminalIdentifier $ telexNumber $ x121Address ) X-ORIGIN 'RFC4524' )
+objectClasses ( 2.5.17.2 NAME 'collectiveAttributeSubentry' AUXILIARY )
+objectClasses ( 2.5.17.0 NAME 'subentry' SUP top STRUCTURAL MUST ( cn $ subtreeSpecification ) )
+objectClasses ( 1.3.6.1.1.10.6.1 NAME 'uddiBusinessEntity' SUP top STRUCTURAL MUST ( uddiBusinessKey $ uddiName ) MAY ( uddiAuthorizedName $ uddiOperator $ uddiDiscoveryURLs $ uddiDescription $ uddiIdentifierBag $ uddiCategoryBag $ uddiv3BusinessKey $ uddiv3DigitalSignature $ uddiv3EntityModificationTime $ uddiv3NodeId ) )
+objectClasses ( 1.3.6.1.1.10.6.2 NAME 'uddiContact' SUP top STRUCTURAL MUST ( uddiPersonName $ uddiUUID ) MAY ( uddiUseType $ uddiDescription $ uddiPhone $ uddiEMail ) )
+objectClasses ( 1.3.6.1.1.10.6.3 NAME 'uddiAddress' SUP top STRUCTURAL MUST uddiUUID MAY ( uddiUseType $ uddiSortCode $ uddiTModelKey $ uddiv3TModelKey $ uddiAddressLine $ uddiLang ) )
+objectClasses ( 1.3.6.1.1.10.6.4 NAME 'uddiBusinessService' SUP top STRUCTURAL MUST uddiServiceKey MAY ( uddiName $ uddiBusinessKey $ uddiDescription $ uddiCategoryBag $ uddiIsProjection $ uddiv3ServiceKey $ uddiv3BusinessKey $ uddiv3DigitalSignature $ uddiv3EntityCreationTime $ uddiv3EntityModificationTime $ uddiv3NodeId ) )
+objectClasses ( 1.3.6.1.1.10.6.5 NAME 'uddiBindingTemplate' SUP top STRUCTURAL MUST uddiBindingKey MAY ( uddiServiceKey $ uddiDescription $ uddiAccessPoint $ uddiHostingRedirector $ uddiCategoryBag $ uddiv3BindingKey $ uddiv3ServiceKey $ uddiv3DigitalSignature $ uddiv3EntityCreationTime $ uddiv3NodeId ) )
+objectClasses ( 1.3.6.1.1.10.6.6 NAME 'uddiTModelInstanceInfo' SUP top STRUCTURAL MUST uddiTModelKey MAY ( uddiDescription $ uddiInstanceDescription $ uddiInstanceParms $ uddiOverviewDescription $ uddiOverviewURL $ uddiv3TModelKey ) )
+objectClasses ( 1.3.6.1.1.10.6.7 NAME 'uddiTModel' SUP top STRUCTURAL MUST ( uddiTModelKey $ uddiName ) MAY ( uddiAuthorizedName $ uddiOperator $ uddiDescription $ uddiOverviewDescription $ uddiOverviewURL $ uddiIdentifierBag $ uddiCategoryBag $ uddiIsHidden $ uddiv3TModelKey $ uddiv3DigitalSignature $ uddiv3NodeId ) )
+objectClasses ( 1.3.6.1.1.10.6.8 NAME 'uddiPublisherAssertion' SUP top STRUCTURAL MUST ( uddiFromKey $ uddiToKey $ uddiKeyedReference $ uddiUUID ) MAY ( uddiv3DigitalSignature $ uddiv3NodeId ) )
+objectClasses ( 1.3.6.1.1.10.6.9 NAME 'uddiv3Subscription' SUP top STRUCTURAL MUST ( uddiv3SubscriptionFilter $ uddiUUID ) MAY ( uddiAuthorizedName $ uddiv3SubscriptionKey $ uddiv3BindingKey $ uddiv3NotificationInterval $ uddiv3MaxEntities $ uddiv3ExpiresAfter $ uddiv3BriefResponse $ uddiv3NodeId ) )
+objectClasses ( 1.3.6.1.1.10.6.10 NAME 'uddiv3EntityObituary' SUP top STRUCTURAL MUST ( uddiv3EntityKey $ uddiUUID ) MAY ( uddiAuthorizedName $ uddiv3EntityCreationTime $ uddiv3EntityDeletionTime $ uddiv3NodeId ) )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.1 NAME 'goDirConfig' DESC 'The root of the configuration DIT' SUP top STRUCTURAL MUST ( cn $ configDSEPath ) MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.2 NAME 'goDirConfigControls' DESC 'The root of the global controls subtree' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.3 NAME 'goDirConfigExtensions' DESC 'The root of the global extended operations subtree' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.4 NAME 'goDirConfigSchemata' DESC 'The root of the global schemata subtree' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.5 NAME 'goDirConfigSchema' DESC 'Leaf entry defining a single schema naming context' SUP top STRUCTURAL MUST ( cn $ configSchemaDN ) MAY ( configMetaSchema $ description ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.6 NAME 'goDirConfigTLS' DESC 'TLS parameters for listener, client or replication agreement entries' SUP top STRUCTURAL MUST ( cn $ configTLSClientMutual $ configTLSCA $ configTLSListenerCert $ configTLSListenerKey $ configTLSClientCert $ configTLSClientKey ) MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.7 NAME 'goDirConfigDIB' DESC 'The root of the DIB subtree' SUP top STRUCTURAL MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.8 NAME 'goDirConfigDIT' DESC 'The root of a single DIT subtree' SUP top STRUCTURAL MUST ( cn $ configDITName $ configDITType $ configDITSuffix ) MAY ( configDBNoSync $ configDataDir $ configDataFileMode $ configGlueParentSuffix $ configSubordinatesPolicy $ configReadOnly $ description ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.9 NAME 'goDirConfigIndices' DESC 'The root or DIT-specific parent entry of an indices subtree' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.10 NAME 'goDirConfigLimits' DESC 'The root or DIT-specific parent entry of a limits subtree' SUP top STRUCTURAL MUST cn MAY ( configSizeLimit $ configTimeLimit $ description ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.11 NAME 'goDirConfigIndex' DESC 'Leaf entry containing the parameters of a single attribute index' SUP top STRUCTURAL MUST cn MAY ( configIndexEquality $ configIndexSubstring $ configIndexPresence $ configIndexApprox $ description ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.12 NAME 'goDirConfigReplAgreements' DESC 'The DIT-specific parent entry of a replication agreements subtree' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.13 NAME 'goDirConfigReplAgreement' DESC 'Leaf entry containing the parameters of a single replication agreement' SUP top STRUCTURAL MUST ( cn $ configReplAgreementBaseDN ) MAY ( configReplAgreementProviderURI $ configReplAgreementConsumerURI $ configReplAgreementSimpleBindDN $ configReplAgreementSimpleBindPW $ configReplAgreementSearchScope $ configReplAgreementSearchFilter $ configReplAgreementAttribute $ configReplAgreementPush $ configReplAgreementUseTxLog $ configSASLMechanism $ configTLSClientCert $ configTLSClientKey $ configTLSClientMutual $ description ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.14 NAME 'goDirConfigControl' DESC 'Leaf entry containing the parameters of a single supported control' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.15 NAME 'goDirConfigFeatures' DESC 'The root of the supported features subtree' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.16 NAME 'goDirConfigFeature' DESC 'Leaf entry containing the parameters of a single supported feature' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.17 NAME 'goDirConfigExtension' DESC 'Leaf entry containing the parameters of a single extended operation' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.18 NAME 'goDirConfigChains' DESC 'The DIT-specific parent of the supported extended operations subtree' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.60.5.19 NAME 'goDirConfigChain' DESC 'Leaf entry containing the parameters of a single chaining agreement' SUP top STRUCTURAL MUST ( cn $ configChainingEndpointURI ) MAY ( configChainingSimpleBindDN $ configChainingSimpleBindPW $ configSASLMechanism $ configTLSClientCert $ configTLSClientKey $ configTLSCA $ configTLSClientMutual $ description ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.8.5.1 NAME 'goDirectoryRootDSE' DESC 'Go Directory root vertex entry' SUP top STRUCTURAL MAY cn X-ORIGIN 'Jesse Coretta' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.31.5.1 NAME 'goDirMonitor' DESC 'The root class of the monitoring DIT' SUP top STRUCTURAL MUST ( cn $ monitorDSAStartTime ) MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.31.5.2 NAME 'goDirMonitorThreads' DESC 'Thread monitoring root class' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.31.5.3 NAME 'goDirMonitorThread' DESC 'Entry for a single thread' SUP top STRUCTURAL MUST cn MAY ( monitorThreadNumber $ description ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.31.5.4 NAME 'goDirMonitorOperations' DESC 'Operation monitoring root class' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.31.5.5 NAME 'goDirMonitorOperation' DESC 'Entry of a monitored operation type' SUP top STRUCTURAL MUST ( cn $ monitorOpsInit $ monitorOpsDone ) MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.31.5.6 NAME 'goDirMonitorConnections' DESC 'Connection monitoring root class' SUP top STRUCTURAL MUST ( cn $ monitorCurrentConnections $ monitorFailedConnections $ monitorTotalConnections ) MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.31.5.7 NAME 'goDirMonitorConnection' DESC 'Entry of a monitored connection' SUP top STRUCTURAL MUST ( cn $ monitorConnectionAuthChoice $ monitorConnectionTLS $ monitorConnectionStartTime $ monitorConnectionLastActive $ monitorConnectionID $ monitorConnectionRemoteAddr $ monitorConnectionLocalAddr ) MAY ( monitorConnectionSASLMechanism $ monitorConnectionBindDN $ monitorConnectionControl $ monitorConnectionResultCode $ description ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.31.5.8 NAME 'goDirMonitorCertificates' DESC 'DSA certificate monitoring root class' SUP top STRUCTURAL MUST cn MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.31.5.9 NAME 'goDirMonitorCertificate' DESC 'Entry of a monitored DSA certificate' SUP top STRUCTURAL MUST ( cn $ monitorTLSCertificateSerial $ monitorTLSCertificateExpirationDays $ monitorTLSCertificateFile $ monitorTLSCertificateIssuer $ monitorTLSCertificateSubject ) MAY description X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.77.5.1 NAME 'goDirState' DESC 'DSA state root class' SUP top STRUCTURAL MUST ( cn $ stateAvailable ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.44.5.1 NAME 'metaLDAPSyntax' DESC 'Tokenized abstraction of an LDAP Syntax Description' SUP top STRUCTURAL MUST metaDefNumericOID MAY ( metaDefDesc $ metaDefXOrigin $ metaDefXPattern $ metaDefXNotHuman ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.44.5.2 NAME 'metaMatchingRule' DESC 'Tokenized abstraction of a Matching Rule' SUP top STRUCTURAL MUST ( metaDefNumericOID $ metaDefSyntax ) MAY ( metaDefName $ metaDefDesc $ metaDefObsolete $ metaDefXOrigin ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.44.5.3 NAME 'metaAttributeType' DESC 'Tokenized abstraction of a Attribute Type' SUP top STRUCTURAL MUST metaDefNumericOID MAY ( metaDefName $ metaDefDesc $ metaDefSyntax $ metaDefUB $ metaDefEquality $ metaDefSubstring $ metaDefOrdering $ metaDefUsage $ metaDefSupT $ metaDefObsolete $ metaDefSingleValue $ metaDefNoUserMods $ metaDefCollective $ metaDefXOrigin ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.44.5.4 NAME 'metaMatchingRuleUse' DESC 'Tokenized abstraction of a Matching Rule Use' SUP top STRUCTURAL MUST metaDefNumericOID MAY ( metaDefName $ metaDefDesc $ metaDefApplies $ metaDefObsolete $ metaDefXOrigin ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.44.5.5 NAME 'metaObjectClass' DESC 'Tokenized abstraction of an Object Class' SUP top STRUCTURAL MUST metaDefNumericOID MAY ( metaDefName $ metaDefDesc $ metaDefMust $ metaDefMay $ metaDefKind $ metaDefSupC $ metaDefObsolete $ metaDefXOrigin ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.44.5.6 NAME 'metaDITContentRule' DESC 'Tokenized abstraction of a DIT Content Rule' SUP top STRUCTURAL MUST metaDefNumericOID MAY ( metaDefName $ metaDefDesc $ metaDefAux $ metaDefMust $ metaDefMay $ metaDefNot $ metaDefObsolete $ metaDefXOrigin ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.44.5.7 NAME 'metaNameForm' DESC 'Tokenized abstraction of a Name Form' SUP top STRUCTURAL MUST ( metaDefNumericOID $ metaDefOC ) MAY ( metaDefName $ metaDefDesc $ metaDefMust $ metaDefMay $ metaDefObsolete $ metaDefXOrigin ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.44.5.8 NAME 'metaDITStructureRule' DESC 'Tokenized abstraction of a DIT Structure Rule' SUP top STRUCTURAL MUST ( metaDefRuleID $ metaDefForm ) MAY ( metaDefName $ metaDefDesc $ metaDefSupR $ metaDefObsolete $ metaDefXOrigin ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+objectClasses ( 1.3.6.1.4.1.56521.389.2.44.5.15 NAME 'goDirectoryMetaSchema' DESC 'Structural class of the meta schema root entry' SUP top STRUCTURAL MUST ou X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 2.5.15.16 NAME 'subentryNameForm' DESC 'X.501, cl. 14.2.2: the Subentry name form' OC subentry MUST cn X-ORIGIN 'ITU-T Rec. X.501' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.1.2.1 NAME 'domainNameForm' OC domain MUST dc )
+nameForms ( 1.3.6.1.1.2.2 NAME 'dcOrganizationNameForm' OC organization MUST dc )
+nameForms ( 1.3.6.1.1.2.3 NAME 'dcOrganizationalUnitNameForm' OC organizationalUnit MUST dc )
+nameForms ( 1.3.6.1.1.2.4 NAME 'dcLocalityNameForm' OC locality MUST dc )
+nameForms ( 1.3.6.1.1.2.5 NAME 'uidOrganizationalPersonNameForm' OC organizationalPerson MUST uid )
+nameForms ( 1.3.6.1.1.10.15.1 NAME 'uddiBusinessEntityNameForm' OC uddiBusinessEntity MUST uddiBusinessKey )
+nameForms ( 1.3.6.1.1.10.15.2 NAME 'uddiContactNameForm' OC uddiContact MUST uddiUUID )
+nameForms ( 1.3.6.1.1.10.15.3 NAME 'uddiAddressNameForm' OC uddiAddress MUST uddiUUID )
+nameForms ( 1.3.6.1.1.10.15.4 NAME 'uddiBusinessServiceNameForm' OC uddiBusinessService MUST uddiServiceKey )
+nameForms ( 1.3.6.1.1.10.15.5 NAME 'uddiBindingTemplateNameForm' OC uddiBindingTemplate MUST uddiBindingKey )
+nameForms ( 1.3.6.1.1.10.15.6 NAME 'uddiTModelInstanceInfoNameForm' OC uddiTModelInstanceInfo MUST uddiTModelKey )
+nameForms ( 1.3.6.1.1.10.15.7 NAME 'uddiTModelNameForm' OC uddiTModel MUST uddiTModelKey )
+nameForms ( 1.3.6.1.1.10.15.8 NAME 'uddiPublisherAssertionNameForm' OC uddiPublisherAssertion MUST uddiUUID )
+nameForms ( 1.3.6.1.1.10.15.9 NAME 'uddiv3SubscriptionNameForm' OC uddiv3Subscription MUST uddiUUID )
+nameForms ( 1.3.6.1.1.10.15.10 NAME 'uddiv3EntityObituaryNameForm' OC uddiv3EntityObituary MUST uddiUUID )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.1 NAME 'configRootForm' DESC 'Enforces use of cn for configuration root DN' OC goDirConfig MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.2 NAME 'configExtensionsRootForm' DESC 'Enforces use of cn for extended operations configuration root RDN' OC goDirConfigExtensions MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.3 NAME 'configFeaturesRootForm' DESC 'Enforces use of cn for supported features configuration root RDN' OC goDirConfigFeatures MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.4 NAME 'configControlsRootForm' DESC 'Enforces use of cn for supported controls configuration root RDN' OC goDirConfigControls MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.5 NAME 'configTLSRootForm' DESC 'Enforces use of cn for the TLS configuration root or DIT-specific parent RDN' OC goDirConfigTLS MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.6 NAME 'configDIBRootForm' DESC 'Enforces use of cn for the DIB configuration root RDN' OC goDirConfigDIB MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.7 NAME 'configDITRootForm' DESC 'Enforces use of cn for a DIT subtree parent' OC goDirConfigDIT MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.8 NAME 'configIndicesRootForm' DESC 'Enforces use of cn for an indices configuration root or DIT-specific parent RDN' OC goDirConfigIndices MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.9 NAME 'configLimitsRootForm' DESC 'Enforces use of cn for an limits configuration root or DIT-specific parent RDN' OC goDirConfigLimits MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.10 NAME 'configReplAgreementRootForm' DESC 'Enforces use of cn for a DIT-specific replication agreement subtree parent RDN' OC goDirConfigReplAgreements MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.11 NAME 'configChainingRootForm' DESC 'Enforces use of cn for a DIT-specific chaining agreement subtree parent RDN' OC goDirConfigChains MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.12 NAME 'configIndexForm' DESC 'Enforces use of cn for a single attribute index configuration entry RDN' OC goDirConfigIndex MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.13 NAME 'configControlForm' DESC 'Enforces use of cn for a single supported control configuration entry RDN' OC goDirConfigControl MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.14 NAME 'configFeatureForm' DESC 'Enforces use of cn for a single supported feature configuration entry RDN' OC goDirConfigFeature MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.15 NAME 'configExtensionForm' DESC 'Enforces use of cn for a single extended operation configuration entry RDN' OC goDirConfigExtension MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.16 NAME 'configReplAgreementForm' DESC 'Enforces use of cn for a single replication agreement configuration entry RDN' OC goDirConfigReplAgreement MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+nameForms ( 1.3.6.1.4.1.56521.389.2.60.7.17 NAME 'configChainingForm' DESC 'Enforces use of cn for a single chaining agreement configuration entry RDN' OC goDirConfigChain MUST cn X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 1 NAME 'uddiBusinessEntityStructureRule' FORM uddiBusinessEntityNameForm )
+dITStructureRules ( 2 NAME 'uddiContactStructureRule' FORM uddiContactNameForm SUP 1 )
+dITStructureRules ( 3 NAME 'uddiAddressStructureRule' FORM uddiAddressNameForm SUP 2 )
+dITStructureRules ( 4 NAME 'uddiBusinessServiceStructureRule' FORM uddiBusinessServiceNameForm SUP 1 )
+dITStructureRules ( 5 NAME 'uddiBindingTemplateStructureRule' FORM uddiBindingTemplateNameForm SUP 4 )
+dITStructureRules ( 6 NAME 'uddiTModelInstanceInfoStructureRule' FORM uddiTModelInstanceInfoNameForm SUP 5 )
+dITStructureRules ( 7 NAME 'uddiTModelStructureRule' FORM uddiTModelNameForm )
+dITStructureRules ( 8 NAME 'uddiPublisherAssertionStructureRule' FORM uddiPublisherAssertionNameForm )
+dITStructureRules ( 9 NAME 'uddiv3SubscriptionStructureRule' FORM uddiv3SubscriptionNameForm )
+dITStructureRules ( 10 NAME 'uddiv3EntityObituaryStructureRule' FORM uddiv3EntityObituaryNameForm )
+dITStructureRules ( 600 NAME 'configRootStructure' DESC 'Implements the configRootForm name form' FORM configRootForm X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 601 NAME 'configExtensionsRootStructure' DESC 'Implements the configExtensionsRootForm name form' FORM configExtensionsRootForm SUP 600 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 602 NAME 'configFeaturesRootStructure' DESC 'Implements the configFeaturesRootForm name form' FORM configFeaturesRootForm SUP 600 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 603 NAME 'configControlsRootStructure' DESC 'Implements the configControlsRootForm name form' FORM configControlsRootForm SUP 600 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 604 NAME 'configTLSRootStructure' DESC 'Implements the configTLSRootForm name form' FORM configTLSRootForm SUP 600 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 605 NAME 'configDIBRootStructure' DESC 'Implements the configDIBRootForm name form' FORM configDIBRootForm SUP 600 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 606 NAME 'configIndicesRootStructure' DESC 'Implements the configIndicesRootForm name form' FORM configIndicesRootForm SUP 600 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 607 NAME 'configLimitsRootStructure' DESC 'Implements the configLimitsRootForm name form' FORM configLimitsRootForm SUP 600 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 608 NAME 'configDITRootStructure' DESC 'Implements the configDITRootForm name form' FORM configDITRootForm SUP 605 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 609 NAME 'configDITReplAgreementRootStructure' DESC 'Implements the configReplAgreementRootForm name form' FORM configReplAgreementRootForm SUP 608 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 610 NAME 'configDITChainingRootStructure' DESC 'Implements the configChainingRootForm name form' FORM configChainingRootForm SUP 608 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 611 NAME 'configDITIndicesRootStructure' DESC 'Implements the configIndicesRootForm name form' FORM configIndicesRootForm SUP 608 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 612 NAME 'configDITTLSStructure' DESC 'Implements the configTLSRootForm name form' FORM configTLSRootForm SUP ( 604 608 ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 613 NAME 'configIndexStructure' DESC 'Implements the configIndexForm name form' FORM configIndexForm SUP ( 606 611 ) X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 614 NAME 'configControlStructure' DESC 'Implements the configControlForm name form' FORM configControlForm SUP 603 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 615 NAME 'configFeatureStructure' DESC 'Implements the configFeatureForm name form' FORM configFeatureForm SUP 602 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 616 NAME 'configExtensionStructure' DESC 'Implements the configExtensionForm name form' FORM configExtensionForm SUP 601 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 617 NAME 'configReplAgreementStructure' DESC 'Implements the configReplAgreementForm name form' FORM configReplAgreementForm SUP 609 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
+dITStructureRules ( 618 NAME 'configChainingStructure' DESC 'Implements the configChainingForm name form' FORM configChainingForm SUP 610 X-ORIGIN 'Jesse Coretta' X-DO-NOT-ADVERTISE 'TRUE' )
