@@ -307,6 +307,113 @@ func (r AttributeTypeProperties) EffectiveOrdering(id []byte) (
 	return
 }
 
+/*
+EffectiveUsage returns effective USAGE values, a string name and uint8 value, for
+the attribute type indicated by id.
+
+If the return string value is zero, the return uint8 value should not be read.
+
+Valid input values are the numeric OID or descriptor (name) of the desired type.
+Case is not significant in the name matching process.
+*/
+func (r AttributeTypeProperties) EffectiveUsage(id []byte) (
+	usage string,
+	number uint8,
+) {
+        noid, _, _, n := r.Resolve(id)
+        if noid == nil {
+                return
+        }
+
+	var found bool
+        if number, found = r.USAGE[n]; !found {
+                // No usage found. See if a super type is defined for id,
+		// and if so, attempt to derive the usage from it.
+		var supt uint
+		if supt, found = r.SUPT[n]; found {
+                        // recurse to id's super type and repeat for
+			// the entire chain.
+			usage, number = r.EffectiveUsage(r.ID[supt])
+                }
+
+		if usage == "" {
+			// If, after all of the above, the usage is still
+			// zero, we must concede that userApplications is
+			// the USAGE.
+			usage = usages[0]
+		}
+	} else {
+		// must be something *other than* userApplications
+		usage = usages[number]
+        }
+
+        return
+}
+
+/*
+EffectiveFlags returns four (4) Boolean values: obsolete, nousermod, collective
+and singlevalue. The values are derived from the specified definition directly,
+or from a super type in its chain.
+*/
+func (r AttributeTypeProperties) EffectiveFlags(id []byte) (
+	singlevalue,
+	collective,
+	nousermod,
+	obsolete bool,
+) {
+	
+        noid, _, _, n := r.Resolve(id)
+        if noid == nil {
+                return
+        }
+
+        flagval, found := r.FLAGS[n]
+	if !found {
+                // No usage found. See if a super type is defined for
+		// id, and if so, attempt to derive the usage from it.
+                var supt uint
+                if supt, found = r.SUPT[n]; found {
+                        // recurse to id's super type and repeat for
+                        // the entire chain.
+                        singlevalue, collective, nousermod, obsolete =
+				r.EffectiveFlags(r.ID[supt])
+                }
+        } else {
+		singlevalue = flagval&flagSingle != 0
+		collective  = flagval&flagCollective != 0
+		nousermod   = flagval&flagNoUserMod != 0
+		obsolete    = flagval&flagObsolete != 0
+        }
+
+	return
+}
+
+/*
+Searchable returns a Boolean value indicative of the specified attribute type
+being usable in search filters.  This requires at least one (1) matching rule
+being implemented by said attribute or, alternatively, a super type.
+*/
+func (r AttributeTypeProperties) Searchable(id []byte) bool {
+	var is bool
+	if noid, _, _, _ := r.Resolve(id); noid != nil {
+		eoid, _ := r.EffectiveEquality(noid)
+		soid, _ := r.EffectiveSubstring(noid)
+		ooid, _ := r.EffectiveOrdering(noid)
+
+		for _, mr := range [][]byte{
+			eoid, // EQUALITY
+			soid, // SUBSTR
+			ooid, // ORDERING
+		}{
+			if is = mr != nil; is {
+				break
+			}
+		}
+	}
+
+	return is
+}
+
 func (r *AttributeTypeProperties) commit(def attributeTypeDefinition, checkOnly bool) (err error) {
 	if checkOnly {
 		return

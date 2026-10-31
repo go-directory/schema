@@ -162,6 +162,16 @@ func (r LDAPSyntaxProperties) Get(id []byte) string {
 }
 
 /*
+SetFunc assigns the provided syntax verification function to the FUNC
+table in association with the provided syntax id.
+*/
+func (r *LDAPSyntaxProperties) SetFunc(id []byte, fn func(any)(bool,error)) {
+	if id, _, n := r.Resolve(id); id != nil && fn != nil {
+		r.FUNC[n] = fn
+	}
+}
+
+/*
 HR returns a Boolean value indicative of the input id argument
 being associated with a human-readable LDAP syntax. A value of
 false is returned if the definition is not found.
