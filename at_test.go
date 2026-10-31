@@ -17,7 +17,7 @@ the method defers to the established default USAGE of "userApplications" (0),
 as per RFC 4512.
 */
 func ExampleAttributeTypeProperties_EffectiveUsage() {
-	usageName, usageNumber:= exampleSchema.AT().EffectiveUsage([]byte(`configTLSClientCert`))
+	usageName, usageNumber := exampleSchema.AT().EffectiveUsage([]byte(`configTLSClientCert`))
 	fmt.Printf("name: %q (%d)", usageName, usageNumber)
 	// Output:
 	// name: "dSAOperation" (3)
@@ -40,9 +40,8 @@ func ExampleAttributeTypeProperties_EffectiveFlags() {
 	single, collect, nousermod, obsolete :=
 		exampleSchema.AT().EffectiveFlags([]byte(`configTLSClientCert`))
 
-        fmt.Printf("single:%t, collect:%t, nousermod:%t, obsolete:%t",
+	fmt.Printf("single:%t, collect:%t, nousermod:%t, obsolete:%t",
 		single, collect, nousermod, obsolete)
-        // Output:
-        // single:true, collect:false, nousermod:false, obsolete:false
+	// Output:
+	// single:true, collect:false, nousermod:false, obsolete:false
 }
-
