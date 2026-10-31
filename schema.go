@@ -815,40 +815,40 @@ func (r SubschemaSubentry) String() string {
 SetSyntaxFunc assigns the provided syntax verification function to the syntax
 FUNC table in association with the provided syntax id.
 */
-func (r *SubschemaSubentry) SetSyntaxFunc(id []byte, fn func(any)(bool,error)) {
-        if id, _, n := r.ls.Resolve(id); id != nil && fn != nil {
-                r.ls.FUNC[n] = fn
-        }
+func (r *SubschemaSubentry) SetSyntaxFunc(id []byte, fn func(any) (bool, error)) {
+	if id, _, n := r.ls.Resolve(id); id != nil && fn != nil {
+		r.ls.FUNC[n] = fn
+	}
 }
 
 /*
 SetEqualityFunc assigns the provided equality matching function to the matching
 rule FUNC table in association with the provided rule id.
 */
-func (r *SubschemaSubentry) SetEqualityFunc(id []byte, fn func(any,any)(bool,error)) {
-        if id, _, _, n := r.mr.Resolve(id); id != nil && fn != nil {
-                r.mr.EQFUNC[n] = fn
-        }
+func (r *SubschemaSubentry) SetEqualityFunc(id []byte, fn func(any, any) (bool, error)) {
+	if id, _, _, n := r.mr.Resolve(id); id != nil && fn != nil {
+		r.mr.EQFUNC[n] = fn
+	}
 }
 
 /*
 SetSubstringFunc assigns the provided substring matching function to the matching
 rule FUNC table in association with the provided rule id.
 */
-func (r *SubschemaSubentry) SetSubstringFunc(id []byte, fn func(any,any)(bool,error)) {
-        if id, _, _, n := r.mr.Resolve(id); id != nil && fn != nil {
-                r.mr.SSFUNC[n] = fn
-        }
+func (r *SubschemaSubentry) SetSubstringFunc(id []byte, fn func(any, any) (bool, error)) {
+	if id, _, _, n := r.mr.Resolve(id); id != nil && fn != nil {
+		r.mr.SSFUNC[n] = fn
+	}
 }
 
 /*
 SetOrderingFunc assigns the provided ordering matching function to the matching
 rule FUNC table in association with the provided rule id.
 */
-func (r *SubschemaSubentry) SetOrderingFunc(id []byte, fn func(any,byte,any)(bool,error)) {
-        if id, _, _, n := r.mr.Resolve(id); id != nil && fn != nil {
-                r.mr.ORFUNC[n] = fn
-        }
+func (r *SubschemaSubentry) SetOrderingFunc(id []byte, fn func(any, byte, any) (bool, error)) {
+	if id, _, _, n := r.mr.Resolve(id); id != nil && fn != nil {
+		r.mr.ORFUNC[n] = fn
+	}
 }
 
 /*

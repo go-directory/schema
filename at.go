@@ -320,21 +320,21 @@ func (r AttributeTypeProperties) EffectiveUsage(id []byte) (
 	usage string,
 	number uint8,
 ) {
-        noid, _, _, n := r.Resolve(id)
-        if noid == nil {
-                return
-        }
+	noid, _, _, n := r.Resolve(id)
+	if noid == nil {
+		return
+	}
 
 	var found bool
-        if number, found = r.USAGE[n]; !found {
-                // No usage found. See if a super type is defined for id,
+	if number, found = r.USAGE[n]; !found {
+		// No usage found. See if a super type is defined for id,
 		// and if so, attempt to derive the usage from it.
 		var supt uint
 		if supt, found = r.SUPT[n]; found {
-                        // recurse to id's super type and repeat for
+			// recurse to id's super type and repeat for
 			// the entire chain.
 			usage, number = r.EffectiveUsage(r.ID[supt])
-                }
+		}
 
 		if usage == "" {
 			// If, after all of the above, the usage is still
@@ -345,9 +345,9 @@ func (r AttributeTypeProperties) EffectiveUsage(id []byte) (
 	} else {
 		// must be something *other than* userApplications
 		usage = usages[number]
-        }
+	}
 
-        return
+	return
 }
 
 /*
@@ -361,29 +361,29 @@ func (r AttributeTypeProperties) EffectiveFlags(id []byte) (
 	nousermod,
 	obsolete bool,
 ) {
-	
-        noid, _, _, n := r.Resolve(id)
-        if noid == nil {
-                return
-        }
 
-        flagval, found := r.FLAGS[n]
+	noid, _, _, n := r.Resolve(id)
+	if noid == nil {
+		return
+	}
+
+	flagval, found := r.FLAGS[n]
 	if !found {
-                // No usage found. See if a super type is defined for
+		// No usage found. See if a super type is defined for
 		// id, and if so, attempt to derive the usage from it.
-                var supt uint
-                if supt, found = r.SUPT[n]; found {
-                        // recurse to id's super type and repeat for
-                        // the entire chain.
-                        singlevalue, collective, nousermod, obsolete =
+		var supt uint
+		if supt, found = r.SUPT[n]; found {
+			// recurse to id's super type and repeat for
+			// the entire chain.
+			singlevalue, collective, nousermod, obsolete =
 				r.EffectiveFlags(r.ID[supt])
-                }
-        } else {
+		}
+	} else {
 		singlevalue = flagval&flagSingle != 0
-		collective  = flagval&flagCollective != 0
-		nousermod   = flagval&flagNoUserMod != 0
-		obsolete    = flagval&flagObsolete != 0
-        }
+		collective = flagval&flagCollective != 0
+		nousermod = flagval&flagNoUserMod != 0
+		obsolete = flagval&flagObsolete != 0
+	}
 
 	return
 }
@@ -404,7 +404,7 @@ func (r AttributeTypeProperties) Searchable(id []byte) bool {
 			eoid, // EQUALITY
 			soid, // SUBSTR
 			ooid, // ORDERING
-		}{
+		} {
 			if is = mr != nil; is {
 				break
 			}
