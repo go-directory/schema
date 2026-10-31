@@ -327,8 +327,8 @@ func (r AttributeTypeProperties) EffectiveUsage(id []byte) (
 
 	var found bool
 	if number, found = r.USAGE[n]; !found {
-		// No usage found. See if a super type is defined for id,
-		// and if so, attempt to derive the usage from it.
+		// No usage found. See if a super type is defined for
+		// id and, if so, attempt to derive the usage from it.
 		var supt uint
 		if supt, found = r.SUPT[n]; found {
 			// recurse to id's super type and repeat for
@@ -344,7 +344,7 @@ func (r AttributeTypeProperties) EffectiveUsage(id []byte) (
 		}
 	} else {
 		// must be something *other than* userApplications
-		usage = usages[number]
+		usage, _ = usages[number]
 	}
 
 	return
