@@ -620,7 +620,7 @@ func (r *SubschemaSubentries) SetAuthoritative(dn []byte, authoritative ...bool)
 		return err
 	}
 	sch.Authoritative = b
-	emitI("subchemaSubentry %q authoritative=%t", sch.DN, isAth)
+	emitI("subchemaSubentry %q authoritative=%t", sch.DN, sch.Authoritative)
 
 	return err
 }
