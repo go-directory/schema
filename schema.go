@@ -310,7 +310,7 @@ func (r *SubschemaSubentry) ReadDirectory(dir string) (err error) {
 	// remove any number of trailing
 	// slashes from dir.
 	dir = strings.TrimRight(dir, `/`)
-	emitM("enter %s", dir)
+	emitM("enter dir=%s", dir)
 
 	// avoid panicking if the directory does not exist during
 	// the "walking" process.
@@ -343,8 +343,8 @@ func (r *SubschemaSubentry) ReadFile(file string) (err error) {
 	}
 
 	var data []byte
-	emitM("read %s", file)
 	if data, err = os.ReadFile(file); err == nil {
+		emitM("read schema=%s bytes=%d", file, len(data))
 		err = r.ReadBytes(data)
 	}
 	emitErr(err)
@@ -382,7 +382,6 @@ followed by any amount of whitespace:
 Case is not significant in the keyword matching process.
 */
 func (r *SubschemaSubentry) ReadBytes(data []byte) error {
-	emitM("read %d bytes", len(data))
 
 	data = removeBashComments(data)
 	data = bytes.ReplaceAll(data, []byte("$\n"), []byte("$ "))
@@ -463,7 +462,7 @@ func (r *SubschemaSubentry) registerDefinitionByCase(defs [][]byte) (err error) 
 			break
 		}
 
-		emitM("register %s: %s", low, def)
+		emitT("register %s", def)
 		r.Timestamp = now()
 	}
 
@@ -572,9 +571,7 @@ func (r *SubschemaSubentries) Add(sch *SubschemaSubentry) error {
 		emitErr(err)
 		return err
 	}
-
-	emitM("add subchemaSubentry %q", sch.DN)
-
+	emitI("add subchemaSubentry %q [authoritative:%t]", sch.DN, ath)
 	(*r)[name] = sch
 
 	return err
@@ -623,7 +620,6 @@ func (r *SubschemaSubentries) SetAuthoritative(dn []byte, authoritative ...bool)
 		return err
 	}
 	sch.Authoritative = b
-	emitM("add authoritative subchemaSubentry %q", dn)
 
 	return err
 }
@@ -648,7 +644,7 @@ func (r *SubschemaSubentries) New(dn []byte, prime ...bool) error {
 	if sch, err = New(len(prime) > 0 && prime[0]); err == nil {
 		sch.DN = dn
 		(*r)[name] = sch
-		emitM("new subchemaSubentry %q", dn)
+		emitI("new subchemaSubentry %q", dn)
 	}
 	emitErr(err)
 
@@ -852,32 +848,33 @@ func doImport(cat int, ath, target *SubschemaSubentry, def ...[]byte) (err error
 
 	switch cat {
 	case 0:
-		// ldap syntax resolver is different from all the others,
-		// so we wrap it specially here.
-		res := func(in []byte) ([]byte, []byte, [][]byte, uint) {
-			noid, _, n := ath.ls.Resolve(in)
-			return noid, nil, nil, n
-		}
 		src := ath.LS()
-		err = imp(headerTokens[0], src.ORD, src.ID, src.STRING, res, target.ls.marshal)
+		err = imp(headerTokens[0], src.ORD, src.ID,
+			src.STRING, src.Resolve, target.ls.marshal)
 	case 1:
 		src := ath.MR()
-		err = imp(headerTokens[2], src.ORD, src.ID, src.STRING, src.Resolve, target.mr.marshal)
+		err = imp(headerTokens[2], src.ORD, src.ID,
+			src.STRING, src.Resolve, target.mr.marshal)
 	case 2:
 		src := ath.AT()
-		err = imp(headerTokens[4], src.ORD, src.ID, src.STRING, src.Resolve, target.at.marshal)
+		err = imp(headerTokens[4], src.ORD, src.ID,
+			src.STRING, src.Resolve, target.at.marshal)
 	case 4:
 		src := ath.OC()
-		err = imp(headerTokens[8], src.ORD, src.ID, src.STRING, src.Resolve, target.oc.marshal)
+		err = imp(headerTokens[8], src.ORD, src.ID,
+			src.STRING, src.Resolve, target.oc.marshal)
 	case 5:
 		src := ath.DC()
-		err = imp(headerTokens[10], src.ORD, src.ID, src.STRING, src.Resolve, target.dc.marshal)
+		err = imp(headerTokens[10], src.ORD, src.ID,
+			src.STRING, src.Resolve, target.dc.marshal)
 	case 6:
 		src := ath.NF()
-		err = imp(headerTokens[10], src.ORD, src.ID, src.STRING, src.Resolve, target.nf.marshal)
+		err = imp(headerTokens[12], src.ORD, src.ID,
+			src.STRING, src.Resolve, target.nf.marshal)
 	case 7:
 		src := ath.DS()
-		err = imp(headerTokens[14], src.ORD, src.ID, src.STRING, src.Resolve, target.ds.marshal)
+		err = imp(headerTokens[14], src.ORD, src.ID,
+			src.STRING, src.Resolve, target.ds.marshal)
 	}
 
 	return err
@@ -950,7 +947,7 @@ SetSyntaxFunc assigns the provided syntax verification function to the syntax
 FUNC table in association with the provided syntax id.
 */
 func (r *SubschemaSubentry) SetSyntaxFunc(id []byte, fn func(any) (bool, error)) {
-	if id, _, n := r.ls.Resolve(id); id != nil && fn != nil {
+	if id, _, _, n := r.ls.Resolve(id); id != nil && fn != nil {
 		r.ls.FUNC[n] = fn
 	}
 }

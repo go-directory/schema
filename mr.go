@@ -213,7 +213,7 @@ type matchingRuleDefinition struct {
 }
 
 func (r *MatchingRuleProperties) commit(def matchingRuleDefinition) error {
-	syn, _, synid := r.schema.ls.Resolve(def.syntax)
+	syn, _, _, synid := r.schema.ls.Resolve(def.syntax)
 	if syn == nil {
 		return schemaError("MatchingRule '", string(def.noid),
 			"' bears unregistered SYNTAX '",

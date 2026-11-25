@@ -433,7 +433,7 @@ func (r *AttributeTypeProperties) commit(def attributeTypeDefinition, checkOnly 
 	}
 
 	if def.syntax != nil {
-		_, _, synid := r.schema.ls.Resolve(def.syntax)
+		_, _, _, synid := r.schema.ls.Resolve(def.syntax)
 		if _, found := r.schema.ls.AT[synid]; !found {
 			r.schema.ls.AT[synid] = make(map[uint]struct{})
 		}
@@ -744,7 +744,7 @@ func (r *AttributeTypeProperties) check(
 	}
 
 	if def.syntax != nil {
-		if syn, _, _ := r.schema.ls.Resolve(def.syntax); syn == nil {
+		if syn, _, _, _ := r.schema.ls.Resolve(def.syntax); syn == nil {
 			err = errATUnregClauseMember(def.noid, def.syntax, `SYNTAX`)
 			return
 		}

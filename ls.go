@@ -58,9 +58,13 @@ description.
 
 The id return value should not be read if the return noid value is zero length.
 
+The descrs value should always be shadowed, as it will be nil in all cases. This
+exists in the return signature merely for maintainer sanity with respect to cases
+in which the resolvers for all categories are accessed in an iterative manner.
+
 Case is not significant in the text matching process.
 */
-func (r LDAPSyntaxProperties) Resolve(term []byte) (noid, description []byte, n uint) {
+func (r LDAPSyntaxProperties) Resolve(term []byte) (noid, description []byte, descrs [][]byte, n uint) {
 	if len(term) > 0 {
 		var found bool
 		if n, found = r.MAP[string(lc(term))]; found {
@@ -98,7 +102,7 @@ it is not intended for disclosure.
 */
 func (r LDAPSyntaxProperties) Advertise(id []byte) bool {
 	var do bool // assume false by default
-	if noid, _, n := r.Resolve(id); noid != nil {
+	if noid, _, _, n := r.Resolve(id); noid != nil {
 		do = true // now assume true by default
 		if exts, _ := r.EXT[n]; len(exts) > 0 {
 			for _, v := range exts {
@@ -154,7 +158,7 @@ Case is not significant in the text matching process.
 */
 func (r LDAPSyntaxProperties) Get(id []byte) string {
 	var s string
-	if noid, _, n := r.Resolve(id); noid != nil {
+	if noid, _, _, n := r.Resolve(id); noid != nil {
 		s = r.STRING[n]
 	}
 
@@ -166,7 +170,7 @@ SetFunc assigns the provided syntax verification function to the FUNC
 table in association with the provided syntax id.
 */
 func (r *LDAPSyntaxProperties) SetFunc(id []byte, fn func(any) (bool, error)) {
-	if id, _, n := r.Resolve(id); id != nil && fn != nil {
+	if id, _, _, n := r.Resolve(id); id != nil && fn != nil {
 		r.FUNC[n] = fn
 	}
 }
@@ -178,7 +182,7 @@ false is returned if the definition is not found.
 */
 func (r LDAPSyntaxProperties) HR(id []byte) bool {
 	var b bool
-	if noid, _, n := r.Resolve(id); noid != nil {
+	if noid, _, _, n := r.Resolve(id); noid != nil {
 		b = true // assume true for the moment.
 		if _, nhr := r.NHR[n]; nhr {
 			// if found, syntax is NOT human readable.
@@ -195,7 +199,7 @@ id being .
 */
 func (r LDAPSyntaxProperties) BinaryTxReq(id []byte) bool {
 	var b bool
-	noid, _, n := r.Resolve(id)
+	noid, _, _, n := r.Resolve(id)
 	if noid == nil {
 		return b
 	}
@@ -238,7 +242,7 @@ func (r *LDAPSyntaxProperties) marshal(in []byte, checkOnly bool) (err error) {
 	}
 
 	noid := tkz.this()
-	if ls, _, _ := r.Resolve(noid); ls != nil && !checkOnly {
+	if ls, _, _, _ := r.Resolve(noid); ls != nil && !checkOnly {
 		err = schemaError("LDAPSyntax OID '", string(noid),
 			"' already registered")
 		return
