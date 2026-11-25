@@ -127,11 +127,13 @@ func ExampleSubschemaSubentries() {
 	}
 
 	// Print some attribute types just for fun
+	fmt.Printf("total attribute types imported: %d\n", target.Counters().Total(2))
 	fmt.Printf("attribute types imported into new schema %q:\n\n", target.DN)
 	fmt.Printf("%s\n", target.AT().String())
 
 	// Output:
 	// Authoritative schema: "cn=schema"
+	// total attribute types imported: 11
 	// attribute types imported into new schema "cn=alt-schema":
 	//
 	// attributeTypes ( 2.5.4.49 NAME 'distinguishedName' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 X-ORIGIN ( 'ITU-T Rec. X.520' 'RFC4519' ) )
