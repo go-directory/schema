@@ -38,7 +38,7 @@ To test whether a particular logging level is set, evaluate via:
 
 A return value of true indicates the specified uint16 bit is set.
 */
-var LogLevel uint16
+var LogLevel uint16 = 65535
 
 const (
 	// not to exceed uint16
@@ -46,4 +46,5 @@ const (
 	logWarning                    // 2
 	logTrace                      // 4
 	logInfo                       // 8
+	logMoreInfo                   // 16
 )

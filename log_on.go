@@ -70,6 +70,15 @@ func emitI(m string, v ...any) {
 	}
 }
 
+/*
+emitM emits MOAR informational events.
+*/
+func emitM(m string, v ...any) {
+	if LogLevel&logMoreInfo != 0 {
+		emit(m, v...)
+	}
+}
+
 func emitErr(err error) {
 	if err != nil {
 		emitE(err.Error())
@@ -86,7 +95,7 @@ var emit func(string, ...any)
 // default emitter
 func defaultEmitter(m string, v ...any) {
 	ts := string(genTimeNow(true))
-	eventLogger.Printf(ts+" "+m, v...)
+	eventLogger.Printf(ts+" [SCHEMA} "+m, v...)
 }
 
 func init() {

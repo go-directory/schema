@@ -57,6 +57,7 @@ func emitW(_ string, _ ...any) {}
 func emitE(_ string, _ ...any) {}
 func emitT(_ string, _ ...any) {}
 func emitI(_ string, _ ...any) {}
+func emitM(_ string, _ ...any) {}
 func emitErr(_ error)          {}
 
 func init() {
