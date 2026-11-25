@@ -571,7 +571,7 @@ func (r *SubschemaSubentries) Add(sch *SubschemaSubentry) error {
 		emitErr(err)
 		return err
 	}
-	emitI("add subchemaSubentry %q [authoritative:%t]", sch.DN, isAth)
+	emitI("add subchemaSubentry %q authoritative=%t", sch.DN, isAth)
 	(*r)[name] = sch
 
 	return err
@@ -620,6 +620,7 @@ func (r *SubschemaSubentries) SetAuthoritative(dn []byte, authoritative ...bool)
 		return err
 	}
 	sch.Authoritative = b
+	emitI("subchemaSubentry %q authoritative=%t", sch.DN, isAth)
 
 	return err
 }
