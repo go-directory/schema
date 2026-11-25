@@ -105,6 +105,7 @@ func New(prime ...bool) (sch *SubschemaSubentry, err error) {
 
 	if len(prime) > 0 && prime[0] {
 		err = sch.primeBuiltIns()
+		emitErr(err)
 	}
 
 	return
@@ -183,6 +184,116 @@ func (r SubschemaSubentry) DS() DITStructureRuleProperties {
 }
 
 /*
+Counters implements a read-only tally of all registered definitions,
+grouped by advertisement status.
+
+See the [Counters.Total] method for a means of obtaining the grand
+total number of definitions for a particular category, regardless of
+advertisement status.
+*/
+type Counters struct {
+	Hidden  map[int]int
+	Visible map[int]int
+}
+
+/*
+Total returns an instance of [Counters], which contains the grant
+total number of definitions for a particular schema category:
+
+ - ls(0)
+ - mr(1)
+ - at(2)
+ - mu(3)
+ - oc(4)
+ - dc(5)
+ - nf(6)
+ - ds(7)
+
+The return value is the summation of visible and hidden definitions
+present within the specified categorical store.
+
+If the input category is -1, a summation of ALL of the above is
+returned.
+*/
+func (r Counters) Total(cat int) int {
+	var total int
+	if 0 <= cat && cat <= 7 {
+		total = r.Hidden[cat] + r.Visible[cat]
+	} else if cat == -1 {
+		for i := 0; i < 8; i++ {
+			total += r.Hidden[i] + r.Visible[i]
+		}
+	}
+		
+
+	return total
+}
+
+/*
+Counters returns an instance of [Counters] following a scan and tally
+of the total number of definitions present within the receiver instance.
+
+Note that instances of this type are not meant to be edited, and are
+intended solely for read-only operations such as monitoring.
+*/
+func (r SubschemaSubentry) Counters() Counters {
+	var c Counters
+
+        // tallies of hidden definitions
+        c.Hidden = map[int]int{ // categorical
+                0: 0, 1: 0, 2: 0, 3: 0,
+                4: 0, 5: 0, 6: 0, 7: 0,
+        }
+
+        // tallies of visible definitions
+        c.Visible = map[int]int{ // categorical
+                0: 0, 1: 0, 2: 0, 3: 0,
+                4: 0, 5: 0, 6: 0, 7: 0,
+        }
+
+	// advertisement checker
+	advert := [8]func([]byte)bool{
+		r.ls.Advertise, r.mr.Advertise,
+		r.at.Advertise,	r.mr.Advertise, 
+		r.oc.Advertise, r.dc.Advertise,
+		r.nf.Advertise, r.ds.Advertise,
+	}
+
+	// ID stores (index -> oid)
+	ids := [8]map[uint][]byte{
+		r.ls.ID, r.mr.ID, r.at.ID, r.mr.ID,
+		r.oc.ID, r.dc.ID, r.nf.ID, r.ds.ID,
+	}
+
+	for cat, manifest := range [][]uint{
+		r.ls.ORD, r.mr.ORD, r.at.ORD, r.mr.ORD, // mr controls mu, not a typo! :)
+		r.oc.ORD, r.dc.ORD, r.nf.ORD, r.ds.ORD,
+	}{
+		for _, def := range manifest {
+			if cat == 3 {
+				if _, pres := r.mu.APPORD[def]; !pres {
+					// avoid counting nonexistent
+					// matchingRuleUses.
+					continue
+				}
+			}
+
+			// resolve the OID and determine whether
+			// the definition is regarded as private,
+			// updating the appropriate counter.
+			id := ids[cat][def]
+			if advert[cat](id) {
+				c.Visible[cat]++
+			} else {
+				c.Hidden[cat]++
+			}
+		}
+	}
+
+	return c
+}
+
+/*
 ReadDirectory recurses all files and folders specified at 'dir',
 returning parsed schema bytes (content) alongside an error.
 
@@ -200,6 +311,7 @@ func (r *SubschemaSubentry) ReadDirectory(dir string) (err error) {
 	// remove any number of trailing
 	// slashes from dir.
 	dir = strings.TrimRight(dir, `/`)
+	emitM("enter %s", dir)
 
 	// avoid panicking if the directory does not exist during
 	// the "walking" process.
@@ -227,13 +339,16 @@ The filename MUST end in ".schema", else an error shall be raised.
 func (r *SubschemaSubentry) ReadFile(file string) (err error) {
 	if !strings.HasSuffix(file, `.schema`) {
 		err = schemaError("Filename MUST end in `.schema`")
+		emitErr(err)
 		return
 	}
 
 	var data []byte
+	emitM("read %s", file)
 	if data, err = os.ReadFile(file); err == nil {
 		err = r.ReadBytes(data)
 	}
+	emitErr(err)
 
 	return
 }
@@ -268,6 +383,8 @@ followed by any amount of whitespace:
 Case is not significant in the keyword matching process.
 */
 func (r *SubschemaSubentry) ReadBytes(data []byte) error {
+	emitM("read %d bytes", len(data))
+
 	data = removeBashComments(data)
 	data = bytes.ReplaceAll(data, []byte("$\n"), []byte("$ "))
 	lines := bytes.Split(data, []byte("\n"))
@@ -343,8 +460,11 @@ func (r *SubschemaSubentry) registerDefinitionByCase(defs [][]byte) (err error) 
 		}
 
 		if err != nil {
+			emitErr(err)
 			break
 		}
+
+		emitM("register %s: %s", low, def) 
 		r.Timestamp = now()
 	}
 
@@ -425,6 +545,7 @@ func (r *SubschemaSubentries) Add(sch *SubschemaSubentry) error {
 	var err error
 	if sch == nil || sch.ls == nil {
 		err = schemaError("Unable to add new schema: receiver is nil")
+		emitErr(err)
 		return err
 	}
 
@@ -433,11 +554,14 @@ func (r *SubschemaSubentries) Add(sch *SubschemaSubentry) error {
 
 	if len(dn) == 0 {
 		err = schemaError("Unable to add new schema: DN is zero length or nil")
+		emitErr(err)
 		return err
 	}
 
 	if _, found := r.Get(dn); found {
 		err = schemaError("Unable to add new schema: DN '", name, "' already registered")
+		emitErr(err)
+		return err
 	}
 
 	isAth := sch.Authoritative
@@ -446,8 +570,11 @@ func (r *SubschemaSubentries) Add(sch *SubschemaSubentry) error {
 	if isAth && ath != nil {
 		err = schemaError("Unable to add new schema: cannot add new authoritative schema (",
 			name, ")  without demoting the existing one (", string(ath.DN), ")")
+		emitErr(err)
 		return err
 	}
+
+	emitM("add subchemaSubentry %q", sch.DN)
 
 	(*r)[name] = sch
 
@@ -480,20 +607,24 @@ func (r *SubschemaSubentries) SetAuthoritative(dn []byte, authoritative ...bool)
 	if ath := r.Authoritative(); ath != nil {
 		if eq := bytes.EqualFold(ath.DN, dn); eq {
 			ath.Authoritative = b
+			emitErr(err)
 			return err
 		}
 
 		err = schemaError("Authoritative schema '", string(ath.DN),
 			"' already in force; cannot promote '", name, "'")
+		emitErr(err)
 		return err
 	}
 
 	sch, found := (*r)[name]
 	if !found || sch == nil || len(sch.DN) == 0 {
 		err = schemaError("Schema '", name, "' not registered")
+		emitErr(err)
 		return err
 	}
 	sch.Authoritative = b
+	emitM("add authoritative subchemaSubentry %q", dn)
 
 	return err
 }
@@ -510,6 +641,7 @@ func (r *SubschemaSubentries) New(dn []byte, prime ...bool) error {
 
 	if _, found := (*r)[name]; found {
 		err = schemaError("Schema '", name, "' already registered")
+		emitErr(err)
 		return err
 	}
 
@@ -517,7 +649,9 @@ func (r *SubschemaSubentries) New(dn []byte, prime ...bool) error {
 	if sch, err = New(len(prime) > 0 && prime[0]); err == nil {
 		sch.DN = dn
 		(*r)[name] = sch
+		emitM("new subchemaSubentry %q", dn)
 	}
+	emitErr(err)
 
 	return err
 }
@@ -670,6 +804,7 @@ func (r *SubschemaSubentries) importDefs(cat int, dest []byte, def ...[]byte) er
 	}
 
 	err = doImport(cat, ath, target, def...)
+	emitErr(err)
 	return err
 }
 
