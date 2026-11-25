@@ -9,7 +9,7 @@ import (
 
 func initLDAPSyntaxProperties(sch *SubschemaSubentry) (lsp *LDAPSyntaxProperties) {
 	lsp = &LDAPSyntaxProperties{
-		MAP:    make(map[string]uint),                  // string oid to #
+		MAP:    make(map[string]uint),                  // string oid or nrml. text to #
 		ID:     make(map[uint][]byte),                  // # to oid
 		TEXT:   make(map[uint][]byte),                  // # to oid
 		PRINC:  make(map[uint][]byte),                  // # to principal descr
