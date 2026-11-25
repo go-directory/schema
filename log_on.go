@@ -95,7 +95,7 @@ var emit func(string, ...any)
 // default emitter
 func defaultEmitter(m string, v ...any) {
 	ts := string(genTimeNow(true))
-	eventLogger.Printf(ts+" [SCHEMA} "+m, v...)
+	eventLogger.Printf(ts+" [SCHEMA] "+m, v...)
 }
 
 func init() {
