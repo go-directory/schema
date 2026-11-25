@@ -11,8 +11,8 @@ DITStructureRuleProperties implements a container type for
 DIT Structure Rule properties.
 */
 type DITStructureRuleProperties struct {
-	MAP     map[string]uint             // rule string numeric OID or nrml. descriptor to #
-	ID      map[uint][]byte             // rule id (k) to byte id (v)
+	MAP     map[string]uint             // string integer identifier (rule ID) or nrml. descriptor to #
+	ID      map[uint][]byte             // rule id (k) to rule ID (v)
 	SUPRORD map[uint][]uint             // ordered collection of superior rule refs
 	DESCR   map[uint][][]byte           // nrml. descriptor (k) to rule integer identifier (v)
 	PRINC   map[uint][]byte             // rule integer identifier (k) to principal descriptor (v)
