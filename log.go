@@ -42,9 +42,9 @@ var LogLevel uint16 = 65535
 
 const (
 	// not to exceed uint16
-	logError   uint16 = 1 << iota // 1
-	logWarning                    // 2
-	logTrace                      // 4
-	logInfo                       // 8
-	logMoreInfo                   // 16
+	logError    uint16 = 1 << iota // 1
+	logWarning                     // 2
+	logTrace                       // 4
+	logInfo                        // 8
+	logMoreInfo                    // 16
 )

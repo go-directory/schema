@@ -200,14 +200,14 @@ type Counters struct {
 Total returns an instance of [Counters], which contains the grant
 total number of definitions for a particular schema category:
 
- - ls(0)
- - mr(1)
- - at(2)
- - mu(3)
- - oc(4)
- - dc(5)
- - nf(6)
- - ds(7)
+  - ls(0)
+  - mr(1)
+  - at(2)
+  - mu(3)
+  - oc(4)
+  - dc(5)
+  - nf(6)
+  - ds(7)
 
 The return value is the summation of visible and hidden definitions
 present within the specified categorical store.
@@ -224,7 +224,6 @@ func (r Counters) Total(cat int) int {
 			total += r.Hidden[i] + r.Visible[i]
 		}
 	}
-		
 
 	return total
 }
@@ -239,22 +238,22 @@ intended solely for read-only operations such as monitoring.
 func (r SubschemaSubentry) Counters() Counters {
 	var c Counters
 
-        // tallies of hidden definitions
-        c.Hidden = map[int]int{ // categorical
-                0: 0, 1: 0, 2: 0, 3: 0,
-                4: 0, 5: 0, 6: 0, 7: 0,
-        }
+	// tallies of hidden definitions
+	c.Hidden = map[int]int{ // categorical
+		0: 0, 1: 0, 2: 0, 3: 0,
+		4: 0, 5: 0, 6: 0, 7: 0,
+	}
 
-        // tallies of visible definitions
-        c.Visible = map[int]int{ // categorical
-                0: 0, 1: 0, 2: 0, 3: 0,
-                4: 0, 5: 0, 6: 0, 7: 0,
-        }
+	// tallies of visible definitions
+	c.Visible = map[int]int{ // categorical
+		0: 0, 1: 0, 2: 0, 3: 0,
+		4: 0, 5: 0, 6: 0, 7: 0,
+	}
 
 	// advertisement checker
-	advert := [8]func([]byte)bool{
+	advert := [8]func([]byte) bool{
 		r.ls.Advertise, r.mr.Advertise,
-		r.at.Advertise,	r.mr.Advertise, 
+		r.at.Advertise, r.mr.Advertise,
 		r.oc.Advertise, r.dc.Advertise,
 		r.nf.Advertise, r.ds.Advertise,
 	}
@@ -268,7 +267,7 @@ func (r SubschemaSubentry) Counters() Counters {
 	for cat, manifest := range [][]uint{
 		r.ls.ORD, r.mr.ORD, r.at.ORD, r.mr.ORD, // mr controls mu, not a typo! :)
 		r.oc.ORD, r.dc.ORD, r.nf.ORD, r.ds.ORD,
-	}{
+	} {
 		for _, def := range manifest {
 			if cat == 3 {
 				if _, pres := r.mu.APPORD[def]; !pres {
@@ -464,7 +463,7 @@ func (r *SubschemaSubentry) registerDefinitionByCase(defs [][]byte) (err error) 
 			break
 		}
 
-		emitM("register %s: %s", low, def) 
+		emitM("register %s: %s", low, def)
 		r.Timestamp = now()
 	}
 
